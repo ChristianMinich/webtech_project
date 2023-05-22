@@ -17,7 +17,7 @@ router.get('/login', (req, res) => {
 
 router.get('/logout', (req, res) => {
     res.clearCookie("accessToken");
-    res.status(200).sendFile(path.resolve('public/html/registration.html'));
+    res.status(200).redirect('/login');
 });
 
 router.get('/register', (req, res) => {
