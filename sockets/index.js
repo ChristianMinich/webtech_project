@@ -15,10 +15,22 @@ module.exports = (io) => {
             io.emit("all-connections", JSON.stringify(users));
         });
 
+        socket.on("join-queue", (username) => {
+            // Add User to Array
+            // if Array >= 2 emit
+            // 2 Users to Game
+            // and Remove from Array
+            // io.emit("join-game", gameID);
+        });
+
+        socket.on("questionSelected", (gameID, username) => {
+
+        });
+
         // Ereignisbehandlung: Nachricht wurde gesendet (Vom Client an Server).
         socket.on("send-chat-message", (message) => {
             socket.broadcast.emit("chat-message", {message: message, name: users[socket.id]});
-        })
+        });
 
         // Ereignisbehandlung: Name wurde geändert.
         socket.on("send-new-username", (name) => {
