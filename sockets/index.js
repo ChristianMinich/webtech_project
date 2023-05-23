@@ -5,7 +5,7 @@ module.exports = (io) => {
 
     io.on("connection", (socket) => {
         console.log(socket.id);
-        console.log(socket.rooms);
+        console.log(socket.request.session);
         users[socket.id] = socket.request.connection.remoteAddress;
         console.log(users);
         // Ereignisbehandlung: Neuer Benutzer meldet sich an.
