@@ -1,7 +1,10 @@
 module.exports = (io) => {
     const users = {} // Sichern der angemeldeten Clients u.A. für Nutzerlisten und Namensänderungen.
 
+    console.log("hello there");
+
     io.on("connection", (socket) => {
+        console.log(socket.id);
         // Ereignisbehandlung: Neuer Benutzer meldet sich an.
         socket.on("new-user", (name) => {
             users[socket.id] = name;
