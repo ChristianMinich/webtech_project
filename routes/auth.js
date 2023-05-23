@@ -24,6 +24,10 @@ router.get('/game-test', (req, res) => {
     res.render('game.ejs');
 })
 
+router.get('/scoreboard', (req, res) => {
+    res.render('scoreboard.ejs');
+})
+
 router.get('/register', (req, res) => {
     res.status(200).sendFile(path.resolve('public/register.html'));
 });

@@ -9,7 +9,7 @@
         </video>
     </div>
     
-    <div id="quiz-box" class="quiz_box">
+    <div class="quiz_box">
         <header>
             <div class="title">Das Quizduell von Liefergruppe</div>
             <div class="timer">
@@ -34,8 +34,20 @@
             <button class="next_btn">Next </button>
         </footer>
     </div>
+    <div class="result_box">
+        <div class="icon">
+            <i class="fas fa-crown"></i>
+        </div>
+        <div class="complete_text">You've completed are Quiz!</div>
+        <div class="score_text">
+            // Score Result from JavaScript -->
+        </div>
+        <div class="buttons">
+            <button class="restart">Replay Quiz</button>
+            <button class="quit">Quit Quiz</button>
+        </div>
+    </div>
     <script src="./js/questions.js"></script>
-    <script src="./js/script.js"></script>
     <style>
     .video-container {
         display: flex;
@@ -50,9 +62,10 @@
         var quizBox = document.getElementById('quiz-box');
         
         video.addEventListener('ended', function() {
-          videoContainer.remove();
-          quizBox.style.display = 'block';
+        videoContainer.remove();
+        start();
         });
       </script>
+      <script src="./js/script-test.js"></script>
 </body>
 </html>
