@@ -5,6 +5,7 @@ module.exports = (io) => {
 
     io.on("connection", (socket) => {
         console.log(socket.id);
+        console.log(socket.rooms);
         // Ereignisbehandlung: Neuer Benutzer meldet sich an.
         socket.on("new-user", (name) => {
             users[socket.id] = name;

@@ -1,6 +1,6 @@
 const database = require('./index');
 
-const db = database.getConnection();
+//const db = database.getConnection();
 
 
 function getUserbyName(username){
