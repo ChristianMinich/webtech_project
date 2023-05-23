@@ -22,11 +22,11 @@ router.get('/logout', (req, res) => {
 
 router.get('/game-test', (req, res) => {
     res.render('game.ejs');
-})
+});
 
 router.get('/scoreboard', (req, res) => {
-    res.render('scoreboard.ejs');
-})
+    res.status(200).sendFile(path.resolve('public/scoreboard.html'));
+});
 
 router.get('/register', (req, res) => {
     res.status(200).sendFile(path.resolve('public/register.html'));
@@ -34,7 +34,7 @@ router.get('/register', (req, res) => {
 
 router.get('/game', (req, res) => {
     res.sendFile(path.resolve('public/game.html'));
-})
+});
 
 router.post("/api/auth", (req, res) => {
     const {username, password} = req.body;
