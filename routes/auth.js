@@ -20,6 +20,10 @@ router.get('/logout', (req, res) => {
     res.status(200).redirect('/login');
 });
 
+router.get('/game-test', (req, res) => {
+    res.render('game.ejs');
+})
+
 router.get('/register', (req, res) => {
     res.status(200).sendFile(path.resolve('public/register.html'));
 });

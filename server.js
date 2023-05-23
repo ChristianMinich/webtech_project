@@ -2,8 +2,10 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 
-app.set("views", "views");
-app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
+
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
 
 const routes = require("./routes");
 app.use("/", routes);
