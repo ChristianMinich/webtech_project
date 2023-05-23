@@ -36,6 +36,10 @@ async function login(username, password) {
     }
 }
 
+async function register(){
+
+}
+
 function getData(token) {
     return jwt.verify(token, process.env.JWT_SECRET);
 }
@@ -47,4 +51,4 @@ async function createUser(username, password) {
     });
 }
 
-module.exports = {login, getData};
+module.exports = {login, getData, register};

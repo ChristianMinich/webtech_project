@@ -8,6 +8,10 @@ app.set("view engine", "ejs");
 const routes = require("./routes");
 app.use("/", routes);
 
+const io = require("socket.io")(http);
+const sockets = require("./sockets");
+sockets(io);
+
 http.listen(3000, () => {
     console.log('Server startet at localhost:3000');
 })

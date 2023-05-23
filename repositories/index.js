@@ -1,5 +1,3 @@
-//TODO: DB Implementation
-
 const mariadb = require('mariadb');
 
 /**
@@ -12,9 +10,9 @@ class MariaDBSingleton {
   constructor() {
     this.pool = mariadb.createPool({
       host: '127.0.0.1',
-      user: 'root',
-      password: 'admin',
-      database: 'sep',
+      user: 'sep23',
+      password: 'lingenliefert',
+      database: 'SEP',
       connectionLimit: 10
     });
   }
@@ -25,7 +23,7 @@ class MariaDBSingleton {
       return connection;
     } catch (err) {
       console.error('Failed to get database connection:', err);
-      throw err;
+     // throw err;
     }
   }
 }
