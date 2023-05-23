@@ -1,0 +1,29 @@
+
+### Aufgaben Aufteilung
+datenbank
+verschlüsselung
+tests
+projektstruktur sinnvolle Ordnername etc
+Geschwindigkeit
+Struktur der Datenquelle
+Kommentare
+gutes design
+präsentation
+Qualität des Codes
+Plus Punkte: Open Source Frame Works
+
+Multiplayer
+Lobby
+Achievements
+Design
+
+
+Jeder Dokumentation
+
+30.05 --- DEADLINE --- 18 Uhr
+
+Chris - Multiplayer
+Jan - Multiplayer
+Rania - Lobby
+Sadik - Achievements
+Tony - Design
