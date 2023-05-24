@@ -10,7 +10,7 @@
 <body>
 <div class="container">
     <h1 class="form-title">Neuen Account erstellen</h1>
-    <form action="#" method="POST">
+    <form method="POST" id="registerForm">
         <div class="main-user-info">
             <div class="user-input-box">
 
@@ -19,15 +19,15 @@
                 <label for="Username"> Username: </label>
                 <label for="username"></label>
                 <input type="text"
-                       id="username"
-                       name="userName"
+                       id="usernameInput"
+                       name="username"
                        placeholder="Enter Username"/>
             </div>
 
             <div class="user-input-box">
                 <label for="Password">Password: </label>
                 <label for="password"></label><input type="password"
-                                                     id="password"
+                                                     id="passwordInput"
                                                      name="password"
                                                      placeholder="Enter Password"/>
             </div>
@@ -48,6 +48,7 @@
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
+<script src="./js/register.js"></script>
 </body>
 </html>
 

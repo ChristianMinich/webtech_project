@@ -5,9 +5,17 @@ const svc = require('../services');
 const database = require('../repositories/index');
 const db = database.getConnection();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.get('/', (req, res) => {
     res.status(200).sendFile(path.resolve('public/index.html'));
+
+    db.then(conn => {
+        conn.query('SELECT * FROM USER')
+        .then(rows => {
+            console.log(rows);
+        })
+    })
 });
 
 router.get('/index', (req, res) => {
@@ -57,14 +65,16 @@ router.post("/api/auth", (req, res) => {
     db.then(conn => {
         conn.query('SELECT USERNAME, PASSWORD FROM USER WHERE USERNAME = ?', [username])
         .then(rows => {
+            console.log(rows);
             if(rows.length === 0) res.status(401).send('Wrong Login Credentials!');
-            bcrypt.compare(password, user.password)
+            bcrypt.compare(password, rows[0].PASSWORD)
             .then((valid) => {
+                console.log(valid);
                 if(valid && rows[0].USERNAME == username){
 
                     conn.query('SELECT USER_ID FROM USER WHERE USERNAME = ?', [username])
                     .then(rows => {
-
+                        console.log(rows);
                         try{
                             if(rows.length !== 0){
     
@@ -87,12 +97,14 @@ router.post("/api/auth", (req, res) => {
                             }
                     })
 
+                } else {
+                    res.status(400).send("Invalid Request");
                 }
             }).catch(error => {
                 res.status(403).send(error);
             })
         }).catch(error => {
-            res.status(403).send(error);
+            console.log(error);
         })
     })
 });
@@ -115,11 +127,15 @@ router.post("/api/auth/register", (req, res) => {
     db.then(conn => {
         conn.query('SELECT USERNAME FROM USER WHERE USERNAME = ?', [username])
         .then(rows => {
-            if(rows[0].USERNAME !== 0) return res.status(400).send("User already exists");
+            try{
+            if(rows[0].USERNAME !== 0) {
+                return res.send("User already exists");
+            }
+            } catch (error){
+            
+            let hashedPW = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
-            let hashedPW = bcrypt.hashSync(password, process.env.JWT_SECRET);
-
-            conn.query('INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID) VALUES (?, ?, ?, ?)', [username, hashedPW, 0, null])
+            conn.query('INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID) VALUES (?, ?, ?, ?)', [username, hashedPW, 0, 1])
             .then(rows => {
                 console.log(rows);
                 conn.query('SELECT USER_ID FROM USER WHERE USERNAME = ?', [username])
@@ -148,9 +164,10 @@ router.post("/api/auth/register", (req, res) => {
                 })
             })
             .catch(error => {
+                console.log(error);
                 res.status(400).send(error);
             })
-
+        }
         })
     })
 

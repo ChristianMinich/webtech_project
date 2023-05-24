@@ -12,7 +12,7 @@ class MariaDBSingleton {
       host: '127.0.0.1',
       user: 'sep23',
       password: 'lingenliefert',
-      database: 'SEP',
+      database: 'QUIZDUELL',
       connectionLimit: 10
     });
   }
