@@ -186,6 +186,25 @@ router.post("/api/auth/register", (req, res) => {
 
 });
 
+router.get('/scoreboard', (req, res) => {
+      db.then(conn => {
+        conn.query('SELECT USERNAME, HIGHSCORE FROM USER ORDER BY HIGHSCORE LIMIT 10')
+          .then(rows => {
+            res.json(rows);
+            conn.end();
+          })
+          .catch(error => {
+            console.log(error);
+            conn.end();
+            res.status(500).json({ error: 'Internal Server Error' });
+          });
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+});
+
 const isJWT = (token) => {
     if (typeof token !== 'string' || !token) {
       return false;
