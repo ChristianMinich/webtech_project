@@ -1,3 +1,3 @@
 const token = require("./token");
 
-module.exports = {validateToken: token.validate}
+module.exports = { validateToken: token.validate };

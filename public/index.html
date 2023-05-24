@@ -1,82 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <link rel="stylesheet" type="text/css" href="./css/main.css" />
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300" rel="stylesheet">
-    <meta charset="UTF-8">
+    <link
+      href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
     <title>Quizduell</title>
-        </head>
-<body>
-
-<div class="contentContainer">
-
-    <nav>
+  </head>
+  <body>
+    <div class="contentContainer">
+      <nav>
         <ul>
-            <li><a href="/index">Home</a></li>
-            <li><a href="/game">So wird gespielt</a></li>
-            <li class="dropdown">
-                <a href="#">Anmelden</a>
-                <ul class="dropdown-menu">
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/register">Registrieren</a></li>
-                </ul>
-            </li>
+          <li><a href="/index">Home</a></li>
+          <li><a href="/game">So wird gespielt</a></li>
+          <li class="dropdown">
+            <a href="#">Anmelden</a>
+            <ul class="dropdown-menu">
+              <li><a href="/login">Login</a></li>
+              <li><a href="/register">Registrieren</a></li>
+            </ul>
+          </li>
         </ul>
-    </nav>
+      </nav>
 
-<h1>Willkommen zu unserem Quiz im Rahmen des WebTech Moduls</h1>
+      <h1>Willkommen zu unserem Quiz im Rahmen des WebTech Moduls</h1>
 
-    <p>Hier steht der Text der unser Quiz erklärt</p>
+      <p>Hier steht der Text der unser Quiz erklärt</p>
 
-    <div class="container">
-        <div class="square"><p>1 vs 1  5 Runden</p></div>
+      <div class="container">
+        <div class="square"><p>1 vs 1 5 Runden</p></div>
         <div class="square"><p>abwechselnd wird eine Kategorie gwählt</p></div>
-        <div class="square"><p>wer schneller antwortet bekommt einen punkt</p></div>
-        <div class="square"><p>wenn die antwort falsch ist bekommt der gegner einen punkt</p></div>
-        <div class="square"><img src="../assets/question.jpg"></div>
-    </div>
+        <div class="square">
+          <p>wer schneller antwortet bekommt einen punkt</p>
+        </div>
+        <div class="square">
+          <p>wenn die antwort falsch ist bekommt der gegner einen punkt</p>
+        </div>
+        <div class="square"><img src="../assets/question.jpg" /></div>
+      </div>
 
-    <h2 id="howToPlay">so wird gespielt</h2>
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-        quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
-        vel illum dolore eu feugiat nulla facilisis at vero et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-        quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
-        vel illum dolore eu feugiat nulla facilisis at vero et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-        Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-        quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
-        vel illum dolore eu feugiat nulla facilisis at vero et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-        quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
-        vel illum dolore eu feugiat nulla facilisis at vero et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-        Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-        quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
-        vel illum dolore eu feugiat nulla facilisis at vero et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-        quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
-        vel illum dolore eu feugiat nulla facilisis at vero et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-        Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</p>
+      <h2 id="howToPlay">so wird gespielt</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+        nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+        volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+        ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+        molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero
+        et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
+        delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor
+        sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+        tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad
+        minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis
+        nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor
+        in hendrerit in vulputate velit esse molestie consequat, vel illum
+        dolore eu feugiat nulla facilisis at vero et accumsan et iusto odio
+        dignissim qui blandit praesent luptatum zzril delenit augue duis dolore
+        te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend
+        option congue nihil imperdiet doming id quod mazim placerat facer possim
+        assum.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+        nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+        volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+        ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+        molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero
+        et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
+        delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor
+        sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+        tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad
+        minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis
+        nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor
+        in hendrerit in vulputate velit esse molestie consequat, vel illum
+        dolore eu feugiat nulla facilisis at vero et accumsan et iusto odio
+        dignissim qui blandit praesent luptatum zzril delenit augue duis dolore
+        te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend
+        option congue nihil imperdiet doming id quod mazim placerat facer possim
+        assum.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+        nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+        volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+        ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+        molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero
+        et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
+        delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor
+        sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+        tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad
+        minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis
+        nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor
+        in hendrerit in vulputate velit esse molestie consequat, vel illum
+        dolore eu feugiat nulla facilisis at vero et accumsan et iusto odio
+        dignissim qui blandit praesent luptatum zzril delenit augue duis dolore
+        te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend
+        option congue nihil imperdiet doming id quod mazim placerat facer possim
+        assum.
+      </p>
 
-    <footer>
+      <footer>
         <p>&copy Liefergruppe</p>
         <p><a href="impressum.html">Impressum</a></p>
-    </footer>
-
-</div>
-<script src="/socket.io/socket.io.js"></script>
-<script>
-   /* const socket = io();
+      </footer>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      /* const socket = io();
 
     socket.on("connection", () => {
             socket.join("room1");
         }); */
-</script>
-
-
-</body>
-
-
-
+    </script>
+  </body>
 </html>
