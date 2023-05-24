@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const path = require('path');
 const svc = require('../services');
+const database = require('../repositories/index');
+const db = database.getConnection();
+const bcrypt = require('bcrypt');
 
 router.get('/', (req, res) => {
     res.status(200).sendFile(path.resolve('public/index.html'));
@@ -38,7 +41,7 @@ router.get('/game', (req, res) => {
 
 router.post("/api/auth", (req, res) => {
     const {username, password} = req.body;
-    svc.login(username, password).then((response) => {
+    /*svc.login(username, password).then((response) => {
         if (response) {
             if (response.token) {
                 res.cookie("accessToken", response.token, {httpOnly: false});
@@ -49,12 +52,37 @@ router.post("/api/auth", (req, res) => {
                 res.end();
             }
         }
-    }).catch(() => res.status(500).json({message: "authentication failed"}));
+    }).catch(() => res.status(500).json({message: "authentication failed"})); */
+
+    db.then(conn => {
+        conn.query('SELECT USERNAME, PASSWORD FROM USER WHERE USERNAME = ?', [username])
+        .then(rows => {
+            if(rows.length === 0) res.status(401).send('Wrong Login Credentials!');
+            bcrypt.compare(password, user.password)
+            .then((valid) => {
+                if(valid && rows[0].USERNAME == username){
+                    const token = jwt.sign({id, username}, process.env.JWT_SECRET, {
+                        algorithm: "HS256",
+                        expiresIn: "12h",
+                        subject: "auth_token"
+                    });
+
+                        res.cookie("accessToken", token, {httpOnly: false});
+                        res.status(200).redirect("/index");
+
+                }
+            }).catch(error => {
+                res.status(403).send(error);
+            })
+        }).catch(error => {
+            res.status(403).send(error);
+        })
+    })
 });
 
 router.post("/api/auth/register", (req, res) => {
     const {username, password} = req.body;
-    svc.register(username, password).then((response) => {
+    /*svc.register(username, password).then((response) => {
         if (response) {
             if (response.token) {
                 res.cookie("accessToken", response.token, {httpOnly: false});
@@ -65,7 +93,53 @@ router.post("/api/auth/register", (req, res) => {
                 res.end();
             }
         }
-    }).catch(() => res.status(500).json({message: "authentication failed"}));
+    }).catch(() => res.status(500).json({message: "authentication failed"})); */
+
+    db.then(conn => {
+        conn.query('SELECT USERNAME FROM USER WHERE USERNAME = ?', [username])
+        .then(rows => {
+            if(rows[0].USERNAME !== 0) return res.status(400).send("User already exists");
+
+            // Funktioniert noch nicht
+            let hashedPW = bcrypt.hash(password, process.env.JWT_SECRET, (error, hash) => {
+                if(error) res.status(400).send(error);
+                return hash;
+            })
+
+            conn.query('INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID) VALUES (?, ?, ?, ?)', [username, hashedPW, 0, null])
+            .then(rows => {
+                conn.query('SELECT USER_ID FROM USER WHERE USERNAME = ?', [username])
+                .then(rows => {
+                    
+                    try{
+                        if(rows.length !== 0){
+
+                            let id = rows[0].USER_ID
+
+                            const token = jwt.sign({id, username}, process.env.JWT_SECRET, {
+                                algorithm: "HS256",
+                                expiresIn: "12h",
+                                subject: "auth_token"
+                            });
+
+                            res.cookie("accessToken", token, {httpOnly: false});
+                            res.status(200).redirect("/index");
+                        } else {
+                            res.status(400).send("An Error has Occured!");
+                        }
+                            
+                        } catch (error) {
+                            console.log(erorr);
+                        }
+                })
+            })
+            .catch(error => {
+                res.status(400).send(error);
+            })
+
+        })
+    })
+
 });
 
 module.exports = router;
