@@ -61,14 +61,31 @@ router.post("/api/auth", (req, res) => {
             bcrypt.compare(password, user.password)
             .then((valid) => {
                 if(valid && rows[0].USERNAME == username){
-                    const token = jwt.sign({id, username}, process.env.JWT_SECRET, {
-                        algorithm: "HS256",
-                        expiresIn: "12h",
-                        subject: "auth_token"
-                    });
 
-                        res.cookie("accessToken", token, {httpOnly: false});
-                        res.status(200).redirect("/index");
+                    conn.query('SELECT USER_ID FROM USER WHERE USERNAME = ?', [username])
+                    .then(rows => {
+
+                        try{
+                            if(rows.length !== 0){
+    
+                                let id = rows[0].USER_ID
+    
+                                const token = jwt.sign({id, username}, process.env.JWT_SECRET, {
+                                    algorithm: "HS256",
+                                    expiresIn: "12h",
+                                    subject: "auth_token"
+                                });
+    
+                                res.cookie("accessToken", token, {httpOnly: false});
+                                res.status(200).redirect("/index");
+                            } else {
+                                res.status(400).send("An Error has Occured!");
+                            }
+                                
+                            } catch (error) {
+                                console.log(error);
+                            }
+                    })
 
                 }
             }).catch(error => {
@@ -104,6 +121,7 @@ router.post("/api/auth/register", (req, res) => {
 
             conn.query('INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID) VALUES (?, ?, ?, ?)', [username, hashedPW, 0, null])
             .then(rows => {
+                console.log(rows);
                 conn.query('SELECT USER_ID FROM USER WHERE USERNAME = ?', [username])
                 .then(rows => {
                     
@@ -125,7 +143,7 @@ router.post("/api/auth/register", (req, res) => {
                         }
                             
                         } catch (error) {
-                            console.log(erorr);
+                            console.log(error);
                         }
                 })
             })

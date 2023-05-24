@@ -2,11 +2,8 @@ const database = require('../../repositories/index');
 
 const db = database.getConnection();
 
-window.onload = () => {
-    generateTable();
-}
-
 function generateTable() {
+    console.log('hello there! scoreboard');
     db.then(conn => {
     conn.query('SELECT USERNAME, HIGHSCORE FROM USER ORDER BY HIGHSCORE LIMIT 10')
         .then(rows => {
