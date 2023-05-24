@@ -100,11 +100,7 @@ router.post("/api/auth/register", (req, res) => {
         .then(rows => {
             if(rows[0].USERNAME !== 0) return res.status(400).send("User already exists");
 
-            // Funktioniert noch nicht
-            let hashedPW = bcrypt.hash(password, process.env.JWT_SECRET, (error, hash) => {
-                if(error) res.status(400).send(error);
-                return hash;
-            })
+            let hashedPW = bcrypt.hashSync(password, process.env.JWT_SECRET);
 
             conn.query('INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID) VALUES (?, ?, ?, ?)', [username, hashedPW, 0, null])
             .then(rows => {
