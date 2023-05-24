@@ -10,12 +10,24 @@ const jwt = require('jsonwebtoken');
 router.get('/', (req, res) => {
     res.status(200).sendFile(path.resolve('public/index.html'));
 
-    db.then(conn => {
+    /*db.then(conn => {
         conn.query('SELECT * FROM USER')
         .then(rows => {
             console.log(rows);
         })
-    })
+    }) */
+
+    try{
+        if (isJWT(req.cookies.accessToken)){
+        const data = svc.getData(req.cookies.accessToken);
+
+        res.render('dashboard', {user: data.username });
+        }
+    }catch (error){
+        console.log(error);
+    }
+
+    //console.log(req.cookies.accessToken);
 });
 
 router.get('/index', (req, res) => {
@@ -87,7 +99,8 @@ router.post("/api/auth", (req, res) => {
                                 });
     
                                 res.cookie("accessToken", token, {httpOnly: false});
-                                res.status(200).redirect("/index");
+                                //res.status(200).redirect("/index");
+                                res.status(200).redirect('/');
                             } else {
                                 res.status(400).send("An Error has Occured!");
                             }
@@ -153,7 +166,7 @@ router.post("/api/auth/register", (req, res) => {
                             });
 
                             res.cookie("accessToken", token, {httpOnly: false});
-                            res.status(200).redirect("/index");
+                            res.status(200).redirect('/');
                         } else {
                             res.status(400).send("An Error has Occured!");
                         }
@@ -172,5 +185,14 @@ router.post("/api/auth/register", (req, res) => {
     })
 
 });
+
+const isJWT = (token) => {
+    if (typeof token !== 'string' || !token) {
+      return false;
+    }
+  
+    const tokenParts = token.split('.');
+    return tokenParts.length === 3 && tokenParts[0] && tokenParts[1] && tokenParts[2];
+  };  
 
 module.exports = router;

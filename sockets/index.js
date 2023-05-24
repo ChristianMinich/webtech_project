@@ -4,10 +4,10 @@ module.exports = (io) => {
     console.log("hello there");
 
     io.on("connection", (socket) => {
-        console.log(socket.id);
-        console.log(socket.request.session);
+        //console.log(socket.id);
+        //console.log(socket.request.session);
         users[socket.id] = socket.request.connection.remoteAddress;
-        console.log(users);
+        //console.log(users);
         // Ereignisbehandlung: Neuer Benutzer meldet sich an.
         socket.on("new-user", (name) => {
             users[socket.id] = name;
