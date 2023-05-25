@@ -30,10 +30,12 @@ router.get("/login", (req, res) => {
 
 router.get("/logout", (req, res) => {
   res.clearCookie("accessToken");
-  res.status(200).redirect("/login");
+  //res.status(200).redirect("/login");
+  res.sendFile(path.resolve('public/login.html'));
 });
 
-router.get("/game-test", (req, res) => {
+// Middleware
+router.get("/game-test",(req, res) => {
   res.render("game.ejs");
 });
 
