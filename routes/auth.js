@@ -31,11 +31,11 @@ router.get("/login", (req, res) => {
 router.get("/logout", (req, res) => {
   res.clearCookie("accessToken");
   //res.status(200).redirect("/login");
-  res.sendFile(path.resolve('public/login.html'));
+  res.sendFile(path.resolve("public/login.html"));
 });
 
 // Middleware
-router.get("/game-test",(req, res) => {
+router.get("/game-test", (req, res) => {
   res.render("game.ejs");
 });
 
