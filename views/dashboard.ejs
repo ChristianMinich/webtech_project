@@ -1,5 +1,12 @@
-<head> </head>
+<head> 
+  <link
+      href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300"
+      rel="stylesheet"
+    />
+  <link href="../public/css/main.css"/>
+</head>
 <body>
+  <%- include('navbar') %>
   <h1>hello there</h1>
   <h2><%= user%></h2>
   <button onclick="logout()">Logout</button>
