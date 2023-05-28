@@ -151,7 +151,7 @@ router.post("/api/auth/register", (req, res) => {
                       );
 
                       res.cookie("accessToken", token, { httpOnly: false });
-                      res.status(200).redirect("/");
+                      res.status(200).redirect("/registered");
                     } else {
                       res.status(400).send("An Error has Occured!");
                     }
@@ -188,6 +188,65 @@ router.get("/scoreboard", notValid,(req, res) => {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   });
+});
+
+router.get('/video', (req, res) => {
+  // Replace 'path/to/video.mp4' with the path to your video file
+  const videoPath = path.resolve(__dirname, '..', 'public', 'assets', 'registered.mp4');
+  res.sendFile(videoPath);
+});
+
+router.get('/registered', (req, res) => {
+  res.send(`
+  <html>
+  <head>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .table-container {
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="table-container">
+      <table margin: auto display>
+        <tr>
+          <td>
+            <video id="myVideo" muted style="display: block; margin: 0 auto;">
+              <source src="/video" type="video/mp4">
+            </video>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          <button id="playButton">Continue</button>
+          </td>
+        </tr>
+      </table>
+      </div>
+    <script>
+      const video = document.querySelector('#myVideo');
+      const playButton = document.querySelector('#playButton');
+
+      playButton.addEventListener('click', () => {
+        video.play();
+        video.muted = false; // Unmute the video once it starts playing
+      });
+
+      video.addEventListener('ended', () => {
+        window.location.href = 'http://131.173.65.77:3000'; // Redirect to another site
+      });
+    </script>
+  </body>
+</html>
+  `);
 });
 
 module.exports = router;
