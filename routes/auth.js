@@ -169,12 +169,14 @@ router.post("/api/auth/register", (req, res) => {
   });
 });
 
-router.get("/scoreboard", (req, res) => {
+router.get("/scoreboard", notValid,(req, res) => {
+  const username = req.username;
   db.then((conn) => {
     conn
-      .query("SELECT USERNAME, HIGHSCORE FROM USER ORDER BY HIGHSCORE LIMIT 10")
+      .query("SELECT USERNAME, HIGHSCORE FROM USER ORDER BY HIGHSCORE DESC LIMIT 10")
       .then((rows) => {
-        res.json(rows);
+        //res.json(rows);
+        res.render("scoreboard", { rows: rows , user: username});
         conn.end();
       })
       .catch((error) => {

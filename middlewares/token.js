@@ -16,11 +16,17 @@ function validate(req, res, next) {
   }
 }
 
-function notValid(req, res, next){
-  try{
-    if(isJWT(req.cookies.accessToken)){
-      next();
-      return;
+function notValid(req, res, next) {
+  try {
+    if (isJWT(req.cookies.accessToken)) {
+      try {
+        const data = svc.getData(req.cookies.accessToken);
+        req.username = data.username;
+        next();
+        return;
+      } catch (error) {
+        console.log(error);
+      }
     }
   } catch (error) {
     res.status(200).redirect("/login");
