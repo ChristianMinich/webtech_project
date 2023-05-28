@@ -7,6 +7,7 @@ const db = database.getConnection();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mw = require("../middlewares");
+const { notValid } = require("../middlewares/token");
 
 router.get("/", mw.validateToken,(req, res) => {
   res.status(200).sendFile(path.resolve("public/index.html"));
@@ -39,16 +40,16 @@ router.get("/logout", (req, res) => {
 router.get("/game-test", (req, res) => {
   res.render("game.ejs");
 });
-
+/*
 router.get("/scoreboard", (req, res) => {
   res.status(200).sendFile(path.resolve("public/scoreboard.html"));
 });
-
+*/
 router.get("/register", mw.validateToken, (req, res) => {
   res.status(200).sendFile(path.resolve("public/register.html"));
 });
 
-router.get("/game", (req, res) => {
+router.get("/game", notValid,(req, res) => {
   res.sendFile(path.resolve("public/game.html"));
 });
 

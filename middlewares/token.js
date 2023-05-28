@@ -16,6 +16,17 @@ function validate(req, res, next) {
   }
 }
 
+function notValid(req, res, next){
+  try{
+    if(isJWT(req.cookies.accessToken)){
+      next();
+      return;
+    }
+  } catch (error) {
+    res.status(200).redirect("/login");
+  }
+}
+
 const isJWT = (token) => {
   if (typeof token !== "string" || !token) {
     return false;
@@ -27,4 +38,4 @@ const isJWT = (token) => {
   );
 };
 
-module.exports = { validate };
+module.exports = { validate, notValid };
