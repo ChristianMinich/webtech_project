@@ -1,47 +1,38 @@
 const svc = require("../services");
 
-function validate(req, res, next) {
-  const token = req.cookies["accessToken"];
-  if (token === undefined) {
+function renderDashboard(req, res, next) {
+  const accessToken = req.cookies["accessToken"];
+
+  if (accessToken) {
+    try {
+      const decoded = svc.getData(accessToken);
+
+      const user = decoded.username;
+
+      return res.render("dashboard", { user: user });
+    } catch (err) {
+      return next();
+    }
+  }
+  next();
+}
+
+function authenticateToken(req, res, next) {
+  const accessToken = req.cookies["accessToken"];
+
+  if (!accessToken) {
+    console.log("redirected!");
+    return res.redirect("/login");
+  }
+
+  try {
+    const decoded = svc.getData(accessToken);
+    console.log(decoded);
+    req.username = decoded.username;
     next();
-    return;
-  }
-  try {
-    if (isJWT(req.cookies.accessToken)) {
-      const data = svc.getData(req.cookies.accessToken);
-      res.render("dashboard", { user: data.username });
-    }
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    return res.redirect("/login");
   }
 }
 
-function notValid(req, res, next) {
-  try {
-    if (isJWT(req.cookies.accessToken)) {
-      try {
-        const data = svc.getData(req.cookies.accessToken);
-        req.username = data.username;
-        next();
-        return;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  } catch (error) {
-    res.status(200).redirect("/login");
-  }
-}
-
-const isJWT = (token) => {
-  if (typeof token !== "string" || !token) {
-    return false;
-  }
-
-  const tokenParts = token.split(".");
-  return (
-    tokenParts.length === 3 && tokenParts[0] && tokenParts[1] && tokenParts[2]
-  );
-};
-
-module.exports = { validate, notValid };
+module.exports = { authenticateToken, renderDashboard };

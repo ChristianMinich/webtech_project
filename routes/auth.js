@@ -7,9 +7,8 @@ const db = database.getConnection();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mw = require("../middlewares");
-const { notValid } = require("../middlewares/token");
 
-router.get("/", mw.validateToken,(req, res) => {
+router.get("/", mw.dashboard,(req, res) => {
   res.status(200).sendFile(path.resolve("public/index.html"));
   /*try {
     if (isJWT(req.cookies.accessToken)) {
@@ -26,7 +25,7 @@ router.get("/index", (req, res) => {
   res.status(200).redirect("/");
 });
 
-router.get("/login", mw.validateToken, (req, res) => {
+router.get("/login", mw.dashboard, (req, res) => {
   res.status(200).sendFile(path.resolve("public/login.html"));
 });
 
@@ -45,12 +44,23 @@ router.get("/scoreboard", (req, res) => {
   res.status(200).sendFile(path.resolve("public/scoreboard.html"));
 });
 */
-router.get("/register", mw.validateToken, (req, res) => {
+router.get("/register", mw.dashboard, (req, res) => {
   res.status(200).sendFile(path.resolve("public/register.html"));
 });
 
-router.get("/game", notValid,(req, res) => {
+router.get("/game", mw.authToken,(req, res) => {
   res.sendFile(path.resolve("public/game.html"));
+});
+
+router.get("/profile/:username", mw.authToken,(req, res) => {
+  const { username } = req.params;
+  const user = req.username;
+  db.then(conn => {
+    conn.query("SELECT DISTINCT USERNAME, HIGHSCORE FROM USER WHERE USERNAME = ?", [username])
+    .then(rows => {
+      res.render("profile", { rows: rows , user: user});
+    })
+  })
 });
 
 router.post("/api/auth", (req, res) => {
@@ -169,11 +179,11 @@ router.post("/api/auth/register", (req, res) => {
   });
 });
 
-router.get("/scoreboard", notValid,(req, res) => {
+router.get("/scoreboard", mw.authToken,(req, res) => {
   const username = req.username;
   db.then((conn) => {
     conn
-      .query("SELECT USERNAME, HIGHSCORE FROM USER ORDER BY HIGHSCORE DESC LIMIT 10")
+      .query("SELECT DISTINCT USERNAME, HIGHSCORE FROM USER ORDER BY HIGHSCORE DESC LIMIT 10")
       .then((rows) => {
         //res.json(rows);
         res.render("scoreboard", { rows: rows , user: username});
@@ -234,6 +244,9 @@ router.get('/registered', (req, res) => {
     <script>
       const video = document.querySelector('#myVideo');
       const playButton = document.querySelector('#playButton');
+
+      video.muted = false;
+      video.play();
 
       playButton.addEventListener('click', () => {
         video.play();

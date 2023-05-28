@@ -1,3 +1,3 @@
 const token = require("./token");
 
-module.exports = { validateToken: token.validate };
+module.exports = { dashboard: token.renderDashboard,  authToken: token.authenticateToken};

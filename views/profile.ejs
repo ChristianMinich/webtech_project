@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>User Highscores</title>
+  <title>Profile of <%= user%></title>
   <style>
     table {
       border-collapse: collapse;
@@ -14,7 +14,10 @@
 </head>
 <body>
   <%- include('navbar') %>
-  <h1>User Highscores</h1>
+
+  <% rows.forEach(function(row) { %>
+    <h1>Profile of <%= row.USERNAME%></h1>
+  <% }) %>
   <table>
     <thead>
       <tr>
@@ -25,7 +28,7 @@
     <tbody>
       <% rows.forEach(function(row) { %>
         <tr>
-            <td><a href="/profile/<%= row.USERNAME %>"><%= row.USERNAME %></a></td>
+          <td><a href="/profile/<%= row.USERNAME %>"><%= row.USERNAME %></a></td>
           <td><%= row.HIGHSCORE %></td>
         </tr>
       <% }) %>
