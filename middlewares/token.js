@@ -3,23 +3,28 @@ const svc = require("../services");
 function validate(req, res, next) {
   const token = req.cookies["accessToken"];
   if (token === undefined) {
-    res.redirect("/login");
+    next();
     return;
   }
   try {
-    let tokenData = svc.getData(token);
-    if (tokenData) {
-      res.locals.tokenData = tokenData;
-      next();
-    } else {
-      res.status(401).json({ message: "authentication error" });
+    if (isJWT(req.cookies.accessToken)) {
+      const data = svc.getData(req.cookies.accessToken);
+      res.render("dashboard", { user: data.username });
     }
-  } catch (e) {
-    res.status(401).json({
-      message: "authentication error: ",
-      error: e.message,
-    });
+  } catch (error) {
+    console.log(error);
   }
 }
+
+const isJWT = (token) => {
+  if (typeof token !== "string" || !token) {
+    return false;
+  }
+
+  const tokenParts = token.split(".");
+  return (
+    tokenParts.length === 3 && tokenParts[0] && tokenParts[1] && tokenParts[2]
+  );
+};
 
 module.exports = { validate };

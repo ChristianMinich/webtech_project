@@ -6,10 +6,11 @@ const database = require("../repositories/index");
 const db = database.getConnection();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const mw = require("../middlewares");
 
-router.get("/", (req, res) => {
+router.get("/", mw.validateToken,(req, res) => {
   res.status(200).sendFile(path.resolve("public/index.html"));
-  try {
+  /*try {
     if (isJWT(req.cookies.accessToken)) {
       const data = svc.getData(req.cookies.accessToken);
 
@@ -17,14 +18,14 @@ router.get("/", (req, res) => {
     }
   } catch (error) {
     console.log(error);
-  }
+  } */
 });
 
 router.get("/index", (req, res) => {
   res.status(200).redirect("/");
 });
 
-router.get("/login", (req, res) => {
+router.get("/login", mw.validateToken, (req, res) => {
   res.status(200).sendFile(path.resolve("public/login.html"));
 });
 
@@ -43,7 +44,7 @@ router.get("/scoreboard", (req, res) => {
   res.status(200).sendFile(path.resolve("public/scoreboard.html"));
 });
 
-router.get("/register", (req, res) => {
+router.get("/register", mw.validateToken, (req, res) => {
   res.status(200).sendFile(path.resolve("public/register.html"));
 });
 
@@ -185,16 +186,5 @@ router.get("/scoreboard", (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   });
 });
-
-const isJWT = (token) => {
-  if (typeof token !== "string" || !token) {
-    return false;
-  }
-
-  const tokenParts = token.split(".");
-  return (
-    tokenParts.length === 3 && tokenParts[0] && tokenParts[1] && tokenParts[2]
-  );
-};
 
 module.exports = router;
