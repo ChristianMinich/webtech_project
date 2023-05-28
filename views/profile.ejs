@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Profile of <%= user%></title>
+  <title>Profile of <%= username%></title>
   <style>
     table {
       border-collapse: collapse;
@@ -18,6 +18,7 @@
   <% rows.forEach(function(row) { %>
     <h1>Profile of <%= row.USERNAME%></h1>
   <% }) %>
+  <img src="<%= avatar%>" width="50px" height="50px">
   <table>
     <thead>
       <tr>

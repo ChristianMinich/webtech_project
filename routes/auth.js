@@ -52,13 +52,18 @@ router.get("/game", mw.authToken,(req, res) => {
   res.sendFile(path.resolve("public/game.html"));
 });
 
-router.get("/profile/:username", mw.authToken,(req, res) => {
-  const { username } = req.params;
+router.get("/profile/:username", mw.authToken, mw.avatar,(req, res) => {
+  const username = req.params.username;
   const user = req.username;
+  const avatar = req.avatar;
+
+  console.log("username " + username);
+  console.log("user " + user);
+  console.log("avatar " + avatar);
   db.then(conn => {
     conn.query("SELECT DISTINCT USERNAME, HIGHSCORE FROM USER WHERE USERNAME = ?", [username])
     .then(rows => {
-      res.render("profile", { rows: rows , user: user});
+      res.render("profile", { rows: rows , username: user, avatar: avatar});
     })
   })
 });
@@ -179,14 +184,15 @@ router.post("/api/auth/register", (req, res) => {
   });
 });
 
-router.get("/scoreboard", mw.authToken,(req, res) => {
+router.get("/scoreboard", mw.authToken, (req, res) => {
   const username = req.username;
   db.then((conn) => {
     conn
-      .query("SELECT DISTINCT USERNAME, HIGHSCORE FROM USER ORDER BY HIGHSCORE DESC LIMIT 10")
+      .query("SELECT DISTINCT U.USERNAME, U.HIGHSCORE, A.FILE_PATH FROM USER U INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID ORDER BY U.HIGHSCORE DESC LIMIT 15")
       .then((rows) => {
+
         //res.json(rows);
-        res.render("scoreboard", { rows: rows , user: username});
+        res.render("scoreboard", { rows: rows , username: username});
         conn.end();
       })
       .catch((error) => {
