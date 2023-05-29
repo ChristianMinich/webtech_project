@@ -51,19 +51,24 @@ router.get("/register", mw.dashboard, (req, res) => {
 router.get("/game", mw.authToken,(req, res) => {
   res.sendFile(path.resolve("public/game.html"));
 });
-
+//SELECT DISTINCT USERNAME, HIGHSCORE FROM USER WHERE USERNAME = ?
 router.get("/profile/:username", mw.authToken, mw.avatar,(req, res) => {
   const username = req.params.username;
   const user = req.username;
-  const avatar = req.avatar;
+  // const avatar = req.avatar; // get User Avatar
 
   console.log("username " + username);
   console.log("user " + user);
-  console.log("avatar " + avatar);
+  //console.log("avatar " + avatar);
   db.then(conn => {
-    conn.query("SELECT DISTINCT USERNAME, HIGHSCORE FROM USER WHERE USERNAME = ?", [username])
+    conn.query("SELECT DISTINCT U.USERNAME, U.HIGHSCORE, A.FILE_PATH FROM USER U INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID WHERE U.USERNAME = ?", [username])
     .then(rows => {
-      res.render("profile", { rows: rows , username: user, avatar: avatar});
+      try{
+        const avatar = rows[0].FILE_PATH
+        res.render("profile", { rows: rows , username: user, avatar: avatar});
+      } catch (error){
+        console.log(error);
+      }
     })
   })
 });
