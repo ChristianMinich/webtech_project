@@ -4,6 +4,7 @@
     <h1>In Queue</h1>
     <h2><%= username%></h2>
     <button onclick="joinQueue()">JOIN</button>
+    <button onclick="getQuestions()">Question</button>
     <div id="users"></div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
@@ -16,8 +17,13 @@
       socket.emit("joinQueue", username);
     }
 
+    function getQuestions() {
+      socket.emit("questions");
+    }
+
     socket.on("joinGame", (roomID) => {
-      window.location.href = "/game/" + roomID;
+        socket.join()
+        window.location.href = "/game/" + roomID;
     });
 
     socket.on("usersInQueue", (users) => {
