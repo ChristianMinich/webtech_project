@@ -4,18 +4,46 @@
     <h1>In Queue</h1>
     <h2><%= username%></h2>
     <button onclick="joinQueue()">JOIN</button>
+    <div id="users"></div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-    const username = '<%= username %>';
+    const username = "<%= username %>";
+    const usersDiv = document.getElementById("users");
 
     function joinQueue() {
       socket.emit("joinQueue", username);
     }
 
     socket.on("joinGame", (roomID) => {
-        window.location.href = '/game/' + roomID;
+      window.location.href = "/game/" + roomID;
+    });
+
+    socket.on("usersInQueue", (users) => {
+      usersDiv.innerHTML = "";
+
+      // Create a table element
+      const table = document.createElement("table");
+
+      // Create the table header row
+      const headerRow = document.createElement("tr");
+      const headerCell1 = document.createElement("th");
+      headerCell1.textContent = "Username";
+      headerRow.appendChild(headerCell1);
+      table.appendChild(headerRow);
+
+      // Iterate over the users array and create table rows
+      users.forEach((user) => {
+        const row = document.createElement("tr");
+        const cell1 = document.createElement("td");
+        cell1.textContent = user;
+        row.appendChild(cell1);
+        table.appendChild(row);
+      });
+
+      // Append the table to the usersDiv
+      usersDiv.appendChild(table);
     });
   </script>
 </html>

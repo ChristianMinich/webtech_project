@@ -21,10 +21,11 @@ module.exports = (io) => {
 
       if(!user.includes(username)){
         user.push(username);
+        io.emit("usersInQueue", user);
       }
       console.log("In Queue: " + username);
       console.log("user: " + user);
-      if (user.length === 2){
+      if (user.length === 4){
         user.length = 0;
         const roomID = uuidv4();
         console.log("joining Game" + user.length)
