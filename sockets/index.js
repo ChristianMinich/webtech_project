@@ -1,5 +1,7 @@
+const { v4: uuidv4 } = require('uuid');
 module.exports = (io) => {
   const users = {}; // Sichern der angemeldeten Clients u.A. für Nutzerlisten und Namensänderungen.
+  const user = [];
 
   console.log("hello there");
 
@@ -13,6 +15,21 @@ module.exports = (io) => {
       users[socket.id] = name;
       socket.broadcast.emit("user-connected", name);
       io.emit("all-connections", JSON.stringify(users));
+    });
+
+    socket.on("joinQueue", (username) => {
+
+      if(!user.includes(username)){
+        user.push(username);
+      }
+      console.log("In Queue: " + username);
+      console.log("user: " + user);
+      if (user.length === 2){
+        user.length = 0;
+        const roomID = uuidv4();
+        console.log("joining Game" + user.length)
+        io.emit("joinGame", roomID);
+      }
     });
 
     socket.on("join-queue", (username) => {

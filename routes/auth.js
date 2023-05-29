@@ -51,6 +51,18 @@ router.get("/register", mw.dashboard, (req, res) => {
 router.get("/game", mw.authToken,(req, res) => {
   res.sendFile(path.resolve("public/game.html"));
 });
+
+router.get("/joinQueue", mw.authToken, (req, res) => {
+  const username = req.username;
+  res.render("queue", {username: username});
+})
+
+router.get('/game/:roomID', (req, res) => {
+  const roomID = req.params.roomID;
+  // Here, you can render the desired EJS template for the game page
+  res.render('game', { roomID: roomID });
+});
+
 //SELECT DISTINCT USERNAME, HIGHSCORE FROM USER WHERE USERNAME = ?
 router.get("/profile/:username", mw.authToken, mw.avatar,(req, res) => {
   const username = req.params.username;

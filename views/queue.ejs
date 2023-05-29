@@ -1,0 +1,21 @@
+<html>
+  <head> </head>
+  <body>
+    <h1>In Queue</h1>
+    <h2><%= username%></h2>
+    <button onclick="joinQueue()">JOIN</button>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const username = '<%= username %>';
+
+    function joinQueue() {
+      socket.emit("joinQueue", username);
+    }
+
+    socket.on("joinGame", (roomID) => {
+        window.location.href = '/game/' + roomID;
+    });
+  </script>
+</html>
