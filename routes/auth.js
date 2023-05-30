@@ -10,15 +10,6 @@ const mw = require("../middlewares");
 
 router.get("/", mw.dashboard,(req, res) => {
   res.status(200).sendFile(path.resolve("public/index.html"));
-  /*try {
-    if (isJWT(req.cookies.accessToken)) {
-      const data = svc.getData(req.cookies.accessToken);
-
-      res.render("dashboard", { user: data.username });
-    }
-  } catch (error) {
-    console.log(error);
-  } */
 });
 
 router.get("/index", (req, res) => {
@@ -35,15 +26,6 @@ router.get("/logout", (req, res) => {
   res.sendFile(path.resolve("public/login.html"));
 });
 
-// Middleware
-router.get("/game-test", (req, res) => {
-  res.render("game.ejs");
-});
-/*
-router.get("/scoreboard", (req, res) => {
-  res.status(200).sendFile(path.resolve("public/scoreboard.html"));
-});
-*/
 router.get("/register", mw.dashboard, (req, res) => {
   res.status(200).sendFile(path.resolve("public/register.html"));
 });
