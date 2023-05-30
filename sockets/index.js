@@ -1,8 +1,15 @@
 const { v4: uuidv4 } = require('uuid');
 const qs = require("../repositories/questions");
+const QuizGame = require("../game/QuizGame");
+const rooms = new Map();
+
 module.exports = (io) => {
   const users = {}; // Sichern der angemeldeten Clients u.A. für Nutzerlisten und Namensänderungen.
   const user = [];
+  const MAX_PLAYERS_PER_ROOM = 2;
+  const queue = [];
+  let gamePageLoadedCount = 0; 
+  
 
   console.log("hello there");
 
@@ -18,7 +25,7 @@ module.exports = (io) => {
       io.emit("all-connections", JSON.stringify(users));
     });
 
-    socket.on("joinQueue", (username) => {
+    socket.on("joinQueu", (username) => {
 
       if(!user.includes(username)){
         user.push(username);
@@ -30,20 +37,67 @@ module.exports = (io) => {
         const roomID = uuidv4();
         console.log("joining Game" + user.length);
         io.emit("joinGame", roomID);
+
         user.length = 0;
       }
     });
 
-    socket.on("questions", () => {
-      qs.getQuestions(2);
+    socket.on('joinQueue', () => {
+      
+      if(!queue.includes(socket)){
+        queue.push(socket);
+      }
+      else{
+        console.log("user schon in queue!")
+      }
+
+      console.log("In Warteschlange " + socket);
+      if (queue.length >= MAX_PLAYERS_PER_ROOM) {
+        const roomId = generateRoomId();
+        const players = [];
+  
+        for (let i = 0; i < MAX_PLAYERS_PER_ROOM; i++) {
+          const playerSocket = queue.shift();
+          const playerId = playerSocket.id;
+          players.push({ id: playerId, score: 0 });
+  
+          // Spieler dem Raum hinzufügen
+          playerSocket.join(roomId);
+  
+          console.log(players);
+          console.log(roomId);
+        }
+  
+        // Raum erstellen und speichern
+        const room = { players: players, gameStarted: false };
+        rooms.set(roomId, room);
+  
+        // Spiel starten
+        
+        io.to(roomId).emit('joinGame', roomId);
+        //startGame(roomId);
+      } else {
+        socket.emit('usersInQueue', "socket.id");
+      }
     });
 
-    socket.on("join-queue", (username) => {
-      // Add User to Array
-      // if Array >= 2 emit
-      // 2 Users to Game
-      // and Remove from Array
-      // io.emit("join-game", gameID);
+    socket.on("gamePageLoaded", () => {
+
+      gamePageLoadedCount++;
+      console.log(gamePageLoadedCount);
+
+        // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
+        if (gamePageLoadedCount === MAX_PLAYERS_PER_ROOM) {
+          //startGame(roomId);
+          console.log("Spiel gestartet");
+          gamePageLoadedCount = 0; 
+        }
+      });
+
+    //socket.on("gameStart")
+
+    socket.on("questions", () => {
+      qs.getQuestions(2);
     });
 
     socket.on("questionSelected", (gameID, username) => {});
@@ -75,3 +129,7 @@ module.exports = (io) => {
     });
   });
 };
+
+function generateRoomId() {
+  return uuidv4();
+}
