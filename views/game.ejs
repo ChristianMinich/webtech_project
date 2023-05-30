@@ -17,17 +17,18 @@
   <script>
     const socket = io();
 
-    document.addEventListener('DOMContentLoaded', () => {
+    //document.addEventListener('DOMContentLoaded', () => {
+    //  socket.emit('gamePageLoaded');
+   // });
+    window.load = function () {
       socket.emit('gamePageLoaded');
-    });
+    }
     
-    socket.on("question", function(question) {
-            document.getElementById('frage').textContent = question.text;
-            document.getElementById('antwort1').textContent = question.answers[0];
-            document.getElementById('antwort2').textContent = question.answers[1];
-            document.getElementById('antwort3').textContent = question.answers[2];
-            document.getElementById('antwort4').textContent = question.answers[3];
-        });
+    socket.on("question", (questions)  => {
+
+      
+
+    });
     
     
   

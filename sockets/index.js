@@ -42,7 +42,7 @@ module.exports = (io) => {
       }
     });
 
-    socket.on('joinQueue', () => {
+    socket.on('joinQueue', (username) => {
       
       if(!queue.includes(socket)){
         queue.push(socket);
@@ -73,11 +73,14 @@ module.exports = (io) => {
         rooms.set(roomId, room);
   
         // Spiel starten
-        
+        //const game = new QuizGame.QuizGame(roomId);
+         
         io.to(roomId).emit('joinGame', roomId);
+        io.to(roomId).emit('question', logques());
+        
         //startGame(roomId);
       } else {
-        socket.emit('usersInQueue', "socket.id");
+        socket.emit('usersInQueue', username);
       }
     });
 
@@ -132,4 +135,47 @@ module.exports = (io) => {
 
 function generateRoomId() {
   return uuidv4();
+}
+
+function getQuestions() {
+
+  const ques = [];
+
+  for(let i = 0; i < 5; i++){
+
+    ques[i] = qs.getQuestions(Math.random()* 20); 
+  }
+return ques;
+}
+
+async function getRandomQuestions() {
+  try {
+      const questions = [];
+      const questionIDs = [1, 2, 3, 4, 5]; // Replace with actual question IDs or generate dynamically
+
+      for (let i = 0; i < 5; i++) {
+          const randomIndex = Math.floor(Math.random() * questionIDs.length);
+          const questionID = questionIDs[randomIndex];
+          const result = await qs.getQuestions(questionID);
+          questions.push(result[0]); // Assuming only one row is returned for each questionID
+      }
+
+      return questions;
+  } catch (error) {
+      console.log(error);
+      return []; // Return an empty array in case of error
+  }
+}
+
+async function logques() {
+  try {
+    const randomQuestions = await getRandomQuestions();
+    //console.log(randomQuestions);
+    randomQuestions.forEach(element => {
+      console.log(element.QUESTION);
+    });
+    return randomQuestions;
+  } catch (error) {
+    console.log(error);
+  }
 }
