@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const qs = require("../repositories/questions");
 const QuizGame = require("../game/QuizGame");
 const rooms = new Map();
+const gameMap = new Map();
 let gamePageLoadedCount = 0;
 
 module.exports = (io) => {
@@ -82,9 +83,9 @@ module.exports = (io) => {
         if (gamePageLoadedCount === MAX_PLAYERS_PER_ROOM) {
           gamePageLoadedCount = 0;
           console.log(roomId + " Spiel startet blad");
-          //const quiz = new QuizGame(roomId);
-          //quiz.start();
-
+          gameMap.set(roomId, new QuizGame(roomId, io));
+          const currGame = gameMap.get(roomId)
+          currGame.start();
           getNextQuestion().then(question => {
             console.log(question);
             console.log(roomId);

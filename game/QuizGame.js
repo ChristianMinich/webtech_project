@@ -2,8 +2,8 @@ const qs = require("../repositories/questions");
 //const io = require("../sockets/index");
 
 class QuizGame {
-  constructor(roomId) {
-    //this.io = io;
+  constructor(roomId, io) {
+    this.io = io;
     this.roomId = roomId;
     this.questions = []; 
     this.currentQuestionIndex = 0;
