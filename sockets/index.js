@@ -84,13 +84,12 @@ module.exports = (io) => {
           gamePageLoadedCount = 0;
           console.log(roomId + " Spiel startet blad");
           gameMap.set(roomId, new QuizGame(roomId, io));
-          const currGame = gameMap.get(roomId)
+          const currGame = gameMap.get(roomId); 
           currGame.start();
-          getNextQuestion().then(question => {
+          console.log(gameMap);
+          /*getNextQuestion().then(question => {
             console.log(question);
-            console.log(roomId);
-            console.log(cRoom);
-            io.to(roomId).emit('question', question);
+            //io.to(roomId).emit('question', question);
             //io.sockets.in(String(roomId)).emit("question", question);
             //io.emit("test", roomId);
             //io.emit('question', question);
@@ -98,7 +97,7 @@ module.exports = (io) => {
             //io.to(String(roomId)).emit("test", roomId);
           }).catch(error => {
             console.log('Fehler beim Abrufen der Frage:', error);
-          });
+          });*/
         }
       });
 
@@ -108,7 +107,13 @@ module.exports = (io) => {
       qs.getQuestions(2);
     });
 
-    socket.on("questionSelected", (gameID, username) => {});
+    socket.on("questionSelected", (roomId, username, answer) => {
+
+
+
+
+
+    });
 
     // Ereignisbehandlung: Nachricht wurde gesendet (Vom Client an Server).
     socket.on("send-chat-message", (message) => {

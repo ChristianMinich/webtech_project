@@ -21,7 +21,8 @@ class QuizGame {
     console.log("Spiel startet");
     getNextQuestion().then(question => {
       console.log(question);
-      //this.sendQuestion(question);
+      this.sendQuestion(question);
+      this.currentQuestionIndex = question.id;
     }).catch(error => {
       console.log('Fehler beim Abrufen der Frage:', error);
     });
@@ -31,7 +32,7 @@ class QuizGame {
   sendQuestion(question) {
     
     if (question) {
-      io.to(this.roomId).emit('question', question);
+      this.io.to(this.roomId).emit('question', question);
     } else {
       console.log('Fehler beim Abrufen der Fragen');
     }
