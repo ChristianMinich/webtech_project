@@ -1,8 +1,9 @@
 const qs = require("../repositories/questions");
-//const io = require("../sockets/index");
 
-class QuizGame {
+class QuizGame { 
+  
   constructor(roomId, io) {
+    this.MAX_ROUNDS = 5;
     this.io = io;
     this.roomId = roomId;
     this.questions = []; 
@@ -13,15 +14,17 @@ class QuizGame {
     
   }
 
-  start() {
+  start(players) {
 
     this.round = 1;
-    this.players = [];
+    this.players = players;
     this.currentQuestionIndex = 0;
     console.log("Spiel startet");
+    
     getNextQuestion().then(question => {
-      console.log(question);
+      console.log("Runde :" + this.round + " " + question);
       this.sendQuestion(question);
+      this.questions[this.round] = question.id;
       this.currentQuestionIndex = question.id;
     }).catch(error => {
       console.log('Fehler beim Abrufen der Frage:', error);
@@ -38,31 +41,37 @@ class QuizGame {
     }
   }
 
-  answerQuestion(playerId, answer) {
-    const player = this.players.find((player) => player.id === playerId);
-    if (!player) {
-      // Player not found, handle the error or perform any necessary actions
-      return;
+  answerQuestion(username, answer) {
+  
+    console.log("Room: " + this.roomId +" | User: " + username + " hat gewählt: " + answer );
+    this.round++;
+    if(this.round < 6){
+      this.newQuestion();
+    }else{
+      console.log("Spiel zuende");
     }
-
-    if (!this.currentQuestion) {
-      // No current question, handle the error or perform any necessary actions
-      return;
-    }
-
-    if (answer === this.currentQuestion.correctAnswer) {
-      player.score += 1;
-      this.io.to(playerId).emit('answer', { correct: true });
-    } else {
-      this.io.to(playerId).emit('answer', { correct: false });
-    }
-
-    this.sendQuestion();
+    
   }
 
   endGame() {
     this.players.forEach((player) => {
       this.io.to(player.id).emit('gameEnd', { score: player.score });
+    });
+  }
+  newQuestion(){
+    getNextQuestion().then(question => {
+      console.log("Runde :" + this.round + " " + question);
+      
+      if(checkDuplicateQuestion(question.id)){
+        this.questions[this.round] = question.id;
+        this.currentQuestionIndex = question.id;
+        this.sendQuestion(question);
+      }
+      else{
+        this.newQuestion();
+       }    
+    }).catch(error => {
+      console.log('Fehler beim Abrufen der Frage:', error);
     });
   }
 }
@@ -94,6 +103,20 @@ async function getNextQuestion() {
   }
 
   return null; // Falls keine Frage abgerufen werden kann, wird null zurückgegeben
+}
+
+
+function checkDuplicateQuestion(quesID){
+
+  for(let i = 1; i <= this.MAX_ROUNDS; i++ ){
+
+    if(questions[i] === quesID){
+      return false; 
+    }
+
+  }
+  return true;
+
 }
 
 

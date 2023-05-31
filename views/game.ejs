@@ -1,12 +1,20 @@
 <html>
   <head>
     <link rel="stylesheet" href="./css/style.css" />
+    <title>QuizGame</title>
+    <style>
+      .answers {
+              border: 1px solid #000000;
+              margin-bottom: 10px;
+              text-align: center;
+              cursor: default;
+          }
+    </style>
   </head>
   <body>
     <h1><%= roomID%></h1>
     <h2><%= username%></h2>
     <img src="<%= avatar%>" width="50px" height="50px">
-
     <div class="quizbox">
 
       <h2 id="question-text"></h2>
@@ -19,14 +27,25 @@
   <script>
     const socket = io();
     const roomId = "<%= roomID %>";
-
-    //document.addEventListener('DOMContentLoaded', () => {
-    //  socket.emit('gamePageLoaded');
-   // });
-    window.onload = function () {
-      socket.emit('gamePageLoaded',roomId);
-    }
+    const username = "<%= username %>";
     
+    window.onload = function () {
+      socket.emit('gamePageLoaded',roomId, username);
+    }
+
+    document.getElementById("option1-text").addEventListener("click", function() {
+      socket.emit("questionSelected", roomId, username, this.textContent)
+    });
+    document.getElementById("option2-text").addEventListener("click", function() {
+      socket.emit("questionSelected", roomId, username, this.textContent)
+    });
+    document.getElementById("option3-text").addEventListener("click", function() {
+      socket.emit("questionSelected", roomId, username, this.textContent)
+    });
+    document.getElementById("option4-text").addEventListener("click", function() {
+      socket.emit("questionSelected", roomId, username, this.textContent)
+    });
+
     socket.on('question', function(question) {
       console.log("Frage erhlaten");
       document.getElementById('question-text').textContent = question.text;

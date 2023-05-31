@@ -10,6 +10,7 @@ module.exports = (io) => {
   const user = [];
   const MAX_PLAYERS_PER_ROOM = 2;
   const queue = [];
+  const playersinRoom = [];
    
   console.log("hello there");
 
@@ -48,36 +49,23 @@ module.exports = (io) => {
           console.log(players);
           console.log(roomId);
         }
-    
         // Raum erstellen und speichern
         const room = { players: players, gameStarted: false };
         rooms.set(roomId, room);
-    
-        // Spiel starten
-        //const game = new QuizGame.QuizGame(roomId);
-    
+
         //Weiterleitung
         io.to(roomId).emit('joinGame', roomId);
 
-        /*Test der Fragen auf Queue seite 
-        getNextQuestion().then(question => {
-          console.log(question);
-          //io.sockets.in(roomId).emit('question', question);
-          io.to(roomId).emit("question", question);
-        }).catch(error => {
-          console.log('Fehler beim Abrufen der Frage:', error);
-        });
-        //Ende Test*/
-        //startGame(roomId);
       } else {
         socket.emit('usersInQueue', username);
       }
     });
     
-    socket.on('gamePageLoaded', (roomId) => {
-
+    socket.on('gamePageLoaded',(roomId, username) => {
       socket.join(roomId);
       gamePageLoadedCount++;
+      //io.to(roomId).emit("giveUserName");
+      playersinRoom.push(String(username));
       console.log(gamePageLoadedCount + " Spieler Da!");
         // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
         if (gamePageLoadedCount === MAX_PLAYERS_PER_ROOM) {
@@ -85,19 +73,8 @@ module.exports = (io) => {
           console.log(roomId + " Spiel startet blad");
           gameMap.set(roomId, new QuizGame(roomId, io));
           const currGame = gameMap.get(roomId); 
-          currGame.start();
+          currGame.start(playersinRoom);
           console.log(gameMap);
-          /*getNextQuestion().then(question => {
-            console.log(question);
-            //io.to(roomId).emit('question', question);
-            //io.sockets.in(String(roomId)).emit("question", question);
-            //io.emit("test", roomId);
-            //io.emit('question', question);
-            //io.sockets.in(roomId).emit('question', question);
-            //io.to(String(roomId)).emit("test", roomId);
-          }).catch(error => {
-            console.log('Fehler beim Abrufen der Frage:', error);
-          });*/
         }
       });
 
@@ -109,9 +86,9 @@ module.exports = (io) => {
 
     socket.on("questionSelected", (roomId, username, answer) => {
 
-
-
-
+      const currGame = gameMap.get(roomId); 
+      currGame.answerQuestion(username, answer);
+      //console.log("Room: " + roomId +" | User: " + username + " hat gewählt: " + answer );
 
     });
 
