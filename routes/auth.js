@@ -7,6 +7,7 @@ const db = database.getConnection();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mw = require("../middlewares");
+const pw = require("../services/passwordValidator");
 
 router.get("/", mw.dashboard,(req, res) => {
   res.status(200).sendFile(path.resolve("public/index.html"));
@@ -129,6 +130,14 @@ router.post("/api/auth", (req, res) => {
 
 router.post("/api/auth/register", (req, res) => {
   const { username, password } = req.body;
+
+// To check a password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
+
+
+  if(!pw.CheckPassword(password)){
+    res.status(400).send("Password does not match the Requirements!");
+  }
+
   db.then((conn) => {
     conn
       .query("SELECT USERNAME FROM USER WHERE USERNAME = ?", [username])
