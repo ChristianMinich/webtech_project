@@ -7,26 +7,36 @@
 
     <div class="quizbox">
 
-      <h2 id="frage"></h2>
-      <div class = "answers" id="antwort1"></div>
-      <div class = "answers" id="antwort2"></div>
-      <div class = "answers" id="antwort3"></div>
-      <div class = "answers" id="antwort4"></div>
+      <h2 id="question-text"></h2>
+      <div class = "answers" id="option1-text"></div>
+      <div class = "answers" id="option2-text"></div>
+      <div class = "answers" id="option3-text"></div>
+      <div class = "answers" id="option4-text"></div>
   </div>
-
+  <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
+    const roomId = "<%= roomID %>";
 
     //document.addEventListener('DOMContentLoaded', () => {
     //  socket.emit('gamePageLoaded');
    // });
-    window.load = function () {
-      socket.emit('gamePageLoaded');
+    window.onload = function () {
+      socket.emit('gamePageLoaded',roomId);
     }
     
-    socket.on("question", (questions)  => {
+    socket.on('question', function(question) {
+      console.log("Frage erhlaten");
+      document.getElementById('question-text').textContent = question.text;
+      document.getElementById('option1-text').textContent = question.answers[0];
+      document.getElementById('option2-text').textContent = question.answers[1];
+      document.getElementById('option3-text').textContent = question.answers[2];
+      document.getElementById('option4-text').textContent = question.answers[3];
+    });
 
-      
+    socket.on("test", (roomID) => {
+
+      console.log("Test erfolgreich ! " + roomID);
 
     });
     

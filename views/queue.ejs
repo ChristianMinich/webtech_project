@@ -6,6 +6,16 @@
     <button onclick="joinQueue()">JOIN</button>
     <button onclick="getQuestions()">Question</button>
     <div id="users"></div>
+
+    <div class="quizbox">
+
+      <h2 id="question-text"></h2>
+      <div class = "answers" id="option1-text"></div>
+      <div class = "answers" id="option2-text"></div>
+      <div class = "answers" id="option3-text"></div>
+      <div class = "answers" id="option4-text"></div>
+  </div>
+  
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -24,6 +34,21 @@
     socket.on("joinGame", (roomID) => {
         //socket.join(roomID);
         window.location.href = "/game/" + roomID;
+    });
+    
+    socket.on("test", (roomID) => {
+      
+      console.log("Test erfolgreich ! " + roomID);
+
+    });
+
+    socket.on('question', function(question) {
+      console.log("Frage erhlaten");
+      document.getElementById('question-text').textContent = question.text;
+      document.getElementById('option1-text').textContent = question.answers[0];
+      document.getElementById('option2-text').textContent = question.answers[1];
+      document.getElementById('option3-text').textContent = question.answers[2];
+      document.getElementById('option4-text').textContent = question.answers[3];
     });
 
     socket.on("usersInQueue", (users) => {
@@ -51,5 +76,6 @@
       // Append the table to the usersDiv
       usersDiv.appendChild(table);
     });
+    
   </script>
 </html>

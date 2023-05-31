@@ -1,35 +1,39 @@
-const shuffle = require('shuffle-array');
+const qs = require("../repositories/questions");
+//const io = require("../sockets/index");
 
 class QuizGame {
-  constructor(questions, io) {
-    this.questions = questions;
-    this.currentQuestion = null;
+  constructor(roomId) {
+    //this.io = io;
+    this.roomId = roomId;
+    this.questions = []; 
+    this.currentQuestionIndex = 0;
+    this.round = 1; 
     this.players = [];
-    this.io = io;
+    console.log("new game created " + roomId );
+    
   }
 
-  addPlayer(player) {
-    this.players.push(player);
-  }
+  start() {
 
-  removePlayer(playerId) {
-    this.players = this.players.filter((player) => player.id !== playerId);
-  }
-
-  startGame() {
-    shuffle(this.questions);
-    this.players.forEach((player) => {
-      player.score = 0;
+    this.round = 1;
+    this.players = [];
+    this.currentQuestionIndex = 0;
+    console.log("Spiel startet");
+    getNextQuestion().then(question => {
+      console.log(question);
+      //this.sendQuestion(question);
+    }).catch(error => {
+      console.log('Fehler beim Abrufen der Frage:', error);
     });
-    this.sendQuestion();
+    //this.sendQuestion();
   }
 
-  sendQuestion() {
-    if (this.questions.length > 0) {
-      this.currentQuestion = this.questions.shift();
-      this.io.emit('question', this.currentQuestion);
+  sendQuestion(question) {
+    
+    if (question) {
+      io.to(this.roomId).emit('question', question);
     } else {
-      this.endGame();
+      console.log('Fehler beim Abrufen der Fragen');
     }
   }
 
@@ -61,5 +65,35 @@ class QuizGame {
     });
   }
 }
+
+async function getNextQuestion() {
+  try {
+    const randomQuestionID = Math.floor(Math.random() * 20) + 1; // Beispiel: Zufällige Frage ID generieren
+    const rows = await qs.getQuestions(randomQuestionID);
+
+    if (rows.length > 0) {
+      const questionRow = rows[0]; // Nehmen Sie die erste Zeile als Frage an
+      
+      const question = {
+        id: questionRow.QUESTION_ID,
+        text: questionRow.QUESTION,
+        answers: [
+          questionRow.RIGHT_ANSWER,
+          questionRow.FALSE_ANSWER1,
+          questionRow.FALSE_ANSWER2,
+          questionRow.FALSE_ANSWER3
+        ],
+        category: questionRow.CATEGORY_ID
+      };
+
+      return question;
+    }
+  } catch (error) {
+    console.log('Fehler beim Abrufen der nächsten Frage:', error);
+  }
+
+  return null; // Falls keine Frage abgerufen werden kann, wird null zurückgegeben
+}
+
 
 module.exports = QuizGame;
