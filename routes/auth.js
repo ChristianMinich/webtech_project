@@ -39,11 +39,12 @@ router.get("/joinQueue", mw.authToken, (req, res) => {
   res.render("queue", {username: username});
 })
 
-router.get('/game/:roomID', mw.authToken, (req, res) => {
+router.get('/game/:roomID', mw.authToken, mw.avatar,(req, res) => {
   const roomID = req.params.roomID;
   const username = req.username;
+  const avatar = req.avatar;
   // Here, you can render the desired EJS template for the game page
-  res.render('game', { roomID: roomID,  username: username});
+  res.render('game', { roomID: roomID,  username: username, avatar: avatar});
 });
 
 //SELECT DISTINCT USERNAME, HIGHSCORE FROM USER WHERE USERNAME = ?
