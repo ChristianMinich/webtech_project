@@ -56,8 +56,9 @@ module.exports = (io) => {
         //const game = new QuizGame.QuizGame(roomId);
     
         //Weiterleitung
-        //io.to(roomId).emit('joinGame', roomId);
-        //Test der Fragen auf Queue seite 
+        io.to(roomId).emit('joinGame', roomId);
+
+        /*Test der Fragen auf Queue seite 
         getNextQuestion().then(question => {
           console.log(question);
           //io.sockets.in(roomId).emit('question', question);
@@ -65,7 +66,7 @@ module.exports = (io) => {
         }).catch(error => {
           console.log('Fehler beim Abrufen der Frage:', error);
         });
-        //Ende Test
+        //Ende Test*/
         //startGame(roomId);
       } else {
         socket.emit('usersInQueue', username);
@@ -74,11 +75,11 @@ module.exports = (io) => {
     
     socket.on('gamePageLoaded', (roomId) => {
 
+      socket.join(roomId);
       gamePageLoadedCount++;
       console.log(gamePageLoadedCount + " Spieler Da!");
         // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
         if (gamePageLoadedCount === MAX_PLAYERS_PER_ROOM) {
-          //console.log("Spiel gestartet");
           gamePageLoadedCount = 0;
           console.log(roomId + " Spiel startet blad");
           //const quiz = new QuizGame(roomId);
@@ -86,10 +87,12 @@ module.exports = (io) => {
 
           getNextQuestion().then(question => {
             console.log(question);
-            //io.to(roomId).emit('question', question);
+            console.log(roomId);
+            console.log(cRoom);
+            io.to(roomId).emit('question', question);
             //io.sockets.in(String(roomId)).emit("question", question);
             //io.emit("test", roomId);
-            io.emit('question', question);
+            //io.emit('question', question);
             //io.sockets.in(roomId).emit('question', question);
             //io.to(String(roomId)).emit("test", roomId);
           }).catch(error => {
