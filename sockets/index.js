@@ -79,15 +79,13 @@ module.exports = (io) => {
           const currGame = gameMap.get(roomId);
           playersinGame.forEach(player => {
             currGame.addPlayer(player);
-            console.log("added Player " + player)
+            console.log("addedPlayer " + player);
           });
-
-          //const currGame = gameMap.get(roomId);
-          //currGame.addPlayer(username); 
           currGame.start();
           console.log(gameMap);
           console.log(currGame.toString());
-      };
+        }
+      });
 
     //socket.on("gameStart")
 
