@@ -18,6 +18,10 @@
 
     <div id="roundCounter"></div>
 
+    <div class="scoreboard" id="scoreboard">
+      <!-- scoreboard content will be dynamically generated -->
+    </div>
+
     <div class="quizbox">
 
       <h2 id="question-text"></h2>
@@ -102,6 +106,16 @@
       document.getElementById("end").textContent = false;
 
     });
+
+    socket.on("scoreBoard", function (players) {
+          const scoreboardElement = document.getElementById("scoreboard");
+          scoreboardElement.innerHTML = "";
+          players.forEach(function (player) {
+            const playerElement = document.createElement("div");
+            playerElement.textContent = "Player: " + player.username + " | Score: " + player.score;
+            scoreboardElement.appendChild(playerElement);
+          });
+        });
     
   
   </script>

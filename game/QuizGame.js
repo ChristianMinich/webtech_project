@@ -21,6 +21,7 @@ class QuizGame {
     //this.players = players;
     this.currentQuestionIndex = 0;
     console.log("Spiel startet");
+    this.updateScoreBoard();
 
     getNextQuestion().then(question => {
       console.log("Runde :" + this.round + " " + question.text);
@@ -77,9 +78,10 @@ class QuizGame {
         }
       });
     }
-
+    this.updateScoreBoard();
     this.round++;
     if (this.round < 6) {
+      
       this.newQuestion();
     } else {
       console.log("Spiel zuende");
@@ -113,7 +115,6 @@ class QuizGame {
 
     this.io.to(this.roomId).emit('gameEnd', this.players);
 
-
   }
   newQuestion() {
     getNextQuestion().then(question => {
@@ -135,6 +136,9 @@ class QuizGame {
   toString() {
     const playerStrings = this.players.map(player => `${player.username} (Score: ${player.score})`);
     return playerStrings.join(", ");
+  }
+  updateScoreBoard(){
+    this.io.to(this.roomId).emit("scoreBoard", this.players);
   }
 }
 

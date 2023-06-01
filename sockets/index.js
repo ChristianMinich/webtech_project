@@ -82,7 +82,7 @@ module.exports = (io) => {
             currGame.addPlayer(player);
             console.log("addedPlayer " + player);
           });
-          
+
           playersinGame.splice(0, playersinGame.length);
           
           currGame.start();
@@ -135,65 +135,4 @@ module.exports = (io) => {
 
 function generateRoomId() {
   return uuidv4();
-}
-
-async function getRandomQuestions() {
-  try {
-      const questions = [];
-      const questionIDs = [1, 2, 3, 4, 5]; // Replace with actual question IDs or generate dynamically
-
-      for (let i = 0; i < 5; i++) {
-          const randomIndex = Math.floor(Math.random() * questionIDs.length);
-          const questionID = questionIDs[randomIndex];
-          const result = await qs.getQuestions(questionID);
-          questions.push(result[0]); // Assuming only one row is returned for each questionID
-      }
-
-      return questions;
-  } catch (error) {
-      console.log(error);
-      return []; // Return an empty array in case of error
-  }
-}
-
-async function logques() {
-  try {
-    const randomQuestions = await getRandomQuestions();
-    //console.log(randomQuestions);
-    randomQuestions.forEach(element => {
-      console.log(element.QUESTION);
-    });
-    return randomQuestions;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function getNextQuestion() {
-  try {
-    const randomQuestionID = Math.floor(Math.random() * 20) + 1; // Beispiel: Zufällige Frage ID generieren
-    const rows = await qs.getQuestions(randomQuestionID);
-
-    if (rows.length > 0) {
-      const questionRow = rows[0]; // Nehmen Sie die erste Zeile als Frage an
-      
-      const question = {
-        id: questionRow.QUESTION_ID,
-        text: questionRow.QUESTION,
-        answers: [
-          questionRow.RIGHT_ANSWER,
-          questionRow.FALSE_ANSWER1,
-          questionRow.FALSE_ANSWER2,
-          questionRow.FALSE_ANSWER3
-        ],
-        category: questionRow.CATEGORY_ID
-      };
-
-      return question;
-    }
-  } catch (error) {
-    console.log('Fehler beim Abrufen der nächsten Frage:', error);
-  }
-
-  return null; // Falls keine Frage abgerufen werden kann, wird null zurückgegeben
 }
