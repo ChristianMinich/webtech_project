@@ -64,17 +64,24 @@ module.exports = (io) => {
     socket.on('gamePageLoaded',(roomId, username) => {
       socket.join(roomId);
       gamePageLoadedCount++;
+      gameMap.set(roomId, new QuizGame(roomId, io));
       //io.to(roomId).emit("giveUserName");
-      playersinRoom.push(String(username));
-      console.log(gamePageLoadedCount + " Spieler Da!");
+      //playersinRoom.push(String(username));
+      //console.log(playersinRoom);
+      console.log(gamePageLoadedCount + " Spieler Da! "+ username );
         // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
         if (gamePageLoadedCount === MAX_PLAYERS_PER_ROOM) {
           gamePageLoadedCount = 0;
           console.log(roomId + " Spiel startet blad");
-          gameMap.set(roomId, new QuizGame(roomId, io));
-          const currGame = gameMap.get(roomId); 
+          
+          const currGame = gameMap.get(roomId);
+          currGame.addPlayer(username); 
           currGame.start(playersinRoom);
           console.log(gameMap);
+          console.log(currGame.toString());
+        }else{
+          const currGame = gameMap.get(roomId);
+          currGame.addPlayer(username);
         }
       });
 

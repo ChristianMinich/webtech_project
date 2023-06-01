@@ -31,7 +31,8 @@
     
     window.onload = function () {
       socket.emit('gamePageLoaded',roomId, username);
-    }
+      console.log(username);
+    };
 
     document.getElementById("option1-text").addEventListener("click", function() {
       socket.emit("questionSelected", roomId, username, this.textContent)

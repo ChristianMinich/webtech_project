@@ -13,7 +13,6 @@ class QuizGame {
     console.log("new game created " + roomId );
     
   }
-
   start(players) {
 
     this.round = 1;
@@ -22,7 +21,7 @@ class QuizGame {
     console.log("Spiel startet");
     
     getNextQuestion().then(question => {
-      console.log("Runde :" + this.round + " " + question);
+      console.log("Runde :" + this.round + " " + question.QUESTION);
       this.sendQuestion(question);
       this.questions[this.round] = question.id;
       this.currentQuestionIndex = question.id;
@@ -31,7 +30,16 @@ class QuizGame {
     });
     //this.sendQuestion();
   }
-
+  addPlayer(username) {
+    console.log("übergebener username: " + username);
+    const player = {
+      username: username,
+      score: 0
+    };
+    console.log(player);
+    this.players.push(player);
+    console.log("Neuer log " + String(this.players.player));
+  }
   sendQuestion(question) {
     
     if (question) {
@@ -60,7 +68,7 @@ class QuizGame {
   }
   newQuestion(){
     getNextQuestion().then(question => {
-      console.log("Runde :" + this.round + " " + question);
+      console.log("Runde :" + this.round + " " + String(question.QUESTION));
       
       if(checkDuplicateQuestion(question.id)){
         this.questions[this.round] = question.id;
@@ -73,6 +81,10 @@ class QuizGame {
     }).catch(error => {
       console.log('Fehler beim Abrufen der Frage:', error);
     });
+  }
+  toString() {
+    const playerStrings = this.players.map(player => `${player.username} (Score: ${player.score})`);
+    return playerStrings.join(", ");
   }
 }
 
