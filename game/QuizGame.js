@@ -89,10 +89,8 @@ class QuizGame {
   }
 
   endGame() {
-    /*
-    this.players.forEach((player) => {
-      this.io.to(player.id).emit('gameEnd', { score: player.score });
-    });*/
+    
+    this.io.to(this.roomId).emit('gameEnd', this.players);
 
     this.players.forEach((player) => {
       db.then(conn => {
