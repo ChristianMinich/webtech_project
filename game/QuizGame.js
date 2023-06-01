@@ -83,6 +83,7 @@ class QuizGame {
       this.newQuestion();
     } else {
       console.log("Spiel zuende");
+      this.endGame();
     }
 
   }
