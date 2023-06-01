@@ -22,7 +22,7 @@ class QuizGame {
     
     getNextQuestion().then(question => {
       console.log("Runde :" + this.round + " " + question.QUESTION);
-      this.sendQuestion(question);
+      this.sendQuestion(question, this.round);
       this.questions[this.round] = question.id;
       this.currentQuestionIndex = question.id;
     }).catch(error => {
@@ -43,7 +43,7 @@ class QuizGame {
   sendQuestion(question) {
     
     if (question) {
-      this.io.to(this.roomId).emit('question', question);
+      this.io.to(this.roomId).emit('question', question, this.round);
     } else {
       console.log('Fehler beim Abrufen der Fragen');
     }
@@ -68,7 +68,7 @@ class QuizGame {
   }
   newQuestion(){
     getNextQuestion().then(question => {
-      console.log("Runde :" + this.round + " " + String(question.QUESTION));
+      console.log("Runde :" + this.round + " " + String(question.text));
       
       if(checkDuplicateQuestion(question.id)){
         this.questions[this.round] = question.id;
