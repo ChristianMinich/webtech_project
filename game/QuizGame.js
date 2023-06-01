@@ -8,6 +8,7 @@ class QuizGame {
     this.roomId = roomId;
     this.questions = []; 
     this.currentQuestionIndex = 0;
+    this.currentRightAnswer = "";
     this.round = 1; 
     this.players = [];
     console.log("new game created " + roomId );
@@ -52,6 +53,21 @@ class QuizGame {
   answerQuestion(username, answer) {
   
     console.log("Room: " + this.roomId +" | User: " + username + " hat gewählt: " + answer );
+
+    if(this.currentRightAnswer === answer){
+      this.players.forEach((player) => {
+        if(player === username){
+          player.score++;
+        }
+      });
+    } else {
+      this.players.forEach((player) => {
+        if(player !== username){
+          player.score++;
+        }
+      });
+    }
+
     this.round++;
     if(this.round < 6){
       this.newQuestion();
@@ -99,6 +115,7 @@ async function getNextQuestion() {
       const question = {
         id: questionRow.QUESTION_ID,
         text: questionRow.QUESTION,
+        right_answer: questionRow.RIGHT_ANSWER,
         answers: [
           questionRow.RIGHT_ANSWER,
           questionRow.FALSE_ANSWER1,
@@ -107,7 +124,7 @@ async function getNextQuestion() {
         ],
         category: questionRow.CATEGORY_ID
       };
-
+      this.currentRightAnswer = questionRow.RIGHT_ANSWER;
       return question;
     }
   } catch (error) {
