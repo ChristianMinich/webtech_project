@@ -89,18 +89,20 @@ class QuizGame {
   }
 
   endGame() {
+    /*
     this.players.forEach((player) => {
       this.io.to(player.id).emit('gameEnd', { score: player.score });
-    });
+    });*/
 
     this.players.forEach((player) => {
       db.then(conn => {
         conn.query("SELECT HIGHSCORE FROM USER WHERE USERNAME = ?", [player.username])
           .then(rows => {
             try {
-              const highscore = rows[0].HIGHSCORE
-              if (player.highscore > highscore) {
-                conn.query("UPDATE USER SET HIGHSCORE = ? WHERE USERNAME = ?", [highscore, player.username])
+              const highscore = rows[0].HIGHSCORE;
+              console.log("Highscore:" + highscore);
+              if (player.score > highscore) {
+                conn.query("UPDATE USER SET HIGHSCORE = ? WHERE USERNAME = ?", [player.score, player.username])
                   .then(rows => {
                     console.log(rows);
                   })
