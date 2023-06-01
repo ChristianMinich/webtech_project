@@ -64,7 +64,7 @@ class QuizGame {
         console.log("player.score" + player.score);
         if (player.username === username) {
           player.score++;
-          console.log("Right Answer " + "Score of " + player.username + "incremented!" + player.score);
+          console.log("Right Answer " + "Score of " + player.username + " incremented! " + player.score);
         }
       });
     } else {
@@ -73,7 +73,7 @@ class QuizGame {
         console.log("player.score" + player.score);
         if (player.username !== username) {
           player.score++;
-          console.log("Wrong Answer " + "Score of " + player.username + "incremented!" + player.score);
+          console.log("Wrong Answer " + "Score of " + player.username + " incremented! " + player.score);
         }
       });
     }
@@ -96,7 +96,7 @@ class QuizGame {
           .then(rows => {
             try {
               const highscore = rows[0].HIGHSCORE;
-              console.log("Highscore:" + highscore);
+              console.log(player.username + " Highscore:" + highscore);
               if (player.score > highscore) {
                 conn.query("UPDATE USER SET HIGHSCORE = ? WHERE USERNAME = ?", [player.score, player.username])
                   .then(rows => {
@@ -158,7 +158,7 @@ async function getNextQuestion() {
         ],
         category: questionRow.CATEGORY_ID
       };
-      return question;
+      return shuffleAnswers(question);
     }
   } catch (error) {
     console.log('Fehler beim Abrufen der nächsten Frage:', error);
@@ -166,7 +166,6 @@ async function getNextQuestion() {
 
   return null; // Falls keine Frage abgerufen werden kann, wird null zurückgegeben
 }
-
 
 function checkDuplicateQuestion(quesID) {
 
@@ -178,7 +177,15 @@ function checkDuplicateQuestion(quesID) {
 
   }
   return true;
+}
 
+function shuffleAnswers(question) {
+  const answers = question.answers;
+  for (let i = answers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [answers[i], answers[j]] = [answers[j], answers[i]];
+  }
+  return question;
 }
 
 

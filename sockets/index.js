@@ -81,15 +81,9 @@ module.exports = (io) => {
           playersinGame.forEach(player => {
             currGame.addPlayer(player);
             console.log("addedPlayer " + player);
-          
-            // Find the index of the player in the array
-            const playerIndex = playersinGame.indexOf(player);
-          
-            // Remove the player from the array
-            if (playerIndex !== -1) {
-              playersinGame.splice(playerIndex, 1);
-            }
           });
+          
+          playersinGame.splice(0, playersinGame.length);
           
           currGame.start();
           console.log(gameMap);
