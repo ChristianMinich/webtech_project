@@ -2,6 +2,7 @@ require("dotenv").config();
 const queries = require("../repositories/userRepository");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const pw = require("./passwordValidator");
 
 async function login(username, password) {
   if (!username) {
@@ -62,4 +63,4 @@ async function createUser(username, password) {
   });
 }
 
-module.exports = { login, getData, register };
+module.exports = { login, getData, register};
