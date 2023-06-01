@@ -82,6 +82,13 @@
     });
 
     socket.on("gameEnd", (players) => {
+      document.getElementById('question-text').disabled = true;
+      document.getElementById('option1-text').disabled = true;
+      document.getElementById('option2-text').disabled = true;
+      document.getElementById('option3-text').disabled = true;
+      document.getElementById('option4-text').disabled = true;
+
+
       document.getElementById('user_1').disabled = false;
       document.getElementById('userscore_1').disabled = false;
       document.getElementById('user_2').disabled = false; 
