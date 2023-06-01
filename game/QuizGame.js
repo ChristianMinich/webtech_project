@@ -14,10 +14,10 @@ class QuizGame {
     console.log("new game created " + roomId );
     
   }
-  start(players) {
+  start() {
 
     this.round = 1;
-    this.players = players;
+    //this.players = players;
     this.currentQuestionIndex = 0;
     console.log("Spiel startet");
     
@@ -40,7 +40,7 @@ class QuizGame {
     };
     console.log(player);
     this.players.push(player);
-    console.log("Neuer log " + String(this.players.player));
+    console.log("Neuer log " + String(this.players[this.players.length - 1].username));
   }
   sendQuestion(question) {
      
@@ -54,9 +54,10 @@ class QuizGame {
   answerQuestion(username, answer) {
   
     console.log("Room: " + this.roomId +" | User: " + username + " hat gewählt: " + answer );
-    console.log(this.currentRightAnswer + "Richtige Antwort | Falsche Antwort: " + answer);
-    if(this.currentRightAnswer === answer){
-    
+    console.log(this.currentRightAnswer + " Richtige Antwort ");
+    console.log(this.players);
+    if(this.currentRightAnswer === String(answer)){
+      console.log("antwort richtig");
       this.players.forEach((player) => {
         console.log("player.username " + player.username);
         console.log("player.score" + player.score);

@@ -76,7 +76,7 @@ module.exports = (io) => {
           
           const currGame = gameMap.get(roomId);
           currGame.addPlayer(username); 
-          currGame.start(playersinRoom);
+          currGame.start();
           console.log(gameMap);
           console.log(currGame.toString());
         }else{
