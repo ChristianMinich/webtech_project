@@ -11,6 +11,7 @@ module.exports = (io) => {
   const MAX_PLAYERS_PER_ROOM = 2;
   const queue = [];
   const playersinRoom = [];
+  const playersinGame = [];
    
   console.log("hello there");
 
@@ -64,26 +65,29 @@ module.exports = (io) => {
     socket.on('gamePageLoaded',(roomId, username) => {
       socket.join(roomId);
       gamePageLoadedCount++;
-      gameMap.set(roomId, new QuizGame(roomId, io));
+      playersinGame.push(username);
+      console.log("playersInGame Filled: " + playersinGame);
       //io.to(roomId).emit("giveUserName");
       //playersinRoom.push(String(username));
       //console.log(playersinRoom);
       console.log(gamePageLoadedCount + " Spieler Da! "+ username );
         // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
-        if (gamePageLoadedCount === MAX_PLAYERS_PER_ROOM) {
+        if (playersinGame.length === MAX_PLAYERS_PER_ROOM) {
+          gameMap.set(roomId, new QuizGame(roomId, io));
           gamePageLoadedCount = 0;
           console.log(roomId + " Spiel startet blad");
-          
           const currGame = gameMap.get(roomId);
-          currGame.addPlayer(username); 
+          playersinGame.forEach(player => {
+            currGame.addPlayer(player);
+            console.log("added Player " + player)
+          });
+
+          //const currGame = gameMap.get(roomId);
+          //currGame.addPlayer(username); 
           currGame.start();
           console.log(gameMap);
           console.log(currGame.toString());
-        }else{
-          const currGame = gameMap.get(roomId);
-          currGame.addPlayer(username);
-        }
-      });
+      };
 
     //socket.on("gameStart")
 
