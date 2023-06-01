@@ -22,9 +22,10 @@ class QuizGame {
     console.log("Spiel startet");
     
     getNextQuestion().then(question => {
-      console.log("Runde :" + this.round + " " + question.QUESTION);
+      console.log("Runde :" + this.round + " " + question.text);
       this.sendQuestion(question, this.round);
       this.questions[this.round] = question.id;
+      this.currentRightAnswer = question.right_answer;
       this.currentQuestionIndex = question.id;
     }).catch(error => {
       console.log('Fehler beim Abrufen der Frage:', error);
@@ -42,7 +43,7 @@ class QuizGame {
     console.log("Neuer log " + String(this.players.player));
   }
   sendQuestion(question) {
-    
+     
     if (question) {
       this.io.to(this.roomId).emit('question', question, this.round);
     } else {
@@ -53,17 +54,18 @@ class QuizGame {
   answerQuestion(username, answer) {
   
     console.log("Room: " + this.roomId +" | User: " + username + " hat gewählt: " + answer );
-
+    console.log(this.currentRightAnswer + "Richtige Antwort | Falsche Antwort: " + answer);
     if(this.currentRightAnswer === answer){
+    
       this.players.forEach((player) => {
-        if(player === username){
+        if(player.username === username){
           player.score++;
           console("Right Answer " + "Score of " + player.username + "incremented!" + player.score);
         }
       });
     } else {
       this.players.forEach((player) => {
-        if(player !== username){
+        if(player.username !== username){
           player.score++;
           console.log("Wrong Answer " + "Score of " + player.username + "incremented!" + player.score);
         }
@@ -91,6 +93,7 @@ class QuizGame {
       if(checkDuplicateQuestion(question.id)){
         this.questions[this.round] = question.id;
         this.currentQuestionIndex = question.id;
+        this.currentRightAnswer = question.right_answer;
         this.sendQuestion(question);
       }
       else{
@@ -126,7 +129,6 @@ async function getNextQuestion() {
         ],
         category: questionRow.CATEGORY_ID
       };
-      this.currentRightAnswer = questionRow.RIGHT_ANSWER;
       return question;
     }
   } catch (error) {
