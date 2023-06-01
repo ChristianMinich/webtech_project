@@ -49,20 +49,21 @@
       document.getElementById('userscore_2').disabled = true;
     };
 
-    document.getElementById("option1-text").addEventListener("click", function() {
-      socket.emit("questionSelected", roomId, username, this.textContent)
-    });
-    document.getElementById("option2-text").addEventListener("click", function() {
-      socket.emit("questionSelected", roomId, username, this.textContent)
-    });
-    document.getElementById("option3-text").addEventListener("click", function() {
-      socket.emit("questionSelected", roomId, username, this.textContent)
-    });
-    document.getElementById("option4-text").addEventListener("click", function() {
-      socket.emit("questionSelected", roomId, username, this.textContent)
-    });
+    const clickHandler = function() {
+      socket.emit("questionSelected", roomId, username, this.textContent);
+    };
 
+    const option1TextElement = document.getElementById("option1-text");
+      const option2TextElement = document.getElementById("option2-text");
+      const option3TextElement = document.getElementById("option3-text");
+      const option4TextElement = document.getElementById("option4-text");
 
+      document.getElementById("option1-text").addEventListener("click", clickHandler);
+      document.getElementById("option2-text").addEventListener("click", clickHandler);
+      document.getElementById("option3-text").addEventListener("click", clickHandler);
+      document.getElementById("option4-text").addEventListener("click", clickHandler);
+
+    
     socket.on('question', function(question, round) {
 
       document.getElementById("roundCounter").textContent = round;
@@ -82,19 +83,15 @@
     });
 
     socket.on("gameEnd", (players) => {
-      document.getElementById('question-text').disabled = true;
-      document.getElementById('option1-text').disabled = true;
-      document.getElementById('option2-text').disabled = true;
-      document.getElementById('option3-text').disabled = true;
-      document.getElementById('option4-text').disabled = true;
-
+      option1TextElement.removeEventListener('click', clickHandler);
+      option2TextElement.removeEventListener('click', clickHandler);
+      option3TextElement.removeEventListener('click', clickHandler);
+      option4TextElement.removeEventListener('click', clickHandler);
 
       document.getElementById('user_1').disabled = false;
       document.getElementById('userscore_1').disabled = false;
       document.getElementById('user_2').disabled = false; 
       document.getElementById('userscore_2').disabled = false;
-
-
 
       document.getElementById('user_1').textContent = players[0].username;
       document.getElementById('userscore_1').textContent = players[0].score; 
@@ -104,7 +101,6 @@
       document.getElementById("end").disabled = false;
       document.getElementById("end").textContent = false;
 
-      
     });
     
   

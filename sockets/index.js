@@ -77,10 +77,20 @@ module.exports = (io) => {
           gamePageLoadedCount = 0;
           console.log(roomId + " Spiel startet blad");
           const currGame = gameMap.get(roomId);
+          
           playersinGame.forEach(player => {
             currGame.addPlayer(player);
             console.log("addedPlayer " + player);
+          
+            // Find the index of the player in the array
+            const playerIndex = playersinGame.indexOf(player);
+          
+            // Remove the player from the array
+            if (playerIndex !== -1) {
+              playersinGame.splice(playerIndex, 1);
+            }
           });
+          
           currGame.start();
           console.log(gameMap);
           console.log(currGame.toString());

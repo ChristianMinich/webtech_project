@@ -89,9 +89,7 @@ class QuizGame {
   }
 
   endGame() {
-    
-    this.io.to(this.roomId).emit('gameEnd', this.players);
-
+  
     this.players.forEach((player) => {
       db.then(conn => {
         conn.query("SELECT HIGHSCORE FROM USER WHERE USERNAME = ?", [player.username])
@@ -112,6 +110,8 @@ class QuizGame {
           })
       })
     });
+
+    this.io.to(this.roomId).emit('gameEnd', this.players);
 
 
   }
