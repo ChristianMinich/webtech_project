@@ -58,14 +58,14 @@ class QuizGame {
       this.players.forEach((player) => {
         if(player === username){
           player.score++;
-          console("Right Answer " + "Score of " + player + "incremented!");
+          console("Right Answer " + "Score of " + player.username + "incremented!" + player.score);
         }
       });
     } else {
       this.players.forEach((player) => {
         if(player !== username){
           player.score++;
-          console.log("Wrong Answer " + "Score of " + player + "incremented!");
+          console.log("Wrong Answer " + "Score of " + player.username + "incremented!" + player.score);
         }
       });
     }
