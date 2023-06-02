@@ -67,9 +67,6 @@ module.exports = (io) => {
       gamePageLoadedCount++;
       playersinGame.push(username);
       console.log("playersInGame Filled: " + playersinGame);
-      //io.to(roomId).emit("giveUserName");
-      //playersinRoom.push(String(username));
-      //console.log(playersinRoom);
       console.log(gamePageLoadedCount + " Spieler Da! "+ username );
         // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
         if (playersinGame.length === MAX_PLAYERS_PER_ROOM) {
@@ -90,12 +87,6 @@ module.exports = (io) => {
           console.log(currGame.toString());
         }
       });
-
-    //socket.on("gameStart")
-
-    socket.on("questions", () => {
-      qs.getQuestions(2);
-    });
 
     socket.on("questionSelected", (roomId, username, answer) => {
 

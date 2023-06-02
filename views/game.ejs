@@ -92,6 +92,12 @@
       option3TextElement.removeEventListener('click', clickHandler);
       option4TextElement.removeEventListener('click', clickHandler);
 
+      document.getElementById('question-text').textContent = " ";
+      document.getElementById('option1-text').textContent = " ";
+      document.getElementById('option2-text').textContent = " ";
+      document.getElementById('option3-text').textContent = " ";
+      document.getElementById('option4-text').textContent = " ";
+
       document.getElementById('user_1').disabled = false;
       document.getElementById('userscore_1').disabled = false;
       document.getElementById('user_2').disabled = false; 
