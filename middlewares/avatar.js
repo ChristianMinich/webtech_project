@@ -15,7 +15,7 @@ function getAvatar(req, res, next){
             .then(rows => {
               const avatar = rows[0].FILE_PATH
               //console.log(avatar);
-              const avatarPath = "/assets/" + avatar;
+              const avatarPath = "/assets/emojis/" + avatar;
               req.avatar = avatarPath;
               next();
             })
