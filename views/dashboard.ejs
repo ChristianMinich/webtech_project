@@ -1,31 +1,53 @@
-<head> 
-  <link
-      href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300"
-      rel="stylesheet"
-    />
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300" rel="stylesheet">
+  <style>
+    /* Add your CSS styles here */
+    .profile-container {
+      position: relative;
+    }
+  
+    .profile-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+  </style>
 </head>
 <body>
-  <%- include('navbar') %>
+  <% include('navbar') %>
   <h1>hello there</h1>
   <h2><%= username%></h2>
-  <img src="<%= avatar%>" width="50px" height="50px">
+  
+  <div class="profile-container">
+    <img src="<%= avatar%>" width="50px" height="50px">
+    <!-- <img src="/assets/ranks/fourth_level.png" width="72px" height="72px" class="profile-image"> -->
+  </div>
+  
   <form action="/logout" method="GET">
     <button type="submit">Logout</button>
   </form>
-
+  
   <form action="/game" method="GET">
     <button type="submit">Single Player</button>
   </form>
+  
   <form action="/joinQueue" method="GET">
     <button type="submit">Join Queue</button>
   </form>
+  
   <form action="/scoreboard" method="GET">
     <button type="submit">Scoreboard</button>
   </form>
+  
   <form action="/game-test" method="GET">
     <button type="submit">Mario</button>
   </form>
+  
   <form action="/registered" method="GET">
     <button type="submit">hello there</button>
   </form>
 </body>
+</html>
