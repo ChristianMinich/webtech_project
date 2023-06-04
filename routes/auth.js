@@ -133,10 +133,10 @@ router.post("/api/auth/register", (req, res) => {
 
 // To check a password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
 
-
-  if(!pw.CheckPassword(password)){
+/*
+  if(!pw.CheckPassword(String(password))){
     res.status(400).send("Password does not match the Requirements!");
-  }
+  } */
 
   db.then((conn) => {
     conn
@@ -198,7 +198,7 @@ router.get("/scoreboard", mw.authToken, (req, res) => {
   const username = req.username;
   db.then((conn) => {
     conn
-      .query("SELECT DISTINCT U.USERNAME, U.HIGHSCORE, A.FILE_PATH FROM USER U INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID ORDER BY U.HIGHSCORE DESC LIMIT 15")
+      .query("SELECT DISTINCT U.USERNAME, U.HIGHSCORE, A.FILE_PATH FROM USER U INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID ORDER BY U.HIGHSCORE DESC LIMIT 50")
       .then((rows) => {
 
         //res.json(rows);
