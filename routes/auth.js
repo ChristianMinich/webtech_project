@@ -148,11 +148,11 @@ router.post("/api/auth/register", (req, res) => {
           }
         } catch (error) {
           let hashedPW = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-
+          const avatarID = Math.floor((Math.random() * 115) + 1);
           conn
             .query(
               "INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID) VALUES (?, ?, ?, ?)",
-              [username, hashedPW, 0, 1]
+              [username, hashedPW, 0, avatarID]
             )
             .then((rows) => {
               console.log(rows);
