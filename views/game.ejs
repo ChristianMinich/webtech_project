@@ -36,7 +36,12 @@
   <div class = "user2" id="user_2"></div>
   <div class = "userscore2" id="userscore_2"></div>
   
-    <div id="end"></div>
+  <div id="end"></div>
+  <div id="endButton">
+    <form action="/index" method="GET">
+      <button type="submit">Back to Dashboard</button>
+    </form>
+  </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
@@ -51,6 +56,7 @@
       document.getElementById('userscore_1').disabled = true;
       document.getElementById('user_2').disabled = true; 
       document.getElementById('userscore_2').disabled = true;
+      document.getElementById("endButton").disabled = true;
     };
 
     const clickHandler = function() {
@@ -110,6 +116,8 @@
 
       document.getElementById("end").disabled = false;
       document.getElementById("end").textContent = false;
+
+      document.getElementById("endButton").disabled = false;
 
     });
 
