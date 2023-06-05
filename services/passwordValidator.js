@@ -8,7 +8,7 @@
  */
 function CheckPassword(inputtxt) {
   var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-  if (inputtxt.match(passw)) {
+  if (inputtxt!=null && inputtxt.match(passw)) {
     return true;
   } else {
     return false;
