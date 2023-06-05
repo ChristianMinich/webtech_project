@@ -35,7 +35,9 @@
       <div class = "answers" id="option4-text"></div>
   </div>
 
-  <div class= "betweenRound" id="waitText">Mach dich Bereit, die nächste Runde startet gleich</div>
+  <div class= "betweenRound" id="waitText">Mach dich Bereit, die nächste Runde startet gleich  
+    <div id= "countdown">5</div>
+  </div>
 
   <div class = "user1" id="user_1"></div>
   <div class = "userscore1" id="userscore_1"></div>
@@ -118,6 +120,7 @@
       disableQuestions();
       const waitTextq = document.getElementById('waitText')
       waitTextq.style.display = 'block';
+      startCountdown();
     });
 
     socket.on("test", (roomID) => {
@@ -211,6 +214,22 @@
   option2TextElement.classList.add('answers');
   option3TextElement.classList.add('answers');
   option4TextElement.classList.add('answers');
+}
+
+function startCountdown(){
+  let timer = 5;
+  const countdownText = document.getElementById('countdown');
+
+  const countdownInterval = setInterval(() => {
+    countdownText.textContent = timer;
+
+    if (timer <= 0) {
+      clearInterval(countdownInterval);
+      
+    }
+
+    timer--;
+  }, 1000);
 
 }
     
