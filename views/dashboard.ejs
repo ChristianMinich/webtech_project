@@ -3,49 +3,124 @@
 <head>
   <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300" rel="stylesheet">
   <style>
-    /* Add your CSS styles here */
+
+    /* Allgemeine Stile */
+    body {
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
     .profile-container {
-      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
     }
-  
-    .profile-image {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
+
+    .profile-container img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
     }
+
+    form {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    button {
+      font-family: 'Lora', serif;
+      font-size: 16px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Media Queries für die Anpassung an verschiedene Geräte */
+    @media screen and (max-width: 768px) {
+      h1 {
+        font-size: 28px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      h3 {
+        font-size: 16px;
+      }
+
+      .profile-container img {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    }
+
+
   </style>
 </head>
 <body>
   <% include('navbar') %>
-  <h1>hello there</h1>
-  <h2><%= username%></h2>
-  
+  <h1>Hello there</h1>
+  <h2>Welcome to your Dashboard</h2>
+  <h3>User: <%= username%></h3>
+
   <div class="profile-container">
-    <img src="<%= avatar%>" width="50px" height="50px">
+    <img src="<%= avatar%>" width="30px" height="30px">
     <!-- <img src="/assets/ranks/fourth_level.png" width="72px" height="72px" class="profile-image"> -->
   </div>
-  
+
   <form action="/logout" method="GET">
     <button type="submit">Logout</button>
   </form>
-  
+
   <form action="/game" method="GET">
     <button type="submit">Single Player</button>
   </form>
-  
+
   <form action="/joinQueue" method="GET">
     <button type="submit">Join Queue</button>
   </form>
-  
+
   <form action="/scoreboard" method="GET">
     <button type="submit">Scoreboard</button>
   </form>
-  
+
   <form action="/game-test" method="GET">
     <button type="submit">Mario</button>
   </form>
-  
+
   <form action="/registered" method="GET">
     <button type="submit">hello there</button>
   </form>
