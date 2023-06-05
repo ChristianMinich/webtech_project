@@ -1,6 +1,7 @@
 const qs = require("../repositories/questions");
 const database = require("../repositories");
 const db = database.getConnection();
+const maxRounds = 5;
 class QuizGame {
 
   constructor(roomId, io) {
@@ -80,8 +81,7 @@ class QuizGame {
     }
     this.updateScoreBoard();
     this.round++;
-    if (this.round < 6) {
-      
+    if (this.round <= maxRounds) {
       this.newQuestion();
     } else {
       console.log("Spiel zuende");
