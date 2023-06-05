@@ -28,13 +28,19 @@ module.exports = (io) => {
     });
 
     socket.on('joinQueue', (username) => {
-      if (!queue.some((item) => item.socket.id === socket.id)) {
+
+      if (!queue.some((item) => item.socket.id === socket.id || item.username === username)) {
         queue.push({ socket: socket, username: username });
       } else {
         console.log("Benutzer bereits in der Warteschlange!");
+        const existingIndex = queue.findIndex((item) => item.username === username);
+        if (existingIndex !== -1) {
+          queue.splice(existingIndex, 1);
+        console.log("Alter Eintrag für Benutzer gelöscht: " + username);
+        }     
+        queue.push({ socket: socket, username: username });
       }
-    
-      console.log("In der Warteschlange: " + socket.id);
+      //console.log("In der Warteschlange: " + socket.id);
       if (queue.length >= MAX_PLAYERS_PER_ROOM) {
         const roomId = generateRoomId();
         const players = [];
