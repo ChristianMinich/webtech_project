@@ -38,7 +38,7 @@ describe("Check password validation", () =>{
      * Checks the value of password which is supossed to be false
      * because it is an empty password
      */
-    test("Invalid password: no uppercase letter", () => {
+    test("Invalid password: empty", () => {
         const password = "";
         const result = CheckPassword(password);
         expect(result).toBe(false);
