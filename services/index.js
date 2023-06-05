@@ -10,9 +10,7 @@ async function login(username, password) {
   } else if (!password) {
     return { status: 400, message: "password not set" };
   } else {
-    return await queries
-      .getUserByName(username)
-      .then((user) => {
+    return await queries.getUserbyName(username).then((user) => {
         if (user) {
           return bcrypt
             .compare(password, user.password)

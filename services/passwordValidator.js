@@ -4,11 +4,11 @@
  * one lowercase letter
  * 
  * @param {*} inputtxt The input text
- * @returns {boolean}
+ * @returns {boolean} 
  */
 function CheckPassword(inputtxt) {
   var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-  if (inputtxt.value.match(passw)) {
+  if (inputtxt.match(passw)) {
     return true;
   } else {
     return false;
