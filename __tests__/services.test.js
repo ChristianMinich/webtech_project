@@ -1,8 +1,11 @@
-/** The test repository for service */
+/** The test repository for services */
 
 const svc = require("../services");
 const { CheckPassword } = require("../services/passwordValidator");
 
+/**
+ * This is the test section for the password
+ */
 describe("Check password validation", () =>{
 
     /**
