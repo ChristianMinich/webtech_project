@@ -37,15 +37,25 @@ class QuizGame {
     //this.sendQuestion();
   }
   addPlayer(username) {
+    
     console.log("übergebener username: " + username);
-    const player = {
-      username: username,
-      score: 0
-    };
-    console.log(player);
-    this.players.push(player);
-    console.log("Neuer log " + String(this.players[this.players.length - 1].username));
+
+      if(this.userExist(username)){
+        console.log("Fehler, doppelter User");
+
+      }else{
+
+        const player = {
+          username: username,
+          score: 0
+        };
+
+        this.players.push(player);
+        console.log("Neuer Spieler hinzugefügt: " + player.username);
+      }
+    
   }
+  
   sendQuestion(question) {
 
     if (question) {
@@ -152,6 +162,20 @@ class QuizGame {
   }
   updateScoreBoard(){
     this.io.to(this.roomId).emit("scoreBoard", this.players);
+  }
+  userExist(username){
+
+    let userExists = false; 
+
+    this.players.forEach(player => {
+    if (player.username === username) {
+      console.log("Der Benutzername existiert bereits! Wird nicht dem Spiel hinzugefügt");
+      userExists = true;
+    }
+  });
+
+    return userExists;
+
   }
 }
 
