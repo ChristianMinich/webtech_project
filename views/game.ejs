@@ -9,6 +9,10 @@
               text-align: center;
               cursor: default;
           }
+        .waitText{
+            display: none;
+        }
+
     </style>
   </head>
   <body>
@@ -22,7 +26,7 @@
       <!-- scoreboard content will be dynamically generated -->
     </div>
 
-    <div class="quizbox">
+    <div class="quizbox" id="quizbox">
 
       <h2 id="question-text"></h2>
       <div class = "answers" id="option1-text"></div>
@@ -30,6 +34,8 @@
       <div class = "answers" id="option3-text"></div>
       <div class = "answers" id="option4-text"></div>
   </div>
+
+  <div class= "betweenRound" id="waitText">Mach dich Bereit, die nächste Runde startet gleich</div>
 
   <div class = "user1" id="user_1"></div>
   <div class = "userscore1" id="userscore_1"></div>
@@ -72,11 +78,13 @@
       document.getElementById('user_2').disabled = true; 
       document.getElementById('userscore_2').disabled = true;
       document.getElementById("endButton").disabled = true;
+      
     };
 
     const clickHandler = function() {
       socket.emit("questionSelected", roomId, username, this.textContent);
     };
+
 
       const option1TextElement = document.getElementById("option1-text");
       const option2TextElement = document.getElementById("option2-text");
@@ -91,6 +99,10 @@
     
       socket.on('question', function(question, round) {
 
+        const waitTextq = document.getElementById('waitText')
+        waitTextq.style.display = 'none';
+        enableQuestions();
+      
       document.getElementById("roundCounter").textContent = round;
 
       console.log("Frage erhlaten");
@@ -99,6 +111,13 @@
       document.getElementById('option2-text').textContent = question.answers[1];
       document.getElementById('option3-text').textContent = question.answers[2];
       document.getElementById('option4-text').textContent = question.answers[3];
+
+    });
+
+    socket.on("newRoundCountdown", () => {
+      disableQuestions();
+      const waitTextq = document.getElementById('waitText')
+      waitTextq.style.display = 'block';
     });
 
     socket.on("test", (roomID) => {
@@ -107,27 +126,11 @@
 
     });
 
+
     socket.on("gameEnd", (players) => {
-      option1TextElement.removeEventListener('click', clickHandler);
-      option2TextElement.removeEventListener('click', clickHandler);
-      option3TextElement.removeEventListener('click', clickHandler);
-      option4TextElement.removeEventListener('click', clickHandler);
+      
+      disableQuestions(); //fragen ausblenden
 
-      document.getElementById('question-text').textContent = " ";
-      document.getElementById('option1-text').textContent = " ";
-      document.getElementById('option2-text').textContent = " ";
-      document.getElementById('option3-text').textContent = " ";
-      document.getElementById('option4-text').textContent = " ";
-
-      document.getElementById("end").disabled = false;
-      document.getElementById("endButton").disabled = false;
-
-    //Scoreboard nach ende
-
-      const answerElements = document.querySelectorAll('.answers');
-      answerElements.forEach((element) => {
-      element.classList.remove('answers');//.answers entfernen
-      });
       const scoreboardElement = document.getElementById('scoreboard');
       scoreboardElement.style.display = 'none';
 
@@ -177,6 +180,39 @@
             scoreboardElement.appendChild(playerElement);
           });
         });
+    function disableQuestions(){
+
+      option1TextElement.removeEventListener('click', clickHandler);
+      option2TextElement.removeEventListener('click', clickHandler);
+      option3TextElement.removeEventListener('click', clickHandler);
+      option4TextElement.removeEventListener('click', clickHandler);
+
+      document.getElementById('question-text').textContent = " ";
+      document.getElementById('option1-text').textContent = " ";
+      document.getElementById('option2-text').textContent = " ";
+      document.getElementById('option3-text').textContent = " ";
+      document.getElementById('option4-text').textContent = " ";
+   
+      const answerElements = document.querySelectorAll('.answers');
+      answerElements.forEach((element) => {
+        element.classList.remove('answers');//.answers entfernen
+      });
+
+  }
+
+  function enableQuestions() {
+
+  option1TextElement.addEventListener('click', clickHandler);
+  option2TextElement.addEventListener('click', clickHandler);
+  option3TextElement.addEventListener('click', clickHandler);
+  option4TextElement.addEventListener('click', clickHandler);
+
+  option1TextElement.classList.add('answers');
+  option2TextElement.classList.add('answers');
+  option3TextElement.classList.add('answers');
+  option4TextElement.classList.add('answers');
+
+}
     
   
   </script>

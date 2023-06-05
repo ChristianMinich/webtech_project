@@ -13,6 +13,7 @@ class QuizGame {
     this.currentRightAnswer = "";
     this.round = 1;
     this.players = [];
+    this.countAnswers = 0;
     console.log("new game created " + roomId);
 
   }
@@ -56,6 +57,12 @@ class QuizGame {
 
   answerQuestion(username, answer) {
 
+    this.io.to(this.roomId).emit('newRoundCountdown');
+    //doppelte antort auf eine frage verhindern
+    if(this.countAnswers === 1){
+      console.log("Doppelte Antwort " + username);
+    }else{
+
     console.log("Room: " + this.roomId + " | User: " + username + " hat gewählt: " + answer);
     console.log(this.currentRightAnswer + " Richtige Antwort ");
     console.log(this.players);
@@ -81,13 +88,19 @@ class QuizGame {
     }
     this.updateScoreBoard();
     this.round++;
+    this.countAnswers = 0;
     if (this.round <= maxRounds) {
-      this.newQuestion();
+    
+      //this.newQuestion();
+      setTimeout(() => {
+        this.newQuestion();
+      }, 5000);
+
     } else {
       console.log("Spiel zuende");
       this.endGame();
     }
-
+  }
   }
 
   endGame() {
