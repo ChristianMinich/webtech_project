@@ -35,6 +35,21 @@
   <div class = "userscore1" id="userscore_1"></div>
   <div class = "user2" id="user_2"></div>
   <div class = "userscore2" id="userscore_2"></div>
+
+  <div id="scoreboard-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Rang</th>
+          <th>Benutzername</th>
+          <th>Punktzahl</th>
+        </tr>
+      </thead>
+      <tbody id="scoreboard-body">
+        <!-- Hier werden die Spieler eingefügt -->
+      </tbody>
+    </table>
+  </div>
   
   <div id="end"></div>
   <div id="endButton">
@@ -63,7 +78,7 @@
       socket.emit("questionSelected", roomId, username, this.textContent);
     };
 
-    const option1TextElement = document.getElementById("option1-text");
+      const option1TextElement = document.getElementById("option1-text");
       const option2TextElement = document.getElementById("option2-text");
       const option3TextElement = document.getElementById("option3-text");
       const option4TextElement = document.getElementById("option4-text");
@@ -74,7 +89,7 @@
       document.getElementById("option4-text").addEventListener("click", clickHandler);
 
     
-    socket.on('question', function(question, round) {
+      socket.on('question', function(question, round) {
 
       document.getElementById("roundCounter").textContent = round;
 
@@ -104,6 +119,7 @@
       document.getElementById('option3-text').textContent = " ";
       document.getElementById('option4-text').textContent = " ";
 
+/*
       document.getElementById('user_1').disabled = false;
       document.getElementById('userscore_1').disabled = false;
       document.getElementById('user_2').disabled = false; 
@@ -113,11 +129,54 @@
       document.getElementById('userscore_1').textContent = players[0].score; 
       document.getElementById('user_2').textContent = players[1].username; 
       document.getElementById('userscore_2').textContent = players[1].score; 
-
+*/
       document.getElementById("end").disabled = false;
-      document.getElementById("end").textContent = false;
+      //document.getElementById("end").textContent = false;
 
       document.getElementById("endButton").disabled = false;
+
+    //Scoreboard nach ende
+
+      const answerElements = document.querySelectorAll('.answer');
+
+  // Schleife über alle Antwort-Elemente
+      answerElements.forEach((element) => {
+      element.classList.remove('answer');
+      });
+      players.sort((a, b) => b.score - a.score);      
+    const scoreboardContainer = document.getElementById("scoreboard-container");
+    scoreboardContainer.innerHTML = ""; // Leeren des Inhalts des Behälters
+
+    const scoreboardTable = document.createElement("table");
+    const headerRow = document.createElement("tr");
+    const rankHeader = document.createElement("th");
+    rankHeader.textContent = "Rang";
+    const usernameHeader = document.createElement("th");
+    usernameHeader.textContent = "Benutzername";
+    const scoreHeader = document.createElement("th");
+    scoreHeader.textContent = "Punktzahl";
+
+    headerRow.appendChild(rankHeader);
+    headerRow.appendChild(usernameHeader);
+    headerRow.appendChild(scoreHeader);
+    scoreboardTable.appendChild(headerRow);
+
+    players.forEach((player, index) => {
+    const playerRow = document.createElement("tr");
+    const rankCell = document.createElement("td");
+    rankCell.textContent = index + 1;
+    const usernameCell = document.createElement("td");
+    usernameCell.textContent = player.username;
+    const scoreCell = document.createElement("td");
+    scoreCell.textContent = player.score;
+
+    playerRow.appendChild(rankCell);
+    playerRow.appendChild(usernameCell);
+    playerRow.appendChild(scoreCell);
+    scoreboardTable.appendChild(playerRow);
+    });
+
+      scoreboardContainer.appendChild(scoreboardTable);
 
     });
 
