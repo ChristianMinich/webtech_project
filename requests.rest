@@ -1,0 +1,11 @@
+GET http://localhost:3000/index
+
+###
+
+POST http://localhost:3000/api/auth
+Content-Type: application/json
+
+{
+    "username": "chris",
+    "password": "234523",
+}

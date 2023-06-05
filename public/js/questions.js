@@ -4,12 +4,7 @@ let questions = [
     numb: 1,
     question: "Was ist die Binärcode-Darstellung von 8?",
     answer: "01000",
-    options: [
-      "01000",
-      "11001",
-      "00101",
-      "00100"
-    ]
+    options: ["01000", "11001", "00101", "00100"],
   },
 
   {
@@ -20,20 +15,21 @@ let questions = [
       "Virtual Public Network",
       "Volatile Private Network",
       "Virtual Personal Network",
-      "Virtual Private Network"
-    ]
+      "Virtual Private Network",
+    ],
   },
 
   {
     numb: 3,
     question: "Was ist ein Hash?",
-    answer: "Ein kryptografischer Algorithmus, der eine Nachricht in eine eindeutige Zeichenfolge umwandelt",
+    answer:
+      "Ein kryptografischer Algorithmus, der eine Nachricht in eine eindeutige Zeichenfolge umwandelt",
     options: [
       "Ein Algorithmus zur Kompression von Daten",
       "Ein Verfahren zur Übertragung von Daten über das Internet",
       "Ein System zur Verschlüsselung von E-Mails",
-      "Ein kryptografischer Algorithmus, der eine Nachricht in eine eindeutige Zeichenfolge umwandelt"
-    ]
+      "Ein kryptografischer Algorithmus, der eine Nachricht in eine eindeutige Zeichenfolge umwandelt",
+    ],
   },
 
   {
@@ -44,57 +40,42 @@ let questions = [
       "Read Access Memory",
       "Random Access Module",
       "Remote Access Memory",
-      "Random Access Memory"
-    ]
+      "Random Access Memory",
+    ],
   },
 
-
-{
-  numb: 5,
-      question: 'Was ist eine "Shell"?',
-    answer: 'Eine Texteingabeaufforderung, die Befehle ausführt',
+  {
+    numb: 5,
+    question: 'Was ist eine "Shell"?',
+    answer: "Eine Texteingabeaufforderung, die Befehle ausführt",
     options: [
-  'Eine grafische Benutzeroberfläche für Betriebssysteme',
-  'Eine Software zum Schutz von Computern vor Viren',
-  'Eine Bibliothek mit Grafikfunktionen zur Erstellung von 3D-Animationen',
-  'Eine Texteingabeaufforderung, die Befehle ausführt'
-]
-},
+      "Eine grafische Benutzeroberfläche für Betriebssysteme",
+      "Eine Software zum Schutz von Computern vor Viren",
+      "Eine Bibliothek mit Grafikfunktionen zur Erstellung von 3D-Animationen",
+      "Eine Texteingabeaufforderung, die Befehle ausführt",
+    ],
+  },
 
-{
-  numb: 6,
-      question: 'Würde Rauscher gute Noten verteilen?',
-    answer: 'Nein',
-    options: [
-  'Ja wie meine Mutter',
-  'Nein, maximal 4.0',
-  'Nein',
-  'Joah'
-]
-},
+  {
+    numb: 6,
+    question: "Würde Rauscher gute Noten verteilen?",
+    answer: "Nein",
+    options: ["Ja wie meine Mutter", "Nein, maximal 4.0", "Nein", "Joah"],
+  },
 
   {
     numb: 7,
     question: "Wer hat das World Wide Web erfunden?",
     answer: "Tim Berners-Lee",
-    options: [
-      "Bill Gates",
-      "Steve Jobs",
-      "Tim Berners-Lee",
-      "Mark Zuckerberg"
-    ]
+    options: ["Bill Gates", "Steve Jobs", "Tim Berners-Lee", "Mark Zuckerberg"],
   },
 
   {
     numb: 8,
-    question: "Welche Organisation ist für die Standardisierung von Web-Technologien zuständig?",
+    question:
+      "Welche Organisation ist für die Standardisierung von Web-Technologien zuständig?",
     answer: "W3C",
-    options: [
-      "IEEE",
-      "IETF",
-      "W3C",
-      "ISO"
-    ]
+    options: ["IEEE", "IETF", "W3C", "ISO"],
   },
 
   {
@@ -105,8 +86,8 @@ let questions = [
       "Ein Computerprogramm zum Abspielen von Musik",
       "Ein Gerät zur Datensicherung auf externen Speichermedien",
       "Eine Art Tastatur für die Eingabe von Musiknoten",
-      "Eine Schritt-für-Schritt-Anleitung zur Lösung eines Problems"
-    ]
+      "Eine Schritt-für-Schritt-Anleitung zur Lösung eines Problems",
+    ],
   },
 
   {
@@ -117,8 +98,7 @@ let questions = [
       "Central Processing Unit",
       "Computer Performance Unit",
       "Central Power Unit",
-      "Computer Processing Unit"
-    ]
+      "Computer Processing Unit",
+    ],
   },
-
 ];

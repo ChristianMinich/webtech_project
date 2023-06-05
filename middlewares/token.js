@@ -1,26 +1,60 @@
-
 const svc = require("../services");
+const database = require("../repositories");
+const path = require("path");
+const db = database.getConnection();
 
-function validate(req, res, next) {
-    const token = req.cookies["accessToken"]
-    if (token === undefined) {
-        res.redirect("/login");
-        return;
-    }
+function renderDashboard(req, res, next) {
+  const accessToken = req.cookies["accessToken"];
+
+  if (accessToken) {
     try {
-        let tokenData = svc.getData(token);
-        if (tokenData) {
-            res.locals.tokenData = tokenData;
-            next();
-        } else {
-            res.status(401).json({message: "authentication error"});
-        }
-    } catch (e) {
-        res.status(401).json({
-            message: "authentication error: ",
-            error: e.message
-        });
+      const decoded = svc.getData(accessToken);
+      const user = decoded.username;
+
+      db.then(conn => {
+        conn.query("SELECT A.FILE_PATH FROM USER U JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID WHERE U.USERNAME = ?", [user])
+          .then(rows => {
+            const avatar = rows[0].FILE_PATH;
+            //console.log(avatar);
+            const avatarPath = "/assets/emojis/" + avatar;
+            return res.render("dashboard", { username: user, avatar: avatarPath });
+          })
+          .catch(error => {
+            console.log(error);
+            next(); 
+          });
+      }).catch(error => {
+        console.log(error);
+        next(); 
+      });
+
+    } catch (err) {
+      console.log(err);
+      next(); 
     }
+  } else {
+    next(); 
+  }
 }
 
-module.exports = {validate};
+
+function authenticateToken(req, res, next) {
+  const accessToken = req.cookies["accessToken"];
+
+  if (!accessToken) {
+    console.log("redirected!");
+    return res.redirect("/login");
+  }
+
+  try {
+    const decoded = svc.getData(accessToken);
+    console.log(decoded);
+    req.username = decoded.username;
+    next();
+  } catch (err) {
+    return res.redirect("/login");
+  }
+}
+
+
+module.exports = { authenticateToken, renderDashboard };
