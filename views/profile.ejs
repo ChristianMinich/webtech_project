@@ -3,13 +3,57 @@
 <head>
   <title>Profile of <%= username%></title>
   <style>
+    /* Allgemeine Styles */
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: url("public/assets/backgrounds/maze-1542265_1920.png");
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
     table {
       border-collapse: collapse;
+      background-color: #a42834;
+      width: 100%;
     }
+
     th, td {
       border: 1px solid black;
       padding: 8px;
     }
+
+    th {
+      background-color: #333;
+      color: #fff;
+      text-align: left;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* Responsives Design */
+
+    @media screen and (max-width: 600px) {
+      table {
+        font-size: 12px;
+      }
+
+      th, td {
+        padding: 4px;
+      }
+    }
+
   </style>
 </head>
 <body>

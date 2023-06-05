@@ -32,7 +32,7 @@ router.get("/register", mw.dashboard, (req, res) => {
 });
 
 router.get("/game", mw.authToken,(req, res) => {
-  res.sendFile(path.resolve("public/game.html"));
+  res.sendFile(path.resolve("public/warmup-warmup-game.html"));
 });
 
 router.get("/joinQueue", mw.authToken, (req, res) => {
