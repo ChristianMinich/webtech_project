@@ -119,62 +119,50 @@
       document.getElementById('option3-text').textContent = " ";
       document.getElementById('option4-text').textContent = " ";
 
-/*
-      document.getElementById('user_1').disabled = false;
-      document.getElementById('userscore_1').disabled = false;
-      document.getElementById('user_2').disabled = false; 
-      document.getElementById('userscore_2').disabled = false;
-
-      document.getElementById('user_1').textContent = players[0].username;
-      document.getElementById('userscore_1').textContent = players[0].score; 
-      document.getElementById('user_2').textContent = players[1].username; 
-      document.getElementById('userscore_2').textContent = players[1].score; 
-*/
       document.getElementById("end").disabled = false;
-      //document.getElementById("end").textContent = false;
-
       document.getElementById("endButton").disabled = false;
 
     //Scoreboard nach ende
 
-      const answerElements = document.querySelectorAll('.answer');
-
-  // Schleife über alle Antwort-Elemente
+      const answerElements = document.querySelectorAll('.answers');
       answerElements.forEach((element) => {
-      element.classList.remove('answer');
+      element.classList.remove('answers');//.answers entfernen
       });
+      const scoreboardElement = document.getElementById('scoreboard');
+      scoreboardElement.style.display = 'none';
+
       players.sort((a, b) => b.score - a.score);      
-    const scoreboardContainer = document.getElementById("scoreboard-container");
-    scoreboardContainer.innerHTML = ""; // Leeren des Inhalts des Behälters
+      const scoreboardContainer = document.getElementById("scoreboard-container");
+      scoreboardContainer.innerHTML = ""; // Leeren des Inhalts des Behälters
 
-    const scoreboardTable = document.createElement("table");
-    const headerRow = document.createElement("tr");
-    const rankHeader = document.createElement("th");
-    rankHeader.textContent = "Rang";
-    const usernameHeader = document.createElement("th");
-    usernameHeader.textContent = "Benutzername";
-    const scoreHeader = document.createElement("th");
-    scoreHeader.textContent = "Punktzahl";
+      const scoreboardTable = document.createElement("table");
+      const headerRow = document.createElement("tr");
+      const rankHeader = document.createElement("th");
+      rankHeader.textContent = "Rang";
+      const usernameHeader = document.createElement("th");
+      usernameHeader.textContent = "Benutzername";
+      const scoreHeader = document.createElement("th");
+      scoreHeader.textContent = "Punktzahl";
 
-    headerRow.appendChild(rankHeader);
-    headerRow.appendChild(usernameHeader);
-    headerRow.appendChild(scoreHeader);
-    scoreboardTable.appendChild(headerRow);
+      headerRow.appendChild(rankHeader);
+      headerRow.appendChild(usernameHeader);
+      headerRow.appendChild(scoreHeader);
+      scoreboardTable.appendChild(headerRow);
 
-    players.forEach((player, index) => {
-    const playerRow = document.createElement("tr");
-    const rankCell = document.createElement("td");
-    rankCell.textContent = index + 1;
-    const usernameCell = document.createElement("td");
-    usernameCell.textContent = player.username;
-    const scoreCell = document.createElement("td");
-    scoreCell.textContent = player.score;
+      players.forEach((player, index) => {
+      const playerRow = document.createElement("tr");
+      const rankCell = document.createElement("td");
+      rankCell.textContent = index + 1;
+      const usernameCell = document.createElement("td");
+      usernameCell.textContent = player.username;
+      const scoreCell = document.createElement("td");
+      scoreCell.textContent = player.score;
 
-    playerRow.appendChild(rankCell);
-    playerRow.appendChild(usernameCell);
-    playerRow.appendChild(scoreCell);
-    scoreboardTable.appendChild(playerRow);
-    });
+      playerRow.appendChild(rankCell);
+      playerRow.appendChild(usernameCell);
+      playerRow.appendChild(scoreCell);
+      scoreboardTable.appendChild(playerRow);
+      });
 
       scoreboardContainer.appendChild(scoreboardTable);
 
