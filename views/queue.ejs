@@ -1,62 +1,21 @@
 <html>
-  <head>
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300" rel="stylesheet">
-
-    <style>
-      body {
-        font-family: 'Montserrat', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f2f2f2;
-      }
-
-      h1, h2, h4 {
-        text-align: center;
-      }
-
-      button {
-        display: block;
-        margin: 0 auto;
-        margin-bottom: 10px;
-        padding: 10px 20px;
-        font-size: 16px;
-        color: #fff;
-        font-family: 'Lora', serif;
-        background-color: #007bff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: #0056b3;
-      }
-
-      #users {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-
-      table {
-        margin: 0 auto;
-        border-collapse: collapse;
-      }
-
-      table th, table td {
-        padding: 5px 10px;
-        border: 1px solid #ddd;
-      }
-
-    </style>
-  </head>
+  <head> </head>
   <body>
-    <h1>Welcome in Queue</h1>
-    <h2>User: <%= username%></h2>
+    <h1>In Queue</h1>
+    <h2><%= username%></h2>
     <button onclick="joinQueue()">JOIN</button>
-    <h4>Pls tab on Join and wait for your opponent </h4>
-
+    <button onclick="getQuestions()">Question</button>
     <div id="users"></div>
 
+    <div class="quizbox">
+
+      <h2 id="question-text"></h2>
+      <div class = "answers" id="option1-text"></div>
+      <div class = "answers" id="option2-text"></div>
+      <div class = "answers" id="option3-text"></div>
+      <div class = "answers" id="option4-text"></div>
+  </div>
+  
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -83,7 +42,16 @@
 
     });
 
-    socket.on("usersInQueue", (username) => {
+    socket.on('question', function(question) {
+      console.log("Frage erhlaten");
+      document.getElementById('question-text').textContent = question.text;
+      document.getElementById('option1-text').textContent = question.answers[0];
+      document.getElementById('option2-text').textContent = question.answers[1];
+      document.getElementById('option3-text').textContent = question.answers[2];
+      document.getElementById('option4-text').textContent = question.answers[3];
+    });
+
+    socket.on("usersInQueue", (users) => {
       usersDiv.innerHTML = "";
 
       // Create a table element

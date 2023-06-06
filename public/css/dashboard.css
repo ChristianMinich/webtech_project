@@ -1,0 +1,121 @@
+*{
+    margin:0;
+    padding: 0;
+
+}
+/* Allgemeine Stile */
+/*body {
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    padding: 20px;
+    background: url("/assets/backgrounds/cat-3695213.jpg");
+    display: marker;
+    min-height: 100vh;
+    width: 100%;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: cover;
+    background-repeat: no-repeat;*/
+body {
+    background-color: #f9fcff;
+    font-family: "Montserrat", serif;
+}
+
+h1,
+h2,
+h3 {
+    font-family: "Helvetica", sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-align: center;
+    color: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+    background-color: rgba(197, 197, 197, 0.4);
+    padding: 10px;
+}
+
+h1 {
+    font-size: 47px;
+}
+
+.profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.profile-container img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6b5b95;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #8b7fa8;
+}
+
+button[type="submit"] {
+    margin-top: 10px;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 10px;
+    border-radius: 25px;
+    margin-top: 20px;
+}
+
+.footer-link {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+/* Media Queries für die Anpassung an verschiedene Geräte */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    .profile-container img {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}

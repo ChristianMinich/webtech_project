@@ -11,32 +11,40 @@ function renderDashboard(req, res, next) {
       const decoded = svc.getData(accessToken);
       const user = decoded.username;
 
-      db.then(conn => {
-        conn.query("SELECT A.FILE_PATH FROM USER U JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID WHERE U.USERNAME = ?", [user])
-          .then(rows => {
-            const avatar = rows[0].FILE_PATH;
-            //console.log(avatar);
-            const avatarPath = "/assets/emojis/" + avatar;
-            return res.render("dashboard", { username: user, avatar: avatarPath });
+      db.then((conn) => {
+        conn
+          .query(
+            "SELECT A.FILE_PATH FROM USER U JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID WHERE U.USERNAME = ?",
+            [user]
+          )
+          .then((rows) => {
+            try {
+              const avatar = rows[0].FILE_PATH;
+              const avatarPath = "/assets/emojis/" + avatar;
+              return res.render("dashboard", {
+                username: user,
+                avatar: avatarPath,
+              });
+            } catch (error) {
+              console.log(error);
+            }
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
-            next(); 
+            next();
           });
-      }).catch(error => {
+      }).catch((error) => {
         console.log(error);
-        next(); 
+        next();
       });
-
     } catch (err) {
       console.log(err);
-      next(); 
+      next();
     }
   } else {
-    next(); 
+    next();
   }
 }
-
 
 function authenticateToken(req, res, next) {
   const accessToken = req.cookies["accessToken"];
@@ -55,6 +63,5 @@ function authenticateToken(req, res, next) {
     return res.redirect("/login");
   }
 }
-
 
 module.exports = { authenticateToken, renderDashboard };

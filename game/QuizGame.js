@@ -13,6 +13,7 @@ class QuizGame {
     this.currentRightAnswer = "";
     this.round = 1;
     this.players = [];
+    this.winner =[];
     this.countAnswers = 0;
     console.log("new game created " + roomId);
 
@@ -47,7 +48,8 @@ class QuizGame {
 
         const player = {
           username: username,
-          score: 0
+          score: 0,
+          win: false
         };
 
         this.players.push(player);
@@ -112,13 +114,31 @@ class QuizGame {
   }
 
   endGame() {
-  
+
+    const null_player = {
+      username: "",
+      score: -1
+    }
+    this.winner.push(null_player);
+    
+    this.players.forEach((player) => {
+
+      if (this.winner[0].score <= player.score) {
+        this.winner.shift();
+        this.winner.push(player);
+      }
+
+    })
+    
     this.players.forEach((player) => {
       db.then(conn => {
         conn.query("SELECT HIGHSCORE FROM USER WHERE USERNAME = ?", [player.username])
           .then(rows => {
             try {
               const highscore = rows[0].HIGHSCORE;
+              if(player.score === 5){
+                highscore+= 15;
+              }
               const newhighscore = highscore+ player.score;
               console.log(player.username + "Alter Highscore:" + highscore);
               console.log(player.username + "Neuer Highscore:" + newhighscore);
@@ -131,6 +151,25 @@ class QuizGame {
               console.log(error);
             }
           })
+        if(player.score === 5){
+
+          conn.query("UPDATE USER SET PERFECT_WINS = PERFECT_WINS + 1 WHERE USERNAME = ?", [player.username])
+          .then(rows => {
+            console.log(rows);
+          })
+        }
+        if (this.winner[0].username === player.username ){
+          conn.query("UPDATE USER SET WINS = WINS + 1 WHERE USERNAME = ?", [player.username])
+          .then(rows => {
+            console.log(rows);
+          })
+        }else{
+          conn.query("UPDATE USER SET LOSES = LOSES + 1 WHERE USERNAME = ?", [player.username])
+          .then(rows => {
+            console.log(rows);
+          })
+
+        }
       })
     });
 
