@@ -150,8 +150,8 @@ router.post("/api/auth/register", (req, res) => {
           const avatarID = Math.floor(Math.random() * 115 + 1);
           conn
             .query(
-              "INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID) VALUES (?, ?, ?, ?)",
-              [username, hashedPW, 0, avatarID]
+              "INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID, WINS, CONCURRENT_WINS, PERFECT_WINS, LOSES) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+              [username, hashedPW, 0, avatarID, 0, 0, 0, 0]
             )
             .then((rows) => {
               conn
