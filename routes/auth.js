@@ -87,15 +87,16 @@ router.post("/api/auth", (req, res) => {
           res.status(401).send("Wrong Login Credentials!");
         } else {
           try {
-            const user_id_fromDB = rows[0].USER_ID;
-            const username_fromDB = rows[0].USERNAME;
+            const id = rows[0].USER_ID;
+            const username = rows[0].USERNAME;
             const password_fromDB = rows[0].PASSWORD;
+
 
             bcrypt.compare(password, password_fromDB).then((valid) => {
               if (valid) {
                 try {
                   const token = jwt.sign(
-                    { user_id_fromDB, username_fromDB },
+                    { id, username },
                     process.env.JWT_SECRET,
                     {
                       algorithm: "HS256",
