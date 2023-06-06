@@ -67,7 +67,6 @@ class QuizGame {
         const player = {
           username: username,
           score: 0,
-          win: false
         };
 
         this.players.push(player);
@@ -198,18 +197,25 @@ class QuizGame {
           .then(rows => {
             console.log(rows);
           })
+          conn.query("UPDATE USER SET CONCURRENT_WINS = CONCURRENT_WINS + 1 WHERE USERNAME = ?", [player.username])
+          .then(rows => {
+          console.log(rows);
+          })
+
         }else{
           conn.query("UPDATE USER SET LOSES = LOSES + 1 WHERE USERNAME = ?", [player.username])
           .then(rows => {
             console.log(rows);
           })
-
+          conn.query("UPDATE USER SET CONCURRENT_WINS = 0 WHERE USERNAME = ?", [player.username])
+          .then(rows => {
+          console.log(rows);
+        })
         }
       })
     });
 
     this.io.to(this.roomId).emit('gameEnd', this.players);
-
   }
 
   /**
