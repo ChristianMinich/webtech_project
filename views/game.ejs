@@ -203,10 +203,10 @@
     
       socket.on('question', function(question, round) {
 
-        const waitTextq = document.getElementById('waitText')
-        waitTextq.style.display = 'none';
-        enableQuestions();
-      
+      const waitTextq = document.getElementById('waitText')
+      waitTextq.style.display = 'none';
+      enableQuestions();
+      document.getElementById('quizbox').style.display = 'block';
       document.getElementById("roundCounter").textContent = round;
 
       console.log("Frage erhlaten");
@@ -220,6 +220,7 @@
 
     socket.on("newRoundCountdown", () => {
       disableQuestions();
+      document.getElementById('quizbox').style.display = 'none';
       const waitTextq = document.getElementById('waitText')
       waitTextq.style.display = 'block';
       startCountdown();
@@ -305,16 +306,16 @@
   }
 
   function enableQuestions() {
+    
+    option1TextElement.addEventListener('click', clickHandler);
+    option2TextElement.addEventListener('click', clickHandler);
+    option3TextElement.addEventListener('click', clickHandler);
+    option4TextElement.addEventListener('click', clickHandler);
 
-  option1TextElement.addEventListener('click', clickHandler);
-  option2TextElement.addEventListener('click', clickHandler);
-  option3TextElement.addEventListener('click', clickHandler);
-  option4TextElement.addEventListener('click', clickHandler);
-
-  option1TextElement.classList.add('answers');
-  option2TextElement.classList.add('answers');
-  option3TextElement.classList.add('answers');
-  option4TextElement.classList.add('answers');
+    option1TextElement.classList.add('answers');
+    option2TextElement.classList.add('answers');
+    option3TextElement.classList.add('answers');
+    option4TextElement.classList.add('answers');
 }
 
 function startCountdown(){
