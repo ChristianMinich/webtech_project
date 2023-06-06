@@ -53,16 +53,17 @@ router.get("/game/:roomID", mw.authToken, mw.avatar, (req, res) => {
 router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
   const username = req.params.username;
   const user = req.username;
-  // const avatar = req.avatar; // get User Avatar
-
-  console.log("username " + username);
-  console.log("user " + user);
-  //console.log("avatar " + avatar);
+  
+  const sqlQuery = `
+  SELECT DISTINCT U.USERNAME, U.HIGHSCORE, A.FILE_PATH
+  FROM USER U
+  INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID
+  WHERE U.USERNAME = '${username}';
+  `;
   db.then((conn) => {
     conn
       .query(
-        "SELECT DISTINCT U.USERNAME, U.HIGHSCORE, A.FILE_PATH FROM USER U INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID WHERE U.USERNAME = ?",
-        [username]
+        sqlQuery
       )
       .then((rows) => {
         try {
