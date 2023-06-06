@@ -124,6 +124,20 @@
       }
 
     }
+    .loader {
+      border: 16px solid #f3f3f3; /* Light grey */
+      border-top: 16px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
 
   </style>
 
@@ -132,21 +146,22 @@
   <h2>Wait for your opponent to Join the Room</h2>
   <h3>If everyone is there, press Join and enjoy the Game together</h3>
 
-    <button onclick="joinQueue()">JOIN</button>
-
+    <button id="joinButton" onclick="joinQueue()">JOIN</button>
+    <div class="loader" id="loader"></div>
+   
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
     const username = "<%= username %>";
     const usersDiv = document.getElementById("users");
-    console.log("username: " + username);
-    function joinQueue() {
-      socket.emit("joinQueue", username);
-    }
 
-    function getQuestions() {
-      socket.emit("questions");
+    console.log("username: " + username);
+
+    function joinQueue() {
+      document.getElementById('joinButton').style.display = "none";
+      document.getElementById('loader').style.display = "block";
+      socket.emit("joinQueue", username);
     }
 
     socket.on("joinGame", (roomID) => {
