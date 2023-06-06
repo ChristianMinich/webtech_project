@@ -194,10 +194,19 @@ router.post("/api/auth/register", (req, res) => {
 
 router.get("/scoreboard", mw.authToken, (req, res) => {
   const username = req.username;
+
+  const sqlQuery = `
+  SELECT DISTINCT U.USERNAME, U.HIGHSCORE, U.WINS, U.CONCURRENT_WINS, U.PERFECT_WINS, U.LOSES, A.FILE_PATH
+  FROM USER U
+  INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID
+  ORDER BY U.HIGHSCORE DESC
+  LIMIT 50;
+  `;
+
   db.then((conn) => {
     conn
       .query(
-        "SELECT DISTINCT U.USERNAME, U.HIGHSCORE, A.FILE_PATH FROM USER U INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID ORDER BY U.HIGHSCORE DESC LIMIT 50"
+        sqlQuery
       )
       .then((rows) => {
         //res.json(rows);
