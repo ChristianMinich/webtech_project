@@ -71,15 +71,15 @@
       }
 
       /* Spieler-Elemente */
-      .user1,
-      .user2,
-      .userscore1,
-      .userscore2 {
+      
+      .userscore
+       {
         margin: 10px auto;
-        max-width: 200px;
+        max-width: fit-content;
         padding: 10px;
         background-color: #f0f0f0;
         border-radius: 5px;
+        
       }
 
       /* Ende-Elemente */
@@ -151,12 +151,7 @@
     <div id= "countdown">5</div>
   </div>
 
-  <div class = "user1" id="user_1"></div>
-  <div class = "userscore1" id="userscore_1"></div>
-  <div class = "user2" id="user_2"></div>
-  <div class = "userscore2" id="userscore_2"></div>
-
-  <div id="scoreboard-container">
+  <div class ="userscore" id="scoreboard-container">
     <table>
       <thead>
         <tr>
@@ -171,7 +166,6 @@
     </table>
   </div>
   
-  <div id="end"></div>
   <div id="endButton">
     <form action="/index" method="GET">
       <button type="submit">Back to Dashboard</button>
@@ -186,12 +180,8 @@
     window.onload = function () {
       socket.emit('gamePageLoaded',roomId, username);
       console.log(username);
-      document.getElementById("end").disabled = true;
-      document.getElementById('user_1').disabled = true;
-      document.getElementById('userscore_1').disabled = true;
-      document.getElementById('user_2').disabled = true; 
-      document.getElementById('userscore_2').disabled = true;
       document.getElementById("endButton").disabled = true;
+      document.getElementById('scoreboard-container').style.display = 'none';
       
     };
 
@@ -246,8 +236,7 @@
       
       disableQuestions(); //fragen ausblenden
 
-      const scoreboardElement = document.getElementById('scoreboard');
-      scoreboardElement.style.display = 'none';
+      document.getElementById('scoreboard-container').style.display = 'block';
 
       players.sort((a, b) => b.score - a.score);      
       const scoreboardContainer = document.getElementById("scoreboard-container");
