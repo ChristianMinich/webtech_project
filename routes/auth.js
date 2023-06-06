@@ -55,7 +55,7 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
   const user = req.username;
   
   const sqlQuery = `
-  SELECT DISTINCT U.USERNAME, U.HIGHSCORE, A.FILE_PATH
+  SELECT DISTINCT U.USERNAME, U.HIGHSCORE, U.WINS, U.CONCURRENT_WINS, U.PERFECT_WINS, U.LOSES, A.FILE_PATH
   FROM USER U
   INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID
   WHERE U.USERNAME = '${username}';
