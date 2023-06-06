@@ -38,10 +38,11 @@ class QuizGame {
 
     getNextQuestion().then(question => {
       console.log("Runde :" + this.round + " " + question.text);
-      this.sendQuestion(question, this.round);
       this.questions[this.round] = question.id;
       this.currentRightAnswer = question.right_answer;
+      question.right_answer = "hier gibts nix zu sehen";
       this.currentQuestionIndex = question.id;
+      this.sendQuestion(question, this.round);
     }).catch(error => {
       console.log('Fehler beim Abrufen der Frage:', error);
     });
@@ -292,7 +293,7 @@ class QuizGame {
  */
 async function getNextQuestion() {
   try {
-    const randomQuestionID = Math.floor(Math.random() * 20) + 1; // Beispiel: Zufällige Frage ID generieren
+    const randomQuestionID = Math.floor(Math.random() * 30) + 1; // Beispiel: Zufällige Frage ID generieren
     const rows = await qs.getQuestions(randomQuestionID);
 
     if (rows.length > 0) {
