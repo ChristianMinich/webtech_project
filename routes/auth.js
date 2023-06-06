@@ -52,12 +52,10 @@ router.get("/game/:roomID", mw.authToken, mw.avatar, (req, res) => {
     .then(rows => {
       try{
         console.log(rows);
-        if(rows.length === 0) res.status(401).redirect("/");
-        const activeGame = rows[0].ROOM_ID;
-        if(activeGame !== undefined && activeGame !== null){
-          res.render("game", { roomID: roomID, username: username, avatar: avatar });
+        if(rows.length === 0) {
+          res.status(401).redirect("/");
         } else {
-          res.status(401).redirect("/")
+          res.render("game", { roomID: roomID, username: username, avatar: avatar });
         }
       } catch (error) {
         console.log(error);
