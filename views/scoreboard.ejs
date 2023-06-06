@@ -3,24 +3,34 @@
 <head>
   <title>User Highscores</title>
   <style>
+
     body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f2f2f2;
-    }
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: url("/assets/backgrounds/joshua-golde-qIu77BsFdds-unsplash.jpg");
+            display: marker;
+            min-height: 100vh;
+            width: auto;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+          }
 
-    h1 {
+    h1,
+    h2,
+    h3 {
+      font-family: "Helvetica", sans-serif;
+      font-weight: 250;
+      text-transform: uppercase;
       text-align: center;
-      margin-top: 20px;
-    }
-
-    table {
-      margin: 0 auto;
-      width: 80%;
-      border-collapse: collapse;
-      border: 1px solid #ddd;
-      background-color: #fff;
+      color: #fff;
+      padding: 10px;
+      border-radius: 25px;
+      background-color: rgba(128, 128, 128, 0.6);
+      margin: 10px 0;
     }
 
     thead {
@@ -63,7 +73,83 @@
       height: 74px;
     }
 
+    table {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 600px;
+    }
 
+    tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    a {
+      text-decoration: none;
+      color: black;
+    }
+
+    @media only screen and (max-width: 767px) {
+      h1 {
+        font-size: 24px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      h3 {
+        font-size: 18px;
+      }
+    }
+
+    @media only screen and (min-width: 768px) and (max-width: 1023px) {
+      h1 {
+        font-size: 36px;
+      }
+
+      h2 {
+        font-size: 28px;
+      }
+
+      h3 {
+        font-size: 24px;
+      }
+    }
+
+    @media only screen and (min-width: 1024px) {
+      h1 {
+        font-size: 48px;
+      }
+
+      h2 {
+        font-size: 36px;
+      }
+
+      h3 {
+        font-size: 30px;
+      }
+    }
+
+    /* For mobile phones */
+    @media only screen and (max-width: 600px) {
+      table {
+        font-size: 14px;
+      }
+    }
+
+    /* For tablets */
+    @media only screen and (min-width: 601px) and (max-width: 768px) {
+      table {
+        font-size: 16px;
+      }
+    }
+
+    /* For desktop */
+    @media only screen and (min-width: 769px) {
+      table {
+        font-size: 18px;
+      }
+    }
 
   </style>
 </head>

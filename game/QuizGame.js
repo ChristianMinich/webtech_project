@@ -4,6 +4,12 @@ const db = database.getConnection();
 const maxRounds = 5;
 class QuizGame {
 
+  /**
+   * Constructs a new instance of the QuizGame class.
+   *
+   * @param {string} roomId - The ID of the game room.
+   * @param {object} io - The IO object for communication.
+   */
   constructor(roomId, io) {
     this.MAX_ROUNDS = 5;
     this.io = io;
@@ -18,6 +24,11 @@ class QuizGame {
     console.log("new game created " + roomId);
 
   }
+
+  /**
+   * Starts the quiz game by initializing game properties,
+   * updating the score board, and sending the first question.
+   */
   start() {
 
     this.round = 1;
@@ -39,8 +50,10 @@ class QuizGame {
   }
 
   /**
+   * Adds a new player to the game with the specified username.
+   * Checks for duplicate usernames before adding the player.
    *
-   * @param username
+   * @param username - The username of the player to add.
    */
   addPlayer(username) {
     
@@ -64,8 +77,9 @@ class QuizGame {
   }
 
   /**
+   * Sends a question to the players in the game room.
    *
-   * @param question
+   * @param question - The question object to send.
    */
   sendQuestion(question) {
 
@@ -77,9 +91,12 @@ class QuizGame {
   }
 
   /**
+   * Processes a player's answer to a question in the game.
+   * Updates player scores based on the correctness of the answer,
+   * updates the score board, starts a new round or ends the game.
    *
-   * @param username
-   * @param answer
+   * @param username - The username of the player answering the question.
+   * @param answer - The answer provided by the player.
    */
   answerQuestion(username, answer) {
 
@@ -128,7 +145,8 @@ class QuizGame {
   }
 
   /**
-   *
+   * Ends the game and performs necessary actions such as updating player high scores in the database
+   * and emitting the 'gameEnd' event to the game room.
    */
   endGame() {
 
@@ -195,7 +213,7 @@ class QuizGame {
   }
 
   /**
-   *
+   * This function fetches the next question, checks for duplicate questions, and sends the question to the players.
    */
   newQuestion() {
     getNextQuestion().then(question => {
@@ -216,8 +234,9 @@ class QuizGame {
   }
 
   /**
+   * Returns a string representation of the players in the game along with their scores.
    *
-   * @return {string}
+   * @return {string} - The string representation of the players and their scores.
    */
   toString() {
     const playerStrings = this.players.map(player => `${player.username} (Score: ${player.score})`);
@@ -225,16 +244,18 @@ class QuizGame {
   }
 
   /**
-   *
+   * Updates the score board by emitting the "scoreBoard" event to the game room.
+   * The event includes the current players and their scores.
    */
   updateScoreBoard(){
     this.io.to(this.roomId).emit("scoreBoard", this.players);
   }
 
   /**
+   * Checks if a user with the given username already exists in the game.
    *
-   * @param username
-   * @return {boolean}
+   * @param username - The username to check for existence in the game.
+   * @return {boolean} - True if the user exists, false otherwise.
    */
   userExist(username){
 
@@ -253,8 +274,10 @@ class QuizGame {
 }
 
 /**
+ * It generates a random question ID and fetches the corresponding question row.
+ * Retrieves the next question asynchronously from the database.
  *
- * @return {Promise<*|null>}
+ * @return {Promise<*|null>} - A Promise that resolves to the next question object or null if no question is retrieved.
  */
 async function getNextQuestion() {
   try {
@@ -286,9 +309,11 @@ async function getNextQuestion() {
 }
 
 /**
+ * Checks if a question with the given question ID already exists in the game's questions array.
+ * It iterates through the questions array and compares each element with the given question ID.
  *
- * @param quesID
- * @return {boolean}
+ * @param quesID - The question ID to check for duplication.
+ * @return {boolean} - A boolean value indicating whether the question is a duplicate (false) or not (true).
  */
 function checkDuplicateQuestion(quesID) {
 
