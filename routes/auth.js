@@ -25,7 +25,7 @@ router.get("/login", mw.dashboard, (req, res) => {
 router.get("/logout", (req, res) => {
   res.clearCookie("accessToken");
   //res.status(200).redirect("/login");
-  res.sendFile(path.resolve("public/login.html"));
+  res.status(200).redirect("/");
 });
 
 router.get("/register", mw.dashboard, (req, res) => {
@@ -226,8 +226,9 @@ router.get("/video", (req, res) => {
   res.sendFile(videoPath);
 });
 
+/*
 router.get("/registered", (req, res) => {
   res.status(200).sendFile(path.resolve("public/registered.html"));
 });
-
+*/
 module.exports = router;
