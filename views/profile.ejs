@@ -49,5 +49,19 @@
       <% }) %>
     </tbody>
   </table>
+  <table>
+    <thead>
+      <tr>
+        <th>Achievments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% achievement.forEach(function(achievement) { %>
+        <tr>
+          <td><img src="/assets/achievements/<%= achievement.FILE_NAME %>"></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
 </body>
 </html>

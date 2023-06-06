@@ -73,7 +73,7 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
   const user = req.username;
   
   const sqlQuery = `
-  SELECT DISTINCT U.USERNAME, U.HIGHSCORE, U.WINS, U.CONCURRENT_WINS, U.PERFECT_WINS, U.LOSES, A.FILE_PATH
+  SELECT DISTINCT U.USER_ID, U.USERNAME, U.HIGHSCORE, U.WINS, U.CONCURRENT_WINS, U.PERFECT_WINS, U.LOSES, A.FILE_PATH
   FROM USER U
   INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID
   WHERE U.USERNAME = '${username}';
@@ -86,7 +86,24 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
       .then((rows) => {
         try {
           const avatar = rows[0].FILE_PATH;
-          res.render("profile", { rows: rows, username: user, avatar: avatar });
+          const achievement_query = `
+          SELECT
+          a.FILE_NAME
+          FROM
+          USER_ACHIEVEMENT ua
+          JOIN ACHIEVEMENT a ON ua.ACHIEVEMENT_ID = a.ACHIEVEMENT_ID
+          WHERE
+          ua.USER_ID = '${rows[0].USER_ID}';
+
+          `;
+          conn.query(achievement_query)
+          .then(achievements => {
+            console.log(achievements);
+            res.render("profile", { achievement: achievements, rows: rows, username: user, avatar: avatar });
+          })
+          .catch(error => {
+            console.log(error);
+          })
         } catch (error) {
           console.log(error);
         }
