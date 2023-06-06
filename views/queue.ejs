@@ -54,18 +54,9 @@
     <h2>User: <%= username%></h2>
     <button onclick="joinQueue()">JOIN</button>
     <h4>Pls tab on Join and wait for your opponent </h4>
-<!--    <button onclick="getQuestions()">Question</button>-->
+
     <div id="users"></div>
 
-<!--    <div class="quizbox">
-
-      <h2 id="question-text"></h2>
-      <div class = "answers" id="option1-text"></div>
-      <div class = "answers" id="option2-text"></div>
-      <div class = "answers" id="option3-text"></div>
-      <div class = "answers" id="option4-text"></div>
-  </div>-->
-  
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -92,16 +83,7 @@
 
     });
 
-    socket.on('question', function(question) {
-      console.log("Frage erhlaten");
-      document.getElementById('question-text').textContent = question.text;
-      document.getElementById('option1-text').textContent = question.answers[0];
-      document.getElementById('option2-text').textContent = question.answers[1];
-      document.getElementById('option3-text').textContent = question.answers[2];
-      document.getElementById('option4-text').textContent = question.answers[3];
-    });
-
-    socket.on("usersInQueue", (users) => {
+    socket.on("usersInQueue", (username) => {
       usersDiv.innerHTML = "";
 
       // Create a table element

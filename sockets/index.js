@@ -31,6 +31,8 @@ module.exports = (io) => {
 
       if (!queue.some((item) => item.socket.id === socket.id || item.username === username)) {
         queue.push({ socket: socket, username: username });
+        io.emit('usersInQueue', username); 
+
       } else {
         console.log("Benutzer bereits in der Warteschlange!");
         const existingIndex = queue.findIndex((item) => item.username === username);
@@ -61,10 +63,10 @@ module.exports = (io) => {
         rooms.set(roomId, room);
 
         //Weiterleitung
-        io.to(roomId).emit('joinGame', roomId);
+        io.to(roomId).emit('joinGame', roomId);//usernames speichern an den der emit geht, verhindern das dritte einem spiel beitreten können 
 
       } else {
-        socket.emit('usersInQueue', username);
+        
       }
     });
     
