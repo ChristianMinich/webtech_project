@@ -141,12 +141,12 @@ module.exports = (io) => {
       });
       io.emit("all-connections", JSON.stringify(users));
     });
-
+    socket.on("leaveGame", (roomId, username)=>{
+      console.log("User: "+ username + " hat das Spiel " + roomId + " verlassen");
+    })
     // Ereignisbehandlung: Verbindung getrennt.
     socket.on("disconnect", () => {
-      socket.broadcast.emit("user-disconnected", users[socket.id]);
-      delete users[socket.id];
-      io.emit("all-connections", JSON.stringify(users));
+      console.log("user disconected");
     });
   });
 };

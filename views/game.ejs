@@ -212,6 +212,9 @@
       document.getElementById('scoreboard-container').style.display = 'none';
       
     };
+    window.addEventListener('beforeunload', function(event) {
+    socket.emit('leaveGame', roomId, username);
+    });
 
     const clickHandler = function() {
       socket.emit("questionSelected", roomId, username, this.textContent);
