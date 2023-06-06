@@ -112,7 +112,7 @@ class QuizGame {
   }
 
   endGame() {
-  
+
     this.players.forEach((player) => {
       db.then(conn => {
         conn.query("SELECT HIGHSCORE FROM USER WHERE USERNAME = ?", [player.username])
@@ -120,7 +120,7 @@ class QuizGame {
             try {
               const highscore = rows[0].HIGHSCORE;
               if(player.score === 5){
-                player.score+= 15;
+                highscore+= 15;
               }
               const newhighscore = highscore+ player.score;
               console.log(player.username + "Alter Highscore:" + highscore);
@@ -134,6 +134,13 @@ class QuizGame {
               console.log(error);
             }
           })
+        if(player.score === 5){
+
+          conn.query("UPDATE USER SET PERFECT_WINS = PERFECT_WINS + 1 WHERE USERNAME = ?", [player.username])
+          .then(rows => {
+            console.log(rows);
+          })
+        }
       })
     });
 
