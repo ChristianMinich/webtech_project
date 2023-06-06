@@ -36,7 +36,9 @@
 
     socket.on("joinGame", (roomID) => {
         //socket.join(roomID);
-        window.location.href = "/game/" + roomID;
+        setTimeout(() => {
+          window.location.href = "/game/" + roomID;
+        }, 3000);
     });
     
     socket.on("test", (roomID) => {

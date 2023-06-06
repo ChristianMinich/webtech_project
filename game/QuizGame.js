@@ -23,6 +23,16 @@ class QuizGame {
     this.countAnswers = 0;
     console.log("new game created " + roomId);
 
+    db.then(conn => {
+      conn.query("INSERT INTO ACTIVE_GAME (ROOM_ID) VALUES (?)", [roomId])
+      .then(rows => {
+        console.log(rows);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    })
+
   }
 
   /**
@@ -30,13 +40,6 @@ class QuizGame {
    * updating the score board, and sending the first question.
    */
   start() {
-
-    db.then(conn => {
-      conn.query("INSERT INTO ACTIVE_GAME (ROOM_ID) VALUES (?)", [this.roomId])
-      .catch(error => {
-        console.log(error);
-      })
-    })
 
     this.round = 1;
     //this.players = players;

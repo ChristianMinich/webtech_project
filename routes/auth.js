@@ -51,6 +51,8 @@ router.get("/game/:roomID", mw.authToken, mw.avatar, (req, res) => {
     conn.query("SELECT ROOM_ID FROM ACTIVE_GAME WHERE ROOM_ID = ?", [roomID])
     .then(rows => {
       try{
+        console.log(rows);
+        if(rows.length === 0) res.status(401).redirect("/");
         const activeGame = rows[0].ROOM_ID;
         if(activeGame !== undefined && activeGame !== null){
           res.render("game", { roomID: roomID, username: username, avatar: avatar });
