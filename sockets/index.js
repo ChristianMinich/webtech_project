@@ -1,9 +1,11 @@
 const { v4: uuidv4 } = require('uuid');
-const qs = require("../repositories/questions");
+const database = require("../repositories");
 const QuizGame = require("../game/QuizGame");
 const rooms = new Map();
 const gameMap = new Map();
 let gamePageLoadedCount = 0;
+
+const db = database.getConnection();
 
 module.exports = (io) => {
   const users = {}; // Sichern der angemeldeten Clients u.A. für Nutzerlisten und Namensänderungen.
@@ -52,6 +54,16 @@ module.exports = (io) => {
       if (queue.length >= MAX_PLAYERS_PER_ROOM) {
         const roomId = generateRoomId();
         const players = [];
+
+        db.then(conn => {
+          conn.query("INSERT INTO ACTIVE_GAME (ROOM_ID) VALUES (?)", [roomId])
+          .then(rows => {
+            console.log(rows);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+        })
     
         for (let i = 0; i < MAX_PLAYERS_PER_ROOM; i++) {
           const { socket: playerSocket, username: playerUsername } = queue.shift();

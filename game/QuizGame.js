@@ -22,17 +22,6 @@ class QuizGame {
     this.winner =[];
     this.countAnswers = 0;
     console.log("new game created " + roomId);
-
-    db.then(conn => {
-      conn.query("INSERT INTO ACTIVE_GAME (ROOM_ID) VALUES (?)", [roomId])
-      .then(rows => {
-        console.log(rows);
-      })
-      .catch(error => {
-        console.log(error);
-      })
-    })
-
   }
 
   /**
@@ -178,7 +167,7 @@ class QuizGame {
         conn.query("SELECT HIGHSCORE FROM USER WHERE USERNAME = ?", [player.username])
           .then(rows => {
             try {
-              const highscore = rows[0].HIGHSCORE;
+              var highscore = rows[0].HIGHSCORE;
               if(player.score === 5){
                 highscore+= 15;
               }
