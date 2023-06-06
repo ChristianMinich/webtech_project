@@ -72,15 +72,12 @@ class QuizGame {
     if(this.countAnswers === 1){
       console.log("Doppelte Antwort " + username);
     }else{
-
+    this.countAnswers++;
     console.log("Room: " + this.roomId + " | User: " + username + " hat gewählt: " + answer);
     console.log(this.currentRightAnswer + " Richtige Antwort ");
-    console.log(this.players);
     if (this.currentRightAnswer === String(answer)) {
       console.log("antwort richtig");
       this.players.forEach((player) => {
-        console.log("player.username " + player.username);
-        console.log("player.score" + player.score);
         if (player.username === username) {
           player.score++;
           console.log("Right Answer " + "Score of " + player.username + " incremented! " + player.score);
@@ -88,8 +85,6 @@ class QuizGame {
       });
     } else {
       this.players.forEach((player) => {
-        console.log("player.username " + player.username);
-        console.log("player.score" + player.score);
         if (player.username !== username) {
           player.score++;
           console.log("Wrong Answer " + "Score of " + player.username + " incremented! " + player.score);
@@ -98,19 +93,22 @@ class QuizGame {
     }
     this.updateScoreBoard();
     this.round++;
-    this.countAnswers = 0;
+    console.log("Aktueller Stand: "+ this.players);
+    
     if (this.round <= maxRounds) {
     
       //this.newQuestion();
       setTimeout(() => {
         this.newQuestion();
       }, 5000);
+      this.countAnswers = 0;
 
     } else {
       console.log("Spiel zuende");
       this.endGame();
     }
   }
+
   }
 
   endGame() {
@@ -121,14 +119,17 @@ class QuizGame {
           .then(rows => {
             try {
               const highscore = rows[0].HIGHSCORE;
-              console.log(player.username + " Highscore:" + highscore);
-              if (player.score > highscore) {
-                conn.query("UPDATE USER SET HIGHSCORE = ? WHERE USERNAME = ?", [player.score, player.username])
-                  .then(rows => {
-                    console.log(rows);
-                  })
+              if(player.score === 5){
+                player.score+= 15;
               }
-
+              const newhighscore = highscore+ player.score;
+              console.log(player.username + "Alter Highscore:" + highscore);
+              console.log(player.username + "Neuer Highscore:" + newhighscore);
+             
+              conn.query("UPDATE USER SET HIGHSCORE = ? WHERE USERNAME = ?", [newhighscore, player.username])
+                .then(rows => {
+                  console.log(rows);
+                })
             } catch (error) {
               console.log(error);
             }

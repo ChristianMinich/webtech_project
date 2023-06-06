@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .table-container {
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="table-container">
+      <table margin: auto display>
+        <tr>
+          <td>
+            <video id="myVideo" muted style="display: block; margin: 0 auto;">
+              <source src="/video" type="video/mp4">
+            </video>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          <button id="playButton">Continue</button>
+          </td>
+        </tr>
+      </table>
+      </div>
+    <script>
+      const video = document.querySelector('#myVideo');
+      const playButton = document.querySelector('#playButton');
+
+      video.muted = false;
+      video.play();
+
+      playButton.addEventListener('click', () => {
+        video.play();
+        video.muted = false; // Unmute the video once it starts playing
+      });
+
+      video.addEventListener('ended', () => {
+        window.location.href = 'http://131.173.65.77:3000'; // Redirect to another site
+      });
+    </script>
+  </body>
+</html>
