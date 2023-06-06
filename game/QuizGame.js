@@ -99,7 +99,6 @@ class QuizGame {
    */
   answerQuestion(username, answer) {
 
-    this.io.to(this.roomId).emit('newRoundCountdown');
     //doppelte antort auf eine frage verhindern
     if(this.countAnswers === 1){
       console.log("Doppelte Antwort " + username);
@@ -129,7 +128,7 @@ class QuizGame {
     
     if (this.round <= maxRounds) {
     
-      //this.newQuestion();
+      this.io.to(this.roomId).emit('newRoundCountdown');
       setTimeout(() => {
         this.newQuestion();
       }, 5000);
