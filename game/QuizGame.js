@@ -37,6 +37,11 @@ class QuizGame {
     });
     //this.sendQuestion();
   }
+
+  /**
+   *
+   * @param username
+   */
   addPlayer(username) {
     
     console.log("übergebener username: " + username);
@@ -57,7 +62,11 @@ class QuizGame {
       }
     
   }
-  
+
+  /**
+   *
+   * @param question
+   */
   sendQuestion(question) {
 
     if (question) {
@@ -67,6 +76,11 @@ class QuizGame {
     }
   }
 
+  /**
+   *
+   * @param username
+   * @param answer
+   */
   answerQuestion(username, answer) {
 
     this.io.to(this.roomId).emit('newRoundCountdown');
@@ -113,6 +127,9 @@ class QuizGame {
 
   }
 
+  /**
+   *
+   */
   endGame() {
 
     const null_player = {
@@ -176,6 +193,10 @@ class QuizGame {
     this.io.to(this.roomId).emit('gameEnd', this.players);
 
   }
+
+  /**
+   *
+   */
   newQuestion() {
     getNextQuestion().then(question => {
       console.log("Runde :" + this.round + " " + String(question.text));
@@ -193,13 +214,28 @@ class QuizGame {
       console.log('Fehler beim Abrufen der Frage:', error);
     });
   }
+
+  /**
+   *
+   * @return {string}
+   */
   toString() {
     const playerStrings = this.players.map(player => `${player.username} (Score: ${player.score})`);
     return playerStrings.join(", ");
   }
+
+  /**
+   *
+   */
   updateScoreBoard(){
     this.io.to(this.roomId).emit("scoreBoard", this.players);
   }
+
+  /**
+   *
+   * @param username
+   * @return {boolean}
+   */
   userExist(username){
 
     let userExists = false; 
@@ -216,6 +252,10 @@ class QuizGame {
   }
 }
 
+/**
+ *
+ * @return {Promise<*|null>}
+ */
 async function getNextQuestion() {
   try {
     const randomQuestionID = Math.floor(Math.random() * 20) + 1; // Beispiel: Zufällige Frage ID generieren
@@ -245,6 +285,11 @@ async function getNextQuestion() {
   return null; // Falls keine Frage abgerufen werden kann, wird null zurückgegeben
 }
 
+/**
+ *
+ * @param quesID
+ * @return {boolean}
+ */
 function checkDuplicateQuestion(quesID) {
 
   for (let i = 1; i <= this.MAX_ROUNDS; i++) {
@@ -257,6 +302,12 @@ function checkDuplicateQuestion(quesID) {
   return true;
 }
 
+/**
+ * Shuffles the answer options of a question in random order.
+ *
+ * @param question - The question object containing the answer options to shuffle.
+ * @return {*} - The question object with shuffled answer options.
+ */
 function shuffleAnswers(question) {
   const answers = question.answers;
   for (let i = answers.length - 1; i > 0; i--) {
