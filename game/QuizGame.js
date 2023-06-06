@@ -119,14 +119,14 @@ class QuizGame {
           .then(rows => {
             try {
               const highscore = rows[0].HIGHSCORE;
-              console.log(player.username + " Highscore:" + highscore);
-              if (player.score > highscore) {
-                conn.query("UPDATE USER SET HIGHSCORE = ? WHERE USERNAME = ?", [player.score, player.username])
-                  .then(rows => {
-                    console.log(rows);
-                  })
-              }
-
+              const newhighscore = highscore+ player.score;
+              console.log(player.username + "Alter Highscore:" + highscore);
+              console.log(player.username + "Neuer Highscore:" + newhighscore);
+             
+              conn.query("UPDATE USER SET HIGHSCORE = ? WHERE USERNAME = ?", [newhighscore, player.username])
+                .then(rows => {
+                  console.log(rows);
+                })
             } catch (error) {
               console.log(error);
             }
