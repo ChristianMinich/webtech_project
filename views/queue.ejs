@@ -25,7 +25,7 @@
     const socket = io();
     const username = "<%= username %>";
     const usersDiv = document.getElementById("users");
-
+    console.log("username: " + username);
     function joinQueue() {
       socket.emit("joinQueue", username);
     }

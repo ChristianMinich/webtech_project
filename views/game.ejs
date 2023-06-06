@@ -128,9 +128,9 @@
     </style>
   </head>
   <body>
-    <h1>c294fcb3-590c-4bb3-adc9-10967c476fdd</h1>
-    <h2>admin</h2>
-    <img src="/assets/emojis/emoji_101.png" width="50px" height="50px">
+    <h1><%= roomID%></h1>
+    <h2><%= username%></h2>
+    <img src="<%= avatar%>" width="50px" height="50px">
 
     <div id="roundCounter"></div>
 
@@ -174,8 +174,8 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-    const roomId = "c294fcb3-590c-4bb3-adc9-10967c476fdd";
-    const username = "admin";
+    const roomId = "<%= roomID %>";
+     const username = "<%= username %>";
     
     window.onload = function () {
       socket.emit('gamePageLoaded',roomId, username);

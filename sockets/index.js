@@ -77,8 +77,7 @@ module.exports = (io) => {
     });
     
     socket.on('gamePageLoaded',(roomId, username) => {
-      
-      
+      console.log(username);
       socket.join(roomId);
       gamePageLoadedCount++;
       playersinGame.push(username);
