@@ -31,6 +31,13 @@ class QuizGame {
    */
   start() {
 
+    db.then(conn => {
+      conn.query("INSERT INTO ACTIVE_GAME (ROOM_ID) VALUES (?)", [this.roomId])
+      .catch(error => {
+        console.log(error);
+      })
+    })
+
     this.round = 1;
     //this.players = players;
     this.currentQuestionIndex = 0;
@@ -215,6 +222,13 @@ class QuizGame {
     });
 
     this.io.to(this.roomId).emit('gameEnd', this.players);
+
+    db.then(conn => {
+      conn.query("DELETE FROM ACTIVE_GAME WHERE ROOM_ID = ?", [this.roomId])
+      .catch(error => {
+        console.log(error);
+      })
+    })
   }
 
   /**

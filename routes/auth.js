@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mw = require("../middlewares");
 const pw = require("../services/passwordValidator");
+const { error } = require("console");
 
 router.get("/", mw.dashboard, (req, res) => {
   res.status(200).sendFile(path.resolve("public/index.html"));
@@ -45,8 +46,25 @@ router.get("/game/:roomID", mw.authToken, mw.avatar, (req, res) => {
   const roomID = req.params.roomID;
   const username = req.username;
   const avatar = req.avatar;
-  // Here, you can render the desired EJS template for the game page
-  res.render("game", { roomID: roomID, username: username, avatar: avatar });
+
+  db.then(conn => {
+    conn.query("SELECT ROOM_ID FROM ACTIVE_GAME WHERE ROOM_ID = ?", [roomID])
+    .then(rows => {
+      try{
+        const activeGame = rows[0].ROOM_ID;
+        if(activeGame !== undefined && activeGame !== null){
+          res.render("game", { roomID: roomID, username: username, avatar: avatar });
+        } else {
+          res.status(401).redirect("/")
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  })
 });
 
 //SELECT DISTINCT USERNAME, HIGHSCORE FROM USER WHERE USERNAME = ?
