@@ -30,6 +30,10 @@
       <tr>
         <th>Username</th>
         <th>Highscore</th>
+        <th>Wins</th>
+        <th>Concurrent Wins</th>
+        <th>Perfect Wins</th>
+        <th>Loses</th>
       </tr>
     </thead>
     <tbody>
@@ -37,6 +41,10 @@
         <tr>
           <td><a href="/profile/<%= row.USERNAME %>"><%= row.USERNAME %></a></td>
           <td><%= row.HIGHSCORE %></td>
+          <td><%= row.WINS %></td>
+          <td><%= row.CONCURRENT_WINS %></td>
+          <td><%= row.PERFECT_WINS %></td>
+          <td><%= row.LOSES %></td>
         </tr>
       <% }) %>
     </tbody>
