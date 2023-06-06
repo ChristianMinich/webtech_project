@@ -119,6 +119,9 @@ class QuizGame {
           .then(rows => {
             try {
               const highscore = rows[0].HIGHSCORE;
+              if(player.score === 5){
+                player.score+= 15;
+              }
               const newhighscore = highscore+ player.score;
               console.log(player.username + "Alter Highscore:" + highscore);
               console.log(player.username + "Neuer Highscore:" + newhighscore);
