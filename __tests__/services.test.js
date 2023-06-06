@@ -104,7 +104,9 @@ describe("Check Login", () => {
     const empty = ["", null, undefined];
 
 
-    // Correct username & password
+    /**
+     * Checks the values of username and passoword are correct
+     */
     correctUsers.forEach((user) => {
         test("Access (admin)", async () => {
             let res = await svc.login(user, correctPassword);
@@ -115,7 +117,10 @@ describe("Check Login", () => {
         });
     });
 
-    // Wrong username & "correct" password
+    /**
+     * Checks if the username is wrong and the passowrd is correct
+     * which is supossed to be undefined
+     */
     wrongUsers.forEach((user) => {
         test("Denied: User not found", async () => {
             let res = await svc.login(user, correctPassword);
@@ -125,7 +130,10 @@ describe("Check Login", () => {
         });
     });
 
-    // Wrong password & correct username
+    /**
+     * Checks if the username is correct and the passowrd is wrong
+     * which is supossed to be undefined
+     */
     wrongPasswords.forEach((password) => {
         test("Denied: Wrong password (admin)", async () => {
             let res = await svc.login(correctUser, password);
@@ -134,7 +142,11 @@ describe("Check Login", () => {
             expect(res.token).toBeUndefined();
         });
     });
-    // Empty username ...
+
+    /**
+     * Checks if the username is empty
+     * which is supossed to be undefined
+     */
     empty.forEach((emptyUser) => {
         // ... with wrong password
         wrongPasswords.forEach((password) => {
@@ -163,7 +175,10 @@ describe("Check Login", () => {
         });
     });
 
-    // Empty password ...
+    /**
+     * Checks if the passowrd is empty
+     * which is supossed to be undefined
+     */
     empty.forEach((emptyPassword) => {
         // ... with correct username
         correctUsers.forEach((user) => {
