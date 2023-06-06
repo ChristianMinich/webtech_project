@@ -27,6 +27,12 @@ module.exports = (io) => {
       io.emit("all-connections", JSON.stringify(users));
     });
 
+    socket.on("achievement_gained", (username) => {
+      //sql query get achievement gained by username return url
+      //console.log("achievement gained accessed! " + username);
+      socket.emit("getAchievement", "/assets/achievements/Achievement_test.png");
+    });
+
     socket.on('joinQueue', (username) => {
 
       if (!queue.some((item) => item.socket.id === socket.id || item.username === username)) {

@@ -32,5 +32,39 @@
     <button type="submit">Logout</button>
   </form>
 
+  <div id="overlay">
+    <img class="achievment" id="overlayImage" src="" alt="">
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const username = "<%= username %>";
+
+    window.onload = function () {
+      document.getElementById('overlay').style.display = 'none';
+      socket.emit("achievement_gained", username);
+    }
+
+    function showOverlay(imageUrl) {
+    var overlay = document.getElementById('overlay');
+    var overlayImage = document.getElementById('overlayImage');
+
+    overlayImage.src = imageUrl;
+    overlay.style.display = 'block';
+
+    setTimeout(function() {
+      overlay.style.display = 'none';
+    }, 5000); 
+    }
+
+
+
+    socket.on("getAchievement", (url) => {
+      console.log("getAchievement " + url);
+      var imageUrl = url;
+      showOverlay(imageUrl);
+    });
+  </script>
+
 </body>
 </html>
