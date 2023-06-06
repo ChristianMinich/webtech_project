@@ -264,7 +264,7 @@
     socket.on("gameEnd", (players) => {
       
       disableQuestions(); //fragen ausblenden
-
+      document.getElementById('quizbox').style.display = 'none';
       document.getElementById('scoreboard-container').style.display = 'block';
 
       players.sort((a, b) => b.score - a.score);      
