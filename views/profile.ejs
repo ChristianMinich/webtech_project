@@ -3,13 +3,76 @@
 <head>
   <title>Profile of <%= username%></title>
   <style>
+
+    body {
+      font-family: "Helvetica", sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      margin-right: 10px;
+    }
+
+    .profile h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .profile {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: auto;
+      flex-direction: column;
+    }
+
+    .profile img {
+      margin-bottom: 10px;
+    }
+
+
     table {
+      width: 100%;
       border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+      border-radius: 5px;
     }
-    th, td {
-      border: 1px solid black;
-      padding: 8px;
+
+    table th,
+    table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
     }
+
+    table th {
+      background-color: #333;
+      color: #fff;
+    }
+
+    table a {
+      color: #333;
+      text-decoration: none;
+
+    }
+    .achievements img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+    }
+
+
+
   </style>
 </head>
 <body>
@@ -19,7 +82,7 @@
     <% rows.forEach(function(row) { %>
       <h1>Profile of <%= row.USERNAME%></h1>
     <% }) %>
-    <div style="position: relative;">
+    <div style="position: relative;" class="profile">
       <img src="/assets/emojis/<%= avatar%>" width="50px" height="50px">
       <!-- <img src="/assets/ranks/fourth_level.png" width="72px" height="72px" style="position: absolute; top: 0; left: 0; z-index: 1;"> -->
     </div>
