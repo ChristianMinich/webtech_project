@@ -5,10 +5,11 @@ const path = require("path");
 const db = database.getConnection();
 
 /**
+ * Middleware function to retrieve the avatar file path for a user.
  *
- * @param req
- * @param res
- * @param next
+ * @param req - Express request object.
+ * @param res - Express respond object.
+ * @param next - Next function for in the middleware chain.
  */
 function getAvatar(req, res, next) {
   const accessToken = req.cookies["accessToken"];
