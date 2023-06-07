@@ -123,28 +123,42 @@ module.exports = (io) => {
 
     socket.on("gamePageLoaded", (roomId, username) => {
       console.log(username);
-      socket.join(roomId);
-      gamePageLoadedCount++;
-      playersinGame.push(username);
-      console.log("playersInGame Filled: " + playersinGame);
-      console.log(gamePageLoadedCount + " Spieler Da! " + username);
-      // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
-      if (playersinGame.length === MAX_PLAYERS_PER_ROOM) {
-        gameMap.set(roomId, new QuizGame(roomId, io));
-        gamePageLoadedCount = 0;
-        console.log(roomId + " Spiel startet blad");
-        const currGame = gameMap.get(roomId);
 
-        playersinGame.forEach((player) => {
-          currGame.addPlayer(player);
-          console.log("addedPlayer " + player);
+      const room = rooms.get(roomId);
+      if(room){
+        const players = room.players;
+
+        players.forEach(player => {
+          if (player.username != username){
+            console.log("Flascher User im Game! + " + username);
+          }else{
+
+            socket.join(roomId);// if user in room join else redirect
+            gamePageLoadedCount++;
+            playersinGame.push(username);
+            console.log(gamePageLoadedCount + " Spieler Da! " + username);
+            // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
+            if (playersinGame.length === MAX_PLAYERS_PER_ROOM) {
+            gameMap.set(roomId, new QuizGame(roomId, io));
+            gamePageLoadedCount = 0;
+            console.log(roomId + " Spiel startet blad");
+            const currGame = gameMap.get(roomId);
+
+            playersinGame.forEach((player) => {
+            currGame.addPlayer(player);
+            console.log("addedPlayer " + player);
+            });
+
+            playersinGame.splice(0, playersinGame.length);
+
+            currGame.start();
+            console.log(gameMap);
+            console.log(currGame.toString());
+            }
+          }
         });
-
-        playersinGame.splice(0, playersinGame.length);
-
-        currGame.start();
-        console.log(gameMap);
-        console.log(currGame.toString());
+      }else{
+        console.log("Room nicht gefunden");
       }
     });
 
