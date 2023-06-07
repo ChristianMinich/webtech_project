@@ -285,6 +285,13 @@ class QuizGame {
 
   }
 
+  /**
+   * Checks if a question with the given question ID already exists in the game's questions array.
+   * It iterates through the questions array and compares each element with the given question ID.
+   *
+   * @param quesID - The question ID to check for duplication.
+   * @return {boolean} - A boolean value indicating whether the question is a duplicate (false) or not (true).
+   */
   checkDuplicateQuestion(quesID) {
 
     for (let i = 1; i <= this.MAX_ROUNDS; i++) {
@@ -333,13 +340,6 @@ async function getNextQuestion() {
   return null; // Falls keine Frage abgerufen werden kann, wird null zurückgegeben
 }
 
-/**
- * Checks if a question with the given question ID already exists in the game's questions array.
- * It iterates through the questions array and compares each element with the given question ID.
- *
- * @param quesID - The question ID to check for duplication.
- * @return {boolean} - A boolean value indicating whether the question is a duplicate (false) or not (true).
- */
 
 
 /**
