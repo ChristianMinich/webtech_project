@@ -1,7 +1,7 @@
 /** The test repository for game. */
-
 const QuizGame = require("../game/QuizGame");
 const { addPlayer } = require("../game/QuizGame");
+const { checkDuplicateQuestion } = require("../game/QuizGame");
 
 /**
  * This is the test section for addPlayer.
@@ -280,4 +280,41 @@ describe("endGame", () => {
     expect(ioMock.to).toHaveBeenCalledWith(game.roomId);
     expect(ioMock.emit).toHaveBeenCalledWith("gameEnd", game.players);
   });
+});
+
+describe("checkDuplicateQuestion", () => {
+  const questions = {
+    1: "123",
+    2: "456",
+    3: "789"
+  };
+
+  const maxRounds = 5;
+
+  test("should return true for a non-duplicate question ID", () => {
+    const game = {
+      MAX_ROUNDS: maxRounds,
+      questions: questions
+    };
+    const questionID = "999";
+    const result = checkDuplicateQuestion(game, questionID);
+    expect(result).toBe(true);
+  });
+
+  test("should return false for a duplicate question ID", () => {
+    const questionID = "456";
+    const result = checkDuplicateQuestion(questionID, context);
+    expect(result).toBe(false);
+  });
+
+  test("should return true for an empty question list", () => {
+    const questionID = "123";
+    const emptyContext = {
+      MAX_ROUNDS: 0,
+      questions: {}
+    };
+    const result = checkDuplicateQuestion(questionID, emptyContext);
+    expect(result).toBe(true);
+  });
+
 });

@@ -2,6 +2,11 @@ const database = require("./index");
 
 const db = database.getConnection();
 
+/**
+ * The function gets username from the Database.
+ *
+ * @param username - The username of the player to get.
+ */
 function getUserbyName(username) {
   db.then((conn) => {
     conn
@@ -15,6 +20,11 @@ function getUserbyName(username) {
   });
 }
 
+/**
+ *
+ * @param username
+ * @param encryptedPassword
+ */
 function createUser(username, encryptedPassword) {
   db.then((conn) => {
     conn.query("INSERT INTO USERS (username, password) VALUES (?, ?)", [

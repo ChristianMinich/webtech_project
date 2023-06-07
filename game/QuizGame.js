@@ -229,15 +229,16 @@ class QuizGame {
    */
   newQuestion() {
     getNextQuestion().then(question => {
-      console.log("Runde :" + this.round + " " + String(question.text));
-
-      if (checkDuplicateQuestion(question.id)) {
+      
+      if (this.checkDuplicateQuestion(question.id)) {
         this.questions[this.round] = question.id;
         this.currentQuestionIndex = question.id;
         this.currentRightAnswer = question.right_answer;
+        console.log("Runde :" + this.round + " " + String(question.text) + "| " + this.questions);
         this.sendQuestion(question);
       }
       else {
+        console.log("Doppelte Frage: " + this.questions);
         this.newQuestion();
       }
     }).catch(error => {
@@ -283,6 +284,25 @@ class QuizGame {
     return userExists;
 
   }
+
+  /**
+   * Checks if a question with the given question ID already exists in the game's questions array.
+   * It iterates through the questions array and compares each element with the given question ID.
+   *
+   * @param quesID - The question ID to check for duplication.
+   * @return {boolean} - A boolean value indicating whether the question is a duplicate (false) or not (true).
+   */
+  checkDuplicateQuestion(quesID) {
+
+    for (let i = 1; i <= this.MAX_ROUNDS; i++) {
+  
+      if (this.questions[i] === quesID) {
+        return false;
+      }
+  
+    }
+    return true;
+  }
 }
 
 /**
@@ -320,24 +340,7 @@ async function getNextQuestion() {
   return null; // Falls keine Frage abgerufen werden kann, wird null zurückgegeben
 }
 
-/**
- * Checks if a question with the given question ID already exists in the game's questions array.
- * It iterates through the questions array and compares each element with the given question ID.
- *
- * @param quesID - The question ID to check for duplication.
- * @return {boolean} - A boolean value indicating whether the question is a duplicate (false) or not (true).
- */
-function checkDuplicateQuestion(quesID) {
 
-  for (let i = 1; i <= this.MAX_ROUNDS; i++) {
-
-    if (questions[i] === quesID) {
-      return false;
-    }
-
-  }
-  return true;
-}
 
 /**
  * Shuffles the answer options of a question in random order.
