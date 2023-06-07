@@ -42,6 +42,15 @@ router.get("/joinQueue", mw.authToken, (req, res) => {
   res.render("queue", { username: username });
 });
 
+/**
+ * GET route handler for accessing a game room.
+ * It requires authentication token and avatar middleware functions to be executed before
+ * handling the request.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ *@returns {void}
+ */
 router.get("/game/:roomID", mw.authToken, mw.avatar, (req, res) => {
   const roomID = req.params.roomID;
   const username = req.username;
@@ -68,6 +77,16 @@ router.get("/game/:roomID", mw.authToken, mw.avatar, (req, res) => {
 });
 
 //SELECT DISTINCT USERNAME, HIGHSCORE FROM USER WHERE USERNAME = ?
+
+/**
+ * GET route handler for accessing a user profile.
+ * It requires authentication token and avatar middleware functions to be executed before
+ * handling the request.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
   const username = req.params.username;
   const user = req.username;
@@ -111,6 +130,14 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
   });
 });
 
+/**
+ * POST route handler for user authentication.
+ * This route handler is responsible for authenticating a user based on the provided username and password.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.post("/api/auth", (req, res) => {
   const { username, password } = req.body;
   db.then((conn) => {
@@ -163,6 +190,15 @@ router.post("/api/auth", (req, res) => {
   });
 });
 
+/**
+ * POST route handler for user registration.
+ * This route handler is responsible for registering a new user.
+ * It checks if the username already exists in the database.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.post("/api/auth/register", (req, res) => {
   const { username, password } = req.body;
 
@@ -228,6 +264,16 @@ router.post("/api/auth/register", (req, res) => {
   });
 });
 
+/**
+ * GET route handler for accessing the scoreboard.
+ * This route handler is responsible for accessing the scoreboard page.
+ * It requires authentication token middleware function to be executed before handling the request.
+ * The top 50 users with the highest scores are retrieved from the database and rendered on the scoreboard page.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.get("/scoreboard", mw.authToken, (req, res) => {
   const username = req.username;
 
@@ -260,6 +306,14 @@ router.get("/scoreboard", mw.authToken, (req, res) => {
   });
 });
 
+/**
+ * GET route handler for accessing the video file of Obi Wan Kenobi.
+ * The video file is located in the "public/assets" directory with the filename "registered.mp4".
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.get("/video", (req, res) => {
   const videoPath = path.resolve(
     __dirname,
