@@ -53,11 +53,13 @@ function renderDashboard(req, res, next) {
 }
 
 /**
+ * This middleware function is used to authenticate the access token in the request.
+ * It checks if the access token is present in the cookies.
  *
- * @param req
- * @param res
- * @param next
- * @returns {*}
+ * @param req - Express request object.
+ * @param res - Express respond object.
+ * @param next - Next function for in the middleware chain.
+ * @returns {*} - void
  */
 function authenticateToken(req, res, next) {
   const accessToken = req.cookies["accessToken"];
