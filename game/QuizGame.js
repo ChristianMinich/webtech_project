@@ -360,8 +360,6 @@ async function getNextQuestion() {
   return null; // Falls keine Frage abgerufen werden kann, wird null zurückgegeben
 }
 
-
-
 /**
  * Shuffles the answer options of a question in random order.
  *
