@@ -27,9 +27,11 @@
       text-align: center;
       color: #fff;
       padding: 10px;
-      border-radius: 25px;
-      background-color: rgba(128, 128, 128, 0.6);
+      border-radius: 15px;
+      background-color: rgba(128, 128, 128, 0.8);
       margin: 10px 0;
+      font-style: bold;
+      
     }
 
     h1 {
@@ -50,10 +52,11 @@
       font-size: 18px;
       border: none;
       border-radius: 5px;
-      background-color: rgba(128, 128, 128, 0.6);
-      color: #fff;
+      /*background-color: rgba(128, 128, 128, 0.6);*/
+      background-color: rgba(162,35,142,0.9);
       margin: 5px;
       transition: background-color 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     }
 
     button:hover {
@@ -68,6 +71,23 @@
       content: attr(data-hover-text);
       display: inline-block;
     }
+
+    .contentContainer {
+        /*background: rgba(169, 169, 169, 0.65);*/
+        /*background: rgba(87,7,97, 0.45);*/
+        background: rgba(191, 191, 191, 0.5);
+        padding: 25px;
+        max-width: fit-content;
+        border-radius: 25px;
+        position: absolute;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: fit-content;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+      }
 
     @media only screen and (max-width: 767px) {
       h1 {
@@ -125,13 +145,14 @@
 
     }
     .loader {
-      border: 16px solid #f3f3f3; /* Light grey */
-      border-top: 16px solid #3498db; /* Blue */
+      border: 16px solid rgba(243,243,243,0.7); /* Light grey */
+      border-top: 16px solid rgba(162,35,142,0.9);
       border-radius: 50%;
       width: 120px;
       height: 120px;
       animation: spin 2s linear infinite;
       display: none;
+      margin: auto;
     }
 
     @keyframes spin {
@@ -143,12 +164,13 @@
 
   <body>
   <h1>Welcome in Queue <%= username %></h1>
+  <div class="contentContainer">
   <h2>Wait for your opponent to Join the Room</h2>
   <h3>If everyone is there, press Join and enjoy the Game together</h3>
 
     <button id="joinButton" onclick="joinQueue()">JOIN</button>
     <div class="loader" id="loader"></div>
-   
+  </div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
