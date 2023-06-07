@@ -164,238 +164,38 @@
   </style>
 </head>
 <body>
-  <% include('navbar') %>
-  <h1>User Highscores</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Avatar</th>
-        <th>Username</th>
-        <th>Highscore</th>
-        <th>Wins</th>
-        <th>Concurrent Wins</th>
-        <th>Perfect Wins</th>
-        <th>Loses</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% rows.forEach(function(row) { %>
-        <tr>
-          <td class="avatar-cell">
-            <div class="avatar-container">
-              <img src="/assets/emojis/<%= row.FILE_PATH%>" alt="Avatar" class="avatar-image">
-              <img src="/assets/ranks/fourth_level.png" alt="Rank" class="rank-image">
-            </div>
-          </td>
-          <td><a href="/profile/<%= row.USERNAME %>"><%= row.USERNAME %></a></td>
-          <td><%= row.HIGHSCORE %></td>
-          <td><%= row.WINS %></td>
-          <td><%= row.CONCURRENT_WINS %></td>
-          <td><%= row.PERFECT_WINS %></td>
-          <td><%= row.LOSES %></td> <!DOCTYPE html>
-          <html>
-          <head>
-            <meta name="viewport" content="width=device-width, initial-scale=0.5">
-            <title>User Highscores</title>
-            <style>
-          
-              body {
-                      font-family: 'Montserrat', sans-serif;
-                      margin: 0;
-                      font-family: 'Montserrat', sans-serif;
-                      text-align: center;
-                      padding: 20px;
-                      background: url("/assets/backgrounds/joshua-golde-qIu77BsFdds-unsplash.jpg");
-                      display: marker;
-                      min-height: 100vh;
-                      width: auto;
-                      background-size: cover;
-                      background-repeat: no-repeat;
-                      background-position: center;
-                    }
-          
-              h1,
-              h2,
-              h3 {
-                font-family: "Helvetica", sans-serif;
-                font-weight: 250;
-                text-transform: uppercase;
-                text-align: center;
-                color: #fff;
-                padding: 10px;
-                border-radius: 25px;
-                background-color: rgba(128, 128, 128, 0.6);
-                margin: 10px 0;
-              }
-          
-              thead {
-                background-color: rgba(242, 242, 242, 0.5);
-              }
-          
-              th, td {
-                padding: 10px;
-                text-align: left;
-              }
-          
-              th {
-                font-weight: bold;
-              }
-          
-              tr:nth-child(even) {
-                background-color: rgba(242, 242, 242, 0.5);
-              }
-          
-              .avatar-cell {
-                text-align: center;
-              }
-          
-              .avatar-container {
-                position: relative;
-                display: inline-block;
-              }
-          
-              .avatar-image {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-              }
-          
-              .rank-image {
-                position: absolute;
-                bottom: -5px;
-                right: -20px;
-                width: 90px;
-                height: 74px;
-              }
-          
-              table {
-                margin: 0 auto;
-                width: 100%;
-                max-width: 600px;
-                padding: 25px;
-                border: 10px solid;
-                border-color: rgba(242, 242, 242, 0.5);
-                border-radius: 10px;
-                background:rgba(255,255,255, 0.3);
-                
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-                
-              }
-          
-              tbody tr:nth-child(even) {
-                background-color: rgba(242, 242, 242, 0.5);
-              }
-          
-              a {
-                text-decoration: none;
-                color: black;
-              }
-          
-              @media only screen and (max-width: 767px) {
-                h1 {
-                  font-size: 24px;
-                }
-          
-                h2 {
-                  font-size: 20px;
-                }
-          
-                h3 {
-                  font-size: 18px;
-                }
-              }
-          
-              @media only screen and (min-width: 768px) and (max-width: 1023px) {
-                h1 {
-                  font-size: 36px;
-                }
-          
-                h2 {
-                  font-size: 28px;
-                }
-          
-                h3 {
-                  font-size: 24px;
-                }
-              }
-          
-              @media only screen and (min-width: 1024px) {
-                h1 {
-                  font-size: 48px;
-                }
-          
-                h2 {
-                  font-size: 36px;
-                }
-          
-                h3 {
-                  font-size: 30px;
-                }
-              }
-          
-              /* For mobile phones */
-              @media only screen and (max-width: 600px) {
-                table {
-                  font-size: 14px;
-                }
-              }
-          
-              /* For tablets */
-              @media only screen and (min-width: 601px) and (max-width: 768px) {
-                table {
-                  font-size: 16px;
-                }
-              }
-          
-              /* For desktop */
-              @media only screen and (min-width: 769px) {
-                table {
-                  font-size: 18px;
-                }
-              }
-          
-            </style>
-          </head>
-          <body>
-            <% include('navbar') %>
-            <h1>User Highscores</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>Avatar</th>
-                  <th>Username</th>
-                  <th>Highscore</th>
-                  <th>Wins</th>
-                  <th>Concurrent Wins</th>
-                  <th>Perfect Wins</th>
-                  <th>Loses</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% rows.forEach(function(row) { %>
-                  <tr>
-                    <td class="avatar-cell">
-                      <div class="avatar-container">
-                        <img src="/assets/emojis/<%= row.FILE_PATH%>" alt="Avatar" class="avatar-image">
-                        <img src="/assets/ranks/fourth_level.png" alt="Rank" class="rank-image">
-                      </div>
-                    </td>
-                    <td><a href="/profile/<%= row.USERNAME %>"><%= row.USERNAME %></a></td>
-                    <td><%= row.HIGHSCORE %></td>
-                    <td><%= row.WINS %></td>
-                    <td><%= row.CONCURRENT_WINS %></td>
-                    <td><%= row.PERFECT_WINS %></td>
-                    <td><%= row.LOSES %></td>
-                  </tr>
-                <% }) %>
-              </tbody>
-            </table>
-          </body>
-          </html>
-          
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
+<% include('navbar') %>
+<h1>User Highscores</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Avatar</th>
+    <th>Username</th>
+    <th>Highscore</th>
+    <th>Wins</th>
+    <th>Concurrent Wins</th>
+    <th>Perfect Wins</th>
+    <th>Loses</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% rows.forEach(function(row) { %>
+    <tr>
+      <td class="avatar-cell">
+        <div class="avatar-container">
+          <img src="/assets/emojis/<%= row.FILE_PATH%>" alt="Avatar" class="avatar-image">
+          <img src="/assets/ranks/fourth_level.png" alt="Rank" class="rank-image">
+        </div>
+      </td>
+      <td><a href="/profile/<%= row.USERNAME %>"><%= row.USERNAME %></a></td>
+      <td><%= row.HIGHSCORE %></td>
+      <td><%= row.WINS %></td>
+      <td><%= row.CONCURRENT_WINS %></td>
+      <td><%= row.PERFECT_WINS %></td>
+      <td><%= row.LOSES %></td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
 </body>
 </html>
