@@ -3,9 +3,10 @@ const database = require('./index');
 const db = database.getConnection();
 
 /**
+ * This function retrieves a question from the database based on its ID.
  *
- * @param questionID
- * @returns {Promise<unknown>}
+ * @param questionID - The ID of the question to retrieve.
+ * @returns {Promise<unknown>} - A Promise resolving to an array of question rows.
  */
 function getQuestions(questionID) {
     return new Promise((resolve, reject) => {
