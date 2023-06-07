@@ -1,8 +1,5 @@
 /** The test repository for game. */
 const QuizGame = require("../game/QuizGame");
-const { addPlayer } = require("../game/QuizGame");
-const { checkDuplicateQuestion } = require("../game/QuizGame");
-const { shuffleAnswers } = require("../game/QuizGame");
 
 /**
  * This is the test section for addPlayer.
@@ -14,7 +11,7 @@ describe("addPlayer", () => {
     this.quizGame = new QuizGame('room1', null);
   });
 
-  test("Add one player", () => {
+  test("Add one player", async() => {
     const quizGame = new QuizGame("room1", null);
     const username = "player1";
 
@@ -44,7 +41,7 @@ describe("addPlayer", () => {
    * Checks if an error is reported while trying to add
    * a player with an existing username.
    */
-  test('Add multiple players', () => {
+  test('Add multiple players', async() => {
     const players = ['player1', 'player2', 'player3'];
 
     players.forEach((username) => {
@@ -95,7 +92,7 @@ describe("sendQuestion", () => {
    * Checks if the sendQuestion function sends the question to the room
    * when a question is provided.
    */
-  test("Question is provided", () => {
+  test("Question is provided", async() => {
     const question = { text: "What is the capital of France?", options: ["Paris", "Berlin", "London"], correctAnswer: 0 };
     game.sendQuestion(question);
     expect(ioMock.to).toHaveBeenCalledWith("room1");
@@ -105,7 +102,7 @@ describe("sendQuestion", () => {
   /**
    * Checks if the function logs an error when a question is not provided.
    */
-  test("Error Question is not provided", () => {
+  test("Error Question is not provided", async() => {
     const consoleSpy = jest.spyOn(console, "log");
     game.sendQuestion(null);
     expect(ioMock.to).not.toHaveBeenCalled();
@@ -148,7 +145,7 @@ describe("answerQuestion", () => {
   /**
    * Checks if the player's score is increased when the answer is correct.
    */
-  test("Correct answer increases player score", () => {
+  test("Correct answer increases player score", async() => {
     // Arrange
     const username = "user1";
     const answer = "A";
@@ -165,7 +162,7 @@ describe("answerQuestion", () => {
   /**
    * Checks if the scores of other players are increased when the answer is wrong.
    */
-  test("Wrong answer decreases player score", () => {
+  test("Wrong answer decreases player score", async() => {
     // Arrange
     const username = "user1";
     const answer = "B";
@@ -185,7 +182,7 @@ describe("answerQuestion", () => {
   /**
    * Checks if the score board is updated after answering a question.
    */
-  test("Updates score board", () => {
+  test("Updates score board", async() => {
     const username = "user1";
     const answer = "A";
     game.currentRightAnswer = "A";
@@ -198,7 +195,7 @@ describe("answerQuestion", () => {
   /**
    * Checks if the game advances to the next round if all rounds are not completed
    */
-  test("Advances to the next round", () => {
+  test("Advances to the next round", async() => {
     const username = "user1";
     const answer = "A";
     game.currentRightAnswer = "A";
@@ -213,7 +210,7 @@ describe("answerQuestion", () => {
   /**
    * Checks if the game ends when all rounds are completed
    */
-  test("Ends the game", () => {
+  test("Ends the game", async() => {
     const username = "user1";
     const answer = "A";
     game.currentRightAnswer = "A";
@@ -299,12 +296,10 @@ describe("checkDuplicateQuestion", () => {
   /**
    * Checks if the function returns true for a non-duplicate question ID.
    */
-  test("True for a non-duplicate question ID", () => {
+  test("True non-duplicate question ID", async() => {
     const quizGame = new QuizGame("room1", null);
-
     quizGame.MAX_ROUNDS = maxRounds;
     quizGame.questions = questions;
-
     const questionID = "999";
     const result = quizGame.checkDuplicateQuestion(questionID);
     expect(result).toBe(true);
@@ -313,11 +308,9 @@ describe("checkDuplicateQuestion", () => {
   /**
    * Checks if the function returns false for a duplicate question ID.
    */
-  test("False for a duplicate question ID", () => {
+  test("False duplicate question ID", async() => {
     const quizGame = new QuizGame("room1", null);
-
     quizGame.questions = questions;
-
     const questionID = "456";
     const result = quizGame.checkDuplicateQuestion(questionID);
     expect(result).toBe(false);
@@ -326,18 +319,19 @@ describe("checkDuplicateQuestion", () => {
   /**
    * Checks if the function returns true for an empty question list.
    */
-  test("True for an empty question list", () => {
+  test("True empty question list", async() => {
     const quizGame = new QuizGame("room1", null);
-
     quizGame.MAX_ROUNDS = 0;
     quizGame.questions = {};
-
     const questionID = "123";
     const result = quizGame.checkDuplicateQuestion(questionID);
     expect(result).toBe(true);
   });
 
-  test("false when question ID is null", () => {
+  /**
+   * Checks if the function returns false for a question ID with the value of null.
+   */
+  test("false question ID is null", async() => {
     const quizGame = new QuizGame("room1", null);
 
     quizGame.MAX_ROUNDS = maxRounds;
@@ -348,7 +342,10 @@ describe("checkDuplicateQuestion", () => {
     expect(result).toBe(false);
   });
 
-  test("true when question list is null", () => {
+  /**
+   * Checks if the function returns true for a question list with the value of null.
+   */
+  test("true question list is null", async() => {
     const quizGame = new QuizGame("room1", null);
 
     quizGame.MAX_ROUNDS = maxRounds;
@@ -359,7 +356,11 @@ describe("checkDuplicateQuestion", () => {
     expect(result).toBe(true);
   });
 
-  test("false if question ID and question list are null", () => {
+  /**
+   * Checks if the function returns false for a question ID with the value of null
+   * and a question list with the value of null.
+   */
+  test("false question ID and question list null", async() => {
     const quizGame = new QuizGame("room1", null);
 
     quizGame.MAX_ROUNDS = maxRounds;

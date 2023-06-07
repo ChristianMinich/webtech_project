@@ -14,7 +14,7 @@ describe("Check password validation", () =>{
     /**
      * Checks the value of password which is supossed to be true.
      */
-    test("Valid password", () => {
+    test("Valid password", async() => {
         const password = "Abc123";
         const result = CheckPassword(password);
         expect(result).toBe(true);
@@ -44,7 +44,7 @@ describe("Check password validation", () =>{
      * Checks the value of password which is supossed to be false
      * because it is an empty password.
      */
-    test("Invalid password: empty", () => {
+    test("Invalid password: empty", async() => {
         const password = "";
         const result = CheckPassword(password);
         expect(result).toBe(false);
@@ -54,7 +54,7 @@ describe("Check password validation", () =>{
      * Checks the value of password which is supossed to be false
      * because it does not contain uppercase letter.
      */
-    test("Invalid password: no uppercase letter", () => {
+    test("Invalid password: no uppercase letter", async() => {
         const password = "abc123";
         const result = CheckPassword(password);
         expect(result).toBe(false);
@@ -64,7 +64,7 @@ describe("Check password validation", () =>{
      * Checks the value of password which is supossed to be false
      * because it does not contain lowercase letter.
      */
-    test("Invalid password: no lowercase letter", () => {
+    test("Invalid password: no lowercase letter", async() => {
         const password = "ABC123";
         const result = CheckPassword(password);
         expect(result).toBe(false);
@@ -74,7 +74,7 @@ describe("Check password validation", () =>{
      * Checks the value of password which is supossed to be false
      * because it does not contain any numbers.
      */
-    test("Invalid password: no numbers", () => {
+    test("Invalid password: no numbers", async() => {
         const password = "Abcdef";
         const result = CheckPassword(password);
         expect(result).toBe(false);
@@ -84,7 +84,7 @@ describe("Check password validation", () =>{
      * Checks the value of password which is supossed to be false
      * because it contains more than 20 characters.
      */
-    test("Invalid password: more than 20", () => {
+    test("Invalid password: more than 20", async() => {
         const password = "Abcdef12345678901234X";
         const result = CheckPassword(password);
         expect(result).toBe(false);
@@ -102,7 +102,7 @@ describe("Create User", () => {
      * Checks the value of the username and password
      * which is supossed to be defined.
      */
-    test("Valid username and password", () => {
+    test("Valid username and password", async() => {
         const username = "testuser";
         const password = "Password123";
         const result = createUser(username, password);
@@ -113,7 +113,7 @@ describe("Create User", () => {
      * Checks the value of the username
      * which is supossed to be empty and undefined.
      */
-    test("Empty username", () => {
+    test("Empty username", async() => {
         const username = "";
         const password = "Password123";
         const result = createUser(username, password);
@@ -124,7 +124,7 @@ describe("Create User", () => {
      * Checks the value of the password
      * which is supossed to be empty and undefined.
      */
-    test("Empty password", () => {
+    test("Empty password", async() => {
         const username = "testuser";
         const password = "";
         const result = createUser(username, password);
@@ -135,7 +135,7 @@ describe("Create User", () => {
      * Checks the value of the username
      * which is supossed to be null and undefined.
      */
-    test("Null username", () => {
+    test("Null username", async() => {
         const username = null;
         const password = "Password123";
         const result = createUser(username, password);
@@ -146,7 +146,7 @@ describe("Create User", () => {
      * Checks the value of the password
      * which is supossed to be null and undefined.
      */
-    test("Null password", () => {
+    test("Null password", async() => {
         const username = "testuser";
         const password = null;
         const result = createUser(username, password);

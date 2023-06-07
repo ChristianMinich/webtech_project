@@ -11,32 +11,81 @@ const mw = require("../middlewares");
 const pw = require("../services/passwordValidator");
 const { error } = require("console");
 
+/**
+ * GET route handler for accessing the homepage.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.get("/", mw.dashboard, (req, res) => {
   res.status(200).sendFile(path.resolve("public/index.html"));
 });
 
+/**
+ * GET route handler for accessing the "/index" endpoint.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.get("/index", (req, res) => {
   res.status(200).redirect("/");
 });
 
+/**
+ * GET route handler for accessing the login page.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.get("/login", mw.dashboard, (req, res) => {
   res.status(200).sendFile(path.resolve("public/login.html"));
 });
 
+/**
+ * GET route handler for logging out the user.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.get("/logout", (req, res) => {
   res.clearCookie("accessToken");
   //res.status(200).redirect("/login");
   res.status(200).redirect("/");
 });
 
+/**
+ * GET route handler for accessing the registration page.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.get("/register", mw.dashboard, (req, res) => {
   res.status(200).sendFile(path.resolve("public/register.html"));
 });
 
+/**
+ * GET route handler for accessing the game page.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.get("/game", mw.authToken, (req, res) => {
   res.sendFile(path.resolve("public/game.html"));
 });
 
+/**
+ * GET route handler for joining the game queue.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
 router.get("/joinQueue", mw.authToken, (req, res) => {
   const username = req.username;
   res.render("queue", { username: username });
@@ -141,6 +190,7 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
  */
 router.post("/api/auth", (req, res) => {
   const { username, password } = req.body;
+  /*** Check the provided username and password against the database. */
   db.then((conn) => {
     conn
       .query(
@@ -156,10 +206,11 @@ router.post("/api/auth", (req, res) => {
             const username = rows[0].USERNAME;
             const password_fromDB = rows[0].PASSWORD;
 
-
+            /*** Compare the provided password with the hashed password stored in the database. */
             bcrypt.compare(password, password_fromDB).then((valid) => {
               if (valid) {
                 try {
+                  /*** Generate a JWT token for authentication. */
                   const token = jwt.sign(
                     { id, username },
                     process.env.JWT_SECRET,
@@ -169,7 +220,7 @@ router.post("/api/auth", (req, res) => {
                       subject: "auth_token",
                     }
                   );
-
+                  /*** Set the JWT token as a cookie and redirect to the dashboard. */
                   res.cookie("accessToken", token, { httpOnly: false });
                   res.status(200).redirect("/");
                 } catch (error) {
