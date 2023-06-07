@@ -4,6 +4,12 @@ const path = require("path");
 
 const db = database.getConnection();
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
 function getAvatar(req, res, next) {
   const accessToken = req.cookies["accessToken"];
 

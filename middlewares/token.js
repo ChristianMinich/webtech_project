@@ -3,6 +3,12 @@ const database = require("../repositories");
 const path = require("path");
 const db = database.getConnection();
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
 function renderDashboard(req, res, next) {
   const accessToken = req.cookies["accessToken"];
 
@@ -46,6 +52,13 @@ function renderDashboard(req, res, next) {
   }
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
 function authenticateToken(req, res, next) {
   const accessToken = req.cookies["accessToken"];
 

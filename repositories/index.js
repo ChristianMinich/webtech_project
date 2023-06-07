@@ -17,6 +17,10 @@ class MariaDBSingleton {
     });
   }
 
+  /**
+   *
+   * @returns {Promise<PoolConnection>}
+   */
   async getConnection() {
     try {
       const connection = await this.pool.getConnection();

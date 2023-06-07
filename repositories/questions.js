@@ -2,6 +2,11 @@ const database = require('./index');
 
 const db = database.getConnection();
 
+/**
+ *
+ * @param questionID
+ * @returns {Promise<unknown>}
+ */
 function getQuestions(questionID) {
     return new Promise((resolve, reject) => {
         db.then(conn => {
