@@ -5,7 +5,6 @@
     <style>
       /* Allgemeine Stile */
       body {
-
         margin: 0;
         background: url("/assets/backgrounds/gameWallpaper.jpg");
         background-size: cover;
@@ -17,7 +16,11 @@
         display: marker;
         min-height: 100vh;
         width: auto;
+        height: auto;
+        background-position-x: center;
+        background-position-y: center;
       }
+
 
       h1, h2 {
         text-align: center;
@@ -40,10 +43,12 @@
       }
 
       .contentContainer {
-        /*background: rgba(169, 169, 169, 0.65);*/
-        /*background: rgba(87,7,97, 0.45);*/
+
+        padding: 20px;
+        display: marker;
+        background-repeat: no-repeat;
+        background-position: center;
         background: rgba(128, 128, 128, 0.6);
-        padding: 25px;
         max-width: fit-content;
         width: auto;
         border-radius: 25px;
@@ -118,9 +123,14 @@
         margin: 10px auto;
         max-width: fit-content;
         padding: 10px;
-        background-color: #f0f0f0;
+        background-color: rgba(128, 128, 128, 0.6);
         border-radius: 5px;
-        
+      }
+
+      #scoreboard-container th,
+      #scoreboard-container td {
+        color: white;
+        text-align: center;
       }
 
       /* Ende-Elemente */
@@ -213,7 +223,7 @@
   </div>
 
   <div class ="userscore" id="scoreboard-container">
-    <table>
+    <table id="AA">
       <thead>
         <tr>
           <th>Rang</th>
