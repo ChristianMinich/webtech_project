@@ -5,7 +5,7 @@ const path = require("path");
 const db = database.getConnection();
 
 /**
- * Middleware function to retrieve the avatar file path for a user.
+ * Middleware function to retrieve the avatar file path for a user
  *
  * @param req - Express request object.
  * @param res - Express respond object.
