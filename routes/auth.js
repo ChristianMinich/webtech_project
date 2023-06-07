@@ -131,6 +131,7 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
 });
 
 /**
+ * LOGIN.
  * POST route handler for user authentication.
  * This route handler is responsible for authenticating a user based on the provided username and password.
  *
