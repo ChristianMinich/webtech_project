@@ -4,10 +4,13 @@ const path = require("path");
 const db = database.getConnection();
 
 /**
+ * This middleware function renders the dashboard page for an authenticated user.
+ * It retrieves the user's avatar file path
  *
- * @param req
- * @param res
- * @param next
+ * @param req - Express request object.
+ * @param res - Express respond object.
+ * @param next - Next function for in the middleware chain.
+ * @returns {void}
  */
 function renderDashboard(req, res, next) {
   const accessToken = req.cookies["accessToken"];
@@ -59,7 +62,7 @@ function renderDashboard(req, res, next) {
  * @param req - Express request object.
  * @param res - Express respond object.
  * @param next - Next function for in the middleware chain.
- * @returns {*} - void
+ * @returns {void}
  */
 function authenticateToken(req, res, next) {
   const accessToken = req.cookies["accessToken"];
