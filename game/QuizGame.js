@@ -36,17 +36,10 @@ class QuizGame {
     console.log("Spiel startet");
     this.updateScoreBoard();
 
-    getNextQuestion().then(question => {
-      console.log("Runde :" + this.round + " " + question.text);
-      this.questions[this.round] = question.id;
-      this.currentRightAnswer = question.right_answer;
-      question.right_answer = "hier gibts nix zu sehen";
-      this.currentQuestionIndex = question.id;
-      this.sendQuestion(question, this.round);
-    }).catch(error => {
-      console.log('Fehler beim Abrufen der Frage:', error);
-    });
-    //this.sendQuestion();
+    this.io.to(this.roomId).emit('newRoundCountdown');
+    setTimeout(() => {
+      this.newQuestion();
+    }, 5000);
   }
 
   /**
@@ -99,7 +92,7 @@ class QuizGame {
    */
   answerQuestion(username, answer) {
 
-    //doppelte antort auf eine frage verhindern
+    //doppelte antworten auf eine frage verhindern
     if(this.countAnswers === 1){
       console.log("Doppelte Antwort " + username);
     }else{
@@ -234,6 +227,7 @@ class QuizGame {
         this.questions[this.round] = question.id;
         this.currentQuestionIndex = question.id;
         this.currentRightAnswer = question.right_answer;
+        question.right_answer = "";
         console.log("Runde :" + this.round + " " + String(question.text) + "| " + this.questions);
         this.sendQuestion(question);
       }
