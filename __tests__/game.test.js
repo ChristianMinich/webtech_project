@@ -2,6 +2,7 @@
 const QuizGame = require("../game/QuizGame");
 const { addPlayer } = require("../game/QuizGame");
 const { checkDuplicateQuestion } = require("../game/QuizGame");
+const { shuffleAnswers } = require("../game/QuizGame");
 
 /**
  * This is the test section for addPlayer.
@@ -282,39 +283,59 @@ describe("endGame", () => {
   });
 });
 
+/**
+ * This is the test section for checkDuplicateQuestion.
+ */
 describe("checkDuplicateQuestion", () => {
+  /*** Define sample questions and max rounds. */
   const questions = {
     1: "123",
     2: "456",
-    3: "789"
+    3: "789",
   };
 
   const maxRounds = 5;
 
-  test("should return true for a non-duplicate question ID", () => {
-    const game = {
-      MAX_ROUNDS: maxRounds,
-      questions: questions
-    };
+  /**
+   * Checks if the function returns true for a non-duplicate question ID.
+   */
+  test("True for a non-duplicate question ID", () => {
+    const quizGame = new QuizGame("room1", null);
+
+    quizGame.MAX_ROUNDS = maxRounds;
+    quizGame.questions = questions;
+
     const questionID = "999";
-    const result = checkDuplicateQuestion(game, questionID);
+    const result = quizGame.checkDuplicateQuestion(questionID);
     expect(result).toBe(true);
   });
 
-  test("should return false for a duplicate question ID", () => {
+  /**
+   * Checks if the function returns false for a duplicate question ID.
+   */
+  test("False for a duplicate question ID", () => {
+    const quizGame = new QuizGame("room1", null);
+
+    quizGame.questions = questions;
+
     const questionID = "456";
-    const result = checkDuplicateQuestion(questionID, context);
+    const result = quizGame.checkDuplicateQuestion(questionID);
     expect(result).toBe(false);
   });
 
-  test("should return true for an empty question list", () => {
+  /**
+   * Checks if the function returns true for an empty question list.
+   */
+  test("True for an empty question list", () => {
+    const quizGame = new QuizGame("room1", null);
+
+    quizGame.MAX_ROUNDS = 0;
+    quizGame.questions = {};
+
     const questionID = "123";
-    const emptyContext = {
-      MAX_ROUNDS: 0,
-      questions: {}
-    };
-    const result = checkDuplicateQuestion(questionID, emptyContext);
+    const result = quizGame.checkDuplicateQuestion(questionID);
     expect(result).toBe(true);
   });
 
 });
+
