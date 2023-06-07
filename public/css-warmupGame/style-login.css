@@ -9,8 +9,8 @@ section {
   width: 100%;
   justify-content: center;
   align-items: center;
-  background: url("/assets/background/background_2_small.jpg");
-  background-size: cover;
+  background: url("/assets/backgrounds/clem-onojeghuo-6tedMQIJpNI-unsplash.jpg");
+  background-size: 550px;
 }
 .form-box {
   width: 400px;

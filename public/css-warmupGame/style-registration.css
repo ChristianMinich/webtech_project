@@ -1,3 +1,4 @@
+
 * {
   padding: 0;
   margin: 0;
@@ -8,20 +9,20 @@ body {
   display: flex;
   justify-content: center;
   align-content: center;
-  background: url("/assets//background/background_2_small.jpg");
+  background: url("/assets/backgrounds/sergey-zolkin-_UeY8aTI6d0-unsplash.jpg");
   background-size: cover;
   min-height: 100vh;
   align-items: center;
 }
 .container {
-  width: 70%;
+  width: auto;
   max-width: 350px;
   background: rgba(0, 0, 0, 0.5);
   padding: 28px;
   margin: 0 28px;
   border-radius: 10px;
   box-shadow: inset -2px 2px 2px white;
-  height: 80vh;
+  height: auto;
 }
 .form-title {
   font-size: 26px;
