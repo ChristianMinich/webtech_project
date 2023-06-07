@@ -11,16 +11,28 @@ class QuizGame {
    * @param {object} io - The IO object for communication.
    */
   constructor(roomId, io) {
+    /** Maximum number of rounds in the game. */
     this.MAX_ROUNDS = 5;
+    /** Socket.io instance. */
     this.io = io;
+    /** ID of the game room. */
     this.roomId = roomId;
+    /** Array to store the question for the game. */
     this.questions = [];
+    /** Index of the current question being asked. */
     this.currentQuestionIndex = 0;
+    /** Correct answer for the current answer. */
     this.currentRightAnswer = "";
+    /** Current round number. */
     this.round = 1;
+    /** Array to store the players in the game. */
     this.players = [];
+    /** Array to store the winner of the game. */
     this.winner =[];
+    /** Counter to track the number of answers submitted for a question. */
     this.countAnswers = 0;
+
+    /** Logging the creation of a new game instance. */
     console.log("new game created " + roomId);
   }
 
@@ -35,7 +47,7 @@ class QuizGame {
     this.currentQuestionIndex = 0;
     console.log("Spiel startet");
     this.updateScoreBoard();
-
+    /** Initiate a new round countdown and start the first question. */
     this.io.to(this.roomId).emit('newRoundCountdown');
     setTimeout(() => {
       this.newQuestion();
@@ -93,13 +105,16 @@ class QuizGame {
   answerQuestion(username, answer) {
 
     //doppelte antworten auf eine frage verhindern
+    /** Prevent duplicate answers to a question. */
     if(this.countAnswers === 1){
       console.log("Doppelte Antwort " + username);
     }else{
     this.countAnswers++;
     console.log("Room: " + this.roomId + " | User: " + username + " hat gewählt: " + answer);
     console.log(this.currentRightAnswer + " Richtige Antwort ");
-    if (this.currentRightAnswer === String(answer)) {
+
+      /** Check if the answer is correct and update scores accordingly. */
+      if (this.currentRightAnswer === String(answer)) {
       console.log("antwort richtig");
       this.players.forEach((player) => {
         if (player.username === username) {
@@ -115,19 +130,20 @@ class QuizGame {
         }
       });
     }
+    /** Update the scoreboard and check if the game should continue or end. */
     this.updateScoreBoard();
     this.round++;
     console.log("Aktueller Stand: "+ this.players);
     
     if (this.round <= maxRounds) {
-    
+      /** Start a new round with a countdown and a new question. */
       this.io.to(this.roomId).emit('newRoundCountdown');
       setTimeout(() => {
         this.newQuestion();
       }, 5000);
       this.countAnswers = 0;
-
     } else {
+      /** End the game if the maximum number of rounds is reached. */
       console.log("Spiel zuende");
       this.endGame();
     }
@@ -140,13 +156,14 @@ class QuizGame {
    * and emitting the 'gameEnd' event to the game room.
    */
   endGame() {
-
+    /** Define a null player object with default values. */
     const null_player = {
       username: "",
       score: -1
     }
     this.winner.push(null_player);
-    
+
+    /** Determine the winner based on the highest score. */
     this.players.forEach((player) => {
 
       if (this.winner[0].score <= player.score) {
@@ -155,7 +172,8 @@ class QuizGame {
       }
 
     })
-    
+
+    /** Update player statistics and highscores in the database. */
     this.players.forEach((player) => {
       db.then(conn => {
         conn.query("SELECT HIGHSCORE FROM USER WHERE USERNAME = ?", [player.username])
@@ -168,7 +186,8 @@ class QuizGame {
               const newhighscore = highscore+ player.score;
               console.log(player.username + "Alter Highscore:" + highscore);
               console.log(player.username + "Neuer Highscore:" + newhighscore);
-             
+
+              /** Update player highscore in the database. */
               conn.query("UPDATE USER SET HIGHSCORE = ? WHERE USERNAME = ?", [newhighscore, player.username])
                 .then(rows => {
                   console.log(rows);
@@ -177,6 +196,7 @@ class QuizGame {
               console.log(error);
             }
           })
+        /** Update the player's perfect wins count in the database. */
         if(player.score === 5){
 
           conn.query("UPDATE USER SET PERFECT_WINS = PERFECT_WINS + 1 WHERE USERNAME = ?", [player.username])
@@ -185,6 +205,7 @@ class QuizGame {
           })
         }
         if (this.winner[0].username === player.username ){
+          /** Update the player's wins and concurrent wins count in the database. */
           conn.query("UPDATE USER SET WINS = WINS + 1 WHERE USERNAME = ?", [player.username])
           .then(rows => {
             console.log(rows);
@@ -195,6 +216,7 @@ class QuizGame {
           })
 
         }else{
+          /** Update the player's loses count and reset concurrent wins count in the database. */
           conn.query("UPDATE USER SET LOSES = LOSES + 1 WHERE USERNAME = ?", [player.username])
           .then(rows => {
             console.log(rows);
@@ -207,8 +229,10 @@ class QuizGame {
       })
     });
 
+    /** Emit the gameEnd event to all players in the room. */
     this.io.to(this.roomId).emit('gameEnd', this.players);
 
+    /** Remove the active game record from the database. */
     db.then(conn => {
       conn.query("DELETE FROM ACTIVE_GAME WHERE ROOM_ID = ?", [this.roomId])
       .catch(error => {

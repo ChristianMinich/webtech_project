@@ -7,7 +7,7 @@ const QuizGame = require("../game/QuizGame");
 describe("addPlayer", () => {
 
   beforeEach(() => {
-    /*** Creating a new instance before every test. */
+    /** Creating a new instance before every test. */
     this.quizGame = new QuizGame('room1', null);
   });
 
@@ -29,11 +29,11 @@ describe("addPlayer", () => {
   test('Add player with existing username', () => {
     const username = 'player1';
 
-    /*** Adding players. */
+    /** Adding players. */
     this.quizGame.addPlayer(username);
-    /*** Trying to add the same username. */
+    /** Trying to add the same username. */
     this.quizGame.addPlayer(username);
-    /*** Checks if the number of ther players remains as the same. */
+    /** Checks if the number of ther players remains as the same. */
     expect(this.quizGame.players.length).toBe(1);
   });
 
@@ -47,12 +47,12 @@ describe("addPlayer", () => {
     players.forEach((username) => {
       this.quizGame.addPlayer(username);
     });
-    /*** Checks if the number of players matches with the added players. */
+    /** Checks if the number of players matches with the added players. */
     expect(this.quizGame.players.length).toBe(players.length);
     players.forEach((username, index) => {
-      /*** Checks if each added player has the corresponding username. */
+      /** Checks if each added player has the corresponding username. */
       expect(this.quizGame.players[index].username).toBe(username);
-      /*** Checks if each added player has the score 0. */
+      /** Checks if each added player has the score 0. */
       expect(this.quizGame.players[index].score).toBe(0);
     });
   });
@@ -65,9 +65,9 @@ describe("addPlayer", () => {
  * This is the test section for sendQuestion.
  */
 describe("sendQuestion", () => {
-  /*** Instance of QuizGame. */
+  /** Instance of QuizGame. */
   let game;
-  /*** Mock object simulating the behavior of io objects. */
+  /** Mock object simulating the behavior of io objects. */
   let ioMock;
 
   /**
@@ -118,9 +118,9 @@ describe("sendQuestion", () => {
  * This is the test section for answerQuestion.
  */
 describe("answerQuestion", () => {
-  /*** Instance of QuizGame. */
+  /** Instance of QuizGame. */
   let game;
-  /*** Mock object simulating the behavior of io objects. */
+  /** Mock object simulating the behavior of io objects. */
   let ioMock;
 
   /**
@@ -168,7 +168,7 @@ describe("answerQuestion", () => {
     const answer = "B";
     game.currentRightAnswer = "A";
 
-    /*** Array of player objects with intial scores og 0 for two players. */
+    /** Array of player objects with intial scores og 0 for two players. */
     game.players = [
       { username: "user1", score: 0 },
       { username: "user2", score: 0 },
@@ -186,7 +186,7 @@ describe("answerQuestion", () => {
     const username = "user1";
     const answer = "A";
     game.currentRightAnswer = "A";
-    /*** Array of player objects with initial scores of 0 for one player. */
+    /** Array of player objects with initial scores of 0 for one player. */
     game.players = [{ username: "user1", score: 0 }];
     game.answerQuestion(username, answer);
     expect(game.players[0].score).toBe(1);
@@ -199,7 +199,7 @@ describe("answerQuestion", () => {
     const username = "user1";
     const answer = "A";
     game.currentRightAnswer = "A";
-    /*** Array of player objects with intial scores og 0 for one player.*/
+    /** Array of player objects with intial scores og 0 for one player.*/
     game.players = [{ username: "user1", score: 0 }];
     game.round = 3;
     game.answerQuestion(username, answer);
@@ -227,11 +227,11 @@ describe("answerQuestion", () => {
  * This is the test section for endGame.
  */
 describe("endGame", () => {
-  /*** Instance of QuizGame. */
+  /** Instance of QuizGame. */
   let game;
-  /*** Mock object simulating the behavior of io objects. */
+  /** Mock object simulating the behavior of io objects. */
   let ioMock;
-  /*** Mock object for the functionality of the database. */
+  /** Mock object for the functionality of the database. */
   let dbMock;
 
   /**
@@ -284,7 +284,7 @@ describe("endGame", () => {
  * This is the test section for checkDuplicateQuestion.
  */
 describe("checkDuplicateQuestion", () => {
-  /*** Define sample questions and max rounds. */
+  /** Define sample questions and max rounds. */
   const questions = {
     1: "123",
     2: "456",

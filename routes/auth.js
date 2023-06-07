@@ -190,7 +190,7 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
  */
 router.post("/api/auth", (req, res) => {
   const { username, password } = req.body;
-  /*** Check the provided username and password against the database. */
+  /** Check the provided username and password against the database. */
   db.then((conn) => {
     conn
       .query(
@@ -206,11 +206,11 @@ router.post("/api/auth", (req, res) => {
             const username = rows[0].USERNAME;
             const password_fromDB = rows[0].PASSWORD;
 
-            /*** Compare the provided password with the hashed password stored in the database. */
+            /** Compare the provided password with the hashed password stored in the database. */
             bcrypt.compare(password, password_fromDB).then((valid) => {
               if (valid) {
                 try {
-                  /*** Generate a JWT token for authentication. */
+                  /** Generate a JWT token for authentication. */
                   const token = jwt.sign(
                     { id, username },
                     process.env.JWT_SECRET,
@@ -220,7 +220,7 @@ router.post("/api/auth", (req, res) => {
                       subject: "auth_token",
                     }
                   );
-                  /*** Set the JWT token as a cookie and redirect to the dashboard. */
+                  /** Set the JWT token as a cookie and redirect to the dashboard. */
                   res.cookie("accessToken", token, { httpOnly: false });
                   res.status(200).redirect("/");
                 } catch (error) {
