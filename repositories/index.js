@@ -19,8 +19,6 @@ class MariaDBSingleton {
 
   /**
    * This function attempts to retrieve a database connection from the connection pool.
-   * If successful, it returns the connection. If an error occurs while getting the connection,
-   * the error is logged to the console, but not thrown.
    *
    * @returns {Promise<PoolConnection>} - A Promise resolving to a database connection.
    */

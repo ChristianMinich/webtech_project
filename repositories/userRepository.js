@@ -21,9 +21,11 @@ function getUserbyName(username) {
 }
 
 /**
+ * The function creates a new user in the database with the provided username and encrypted password.
  *
- * @param username
- * @param encryptedPassword
+ * @param username - The username of the new user.
+ * @param encryptedPassword - The encrypted password of the new user.
+ * @returns {Promise<void>} - A Promise that resolves when the user is created successfully.
  */
 function createUser(username, encryptedPassword) {
   db.then((conn) => {
