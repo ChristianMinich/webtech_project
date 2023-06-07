@@ -4,80 +4,107 @@
   <title>Profile of <%= username%></title>
   <style>
 
+    /* Allgemeine Stile */
     body {
-      font-family: "Helvetica", sans-serif;
-      background-color: #f2f2f2;
       margin: 0;
-      padding: 0;
-    }
-
-    .navbar a {
-      color: #fff;
-      text-decoration: none;
-      margin-right: 10px;
-    }
-
-    .profile h1 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-    .profile {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: url("/assets/backgrounds/florian-klauer-mk7D-4UCfmg-unsplash.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      padding: 20px;
+      display: marker;
+      min-height: 100vh;
+      width: auto;
       height: auto;
-      flex-direction: column;
+      background-position-x: center;
+      background-position-y: center;
+    }
+
+    h1,
+    h2 {
+      text-align: center;
+      color: white; /* Textfarbe in Weiß */
+    }
+
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Profil-Container */
+    .profile {
+      position: relative;
     }
 
     .profile img {
-      margin-bottom: 10px;
+      display: block;
+      margin: 0 auto;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
-
+    /* Tabelle */
     table {
+      margin: 10px auto;
+      max-width: 600px;
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
-      background-color: #fff;
+      background-color: rgba(128, 128, 128, 0.6);
       border-radius: 5px;
+      color: white; /* Textfarbe in Weiß */
     }
 
-    table th,
-    table td {
+    th,
+    td {
       padding: 10px;
+      text-align: center;
+    }
+
+    thead {
+      background-color: rgba(128, 128, 128, 0.6);
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: rgba(128, 128, 128, 0.6);
+    }
+
+    /* Achievements-Tabelle */
+    table:last-child {
+      margin-top: 20px;
+    }
+
+    table:last-child th {
       text-align: left;
-      border-bottom: 1px solid #ddd;
     }
 
-    table th {
-      background-color: #333;
-      color: #fff;
-    }
+    /* Media Queries für responsives Design */
+    @media screen and (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
 
-    table a {
-      color: #333;
-      text-decoration: none;
+      h2 {
+        font-size: 16px;
+      }
 
-    }
-    .achievements img {
-      width: 50px;
-      height: 50px;
-      margin-bottom: 10px;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 10px;
+      table {
+        max-width: 400px;
       }
     }
 
-
+    @media screen and (max-width: 400px) {
+      table {
+        max-width: 300px;
+      }
+    }
 
   </style>
 </head>
 <body>
   <%- include('navbar') %>
-
   <div>
     <% rows.forEach(function(row) { %>
       <h1>Profile of <%= row.USERNAME%></h1>
