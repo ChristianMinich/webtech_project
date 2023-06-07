@@ -287,6 +287,7 @@ describe("endGame", () => {
  * This is the test section for checkDuplicateQuestion.
  */
 describe("checkDuplicateQuestion", () => {
+  /*** Define sample questions and max rounds. */
   const questions = {
     1: "123",
     2: "456",
@@ -295,7 +296,10 @@ describe("checkDuplicateQuestion", () => {
 
   const maxRounds = 5;
 
-  test("should return true for a non-duplicate question ID", () => {
+  /**
+   * Checks if the function returns true for a non-duplicate question ID.
+   */
+  test("True for a non-duplicate question ID", () => {
     const quizGame = new QuizGame("room1", null);
 
     quizGame.MAX_ROUNDS = maxRounds;
@@ -306,7 +310,10 @@ describe("checkDuplicateQuestion", () => {
     expect(result).toBe(true);
   });
 
-  test("should return false for a duplicate question ID", () => {
+  /**
+   * Checks if the function returns false for a duplicate question ID.
+   */
+  test("False for a duplicate question ID", () => {
     const quizGame = new QuizGame("room1", null);
 
     quizGame.questions = questions;
@@ -316,7 +323,10 @@ describe("checkDuplicateQuestion", () => {
     expect(result).toBe(false);
   });
 
-  test("should return true for an empty question list", () => {
+  /**
+   * Checks if the function returns true for an empty question list.
+   */
+  test("True for an empty question list", () => {
     const quizGame = new QuizGame("room1", null);
 
     quizGame.MAX_ROUNDS = 0;
