@@ -337,5 +337,37 @@ describe("checkDuplicateQuestion", () => {
     expect(result).toBe(true);
   });
 
+  test("false when question ID is null", () => {
+    const quizGame = new QuizGame("room1", null);
+
+    quizGame.MAX_ROUNDS = maxRounds;
+    quizGame.questions = questions;
+
+    const questionID = null;
+    const result = quizGame.checkDuplicateQuestion(questionID);
+    expect(result).toBe(false);
+  });
+
+  test("true when question list is null", () => {
+    const quizGame = new QuizGame("room1", null);
+
+    quizGame.MAX_ROUNDS = maxRounds;
+    quizGame.questions;
+
+    const questionID = "123";
+    const result = quizGame.checkDuplicateQuestion(questionID);
+    expect(result).toBe(true);
+  });
+
+  test("false if question ID and question list are null", () => {
+    const quizGame = new QuizGame("room1", null);
+
+    quizGame.MAX_ROUNDS = maxRounds;
+    quizGame.questions = null;
+
+    const questionID = null;
+    const result = quizGame.checkDuplicateQuestion(questionID);
+    expect(result).toBe(false);
+  });
 });
 
