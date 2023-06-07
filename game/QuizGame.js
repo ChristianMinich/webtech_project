@@ -99,7 +99,7 @@ class QuizGame {
    */
   answerQuestion(username, answer) {
 
-    //doppelte antort auf eine frage verhindern
+    //doppelte antworten auf eine frage verhindern
     if(this.countAnswers === 1){
       console.log("Doppelte Antwort " + username);
     }else{
