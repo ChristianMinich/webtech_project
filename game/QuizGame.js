@@ -287,7 +287,9 @@ class QuizGame {
    * @return {boolean} - A boolean value indicating whether the question is a duplicate (false) or not (true).
    */
   checkDuplicateQuestion(quesID) {
-
+    if (quesID === null) {
+      return false;
+    }
     for (let i = 1; i <= this.MAX_ROUNDS; i++) {
   
       if (this.questions[i] === quesID) {
