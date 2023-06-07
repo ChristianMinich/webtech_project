@@ -180,6 +180,15 @@ module.exports = (io) => {
     // Ereignisbehandlung: Verbindung getrennt.
     socket.on("disconnect", () => {
       console.log("user disconected");
+      const disconnectedPlayer = queue.find((item) => item.socket.id === socket.id);
+      if (disconnectedPlayer) {
+        const username = disconnectedPlayer.username;
+        const playerIndex = queue.findIndex((item) => item.username === username);
+      if (playerIndex !== -1) {
+        queue.splice(playerIndex, 1);
+        console.log("Player disconnected and removed from queue: " + username);
+      }
+    }
     });
   });
 };
