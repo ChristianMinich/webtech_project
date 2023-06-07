@@ -1,9 +1,7 @@
 /** The test repository for game. */
-util;
 const QuizGame = require("../game/QuizGame");
 const { addPlayer } = require("../game/QuizGame");
-const { checkDuplicateQuestion } = require('../game/QuizGame');
-const util = require("util");
+const { checkDuplicateQuestion } = require("../game/QuizGame");
 
 /**
  * This is the test section for addPlayer.
@@ -284,7 +282,6 @@ describe("endGame", () => {
   });
 });
 
-
 describe("checkDuplicateQuestion", () => {
   const questions = {
     1: "123",
@@ -295,8 +292,12 @@ describe("checkDuplicateQuestion", () => {
   const maxRounds = 5;
 
   test("should return true for a non-duplicate question ID", () => {
+    const game = {
+      MAX_ROUNDS: maxRounds,
+      questions: questions
+    };
     const questionID = "999";
-    const result = checkDuplicateQuestion(questionID, questions, maxRounds);
+    const result = checkDuplicateQuestion(game, questionID);
     expect(result).toBe(true);
   });
 
