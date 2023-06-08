@@ -86,9 +86,10 @@ router.get("/game", mw.authToken, (req, res) => {
  * @param {Object} res - Express response object.
  * @returns {void}
  */
-router.get("/joinQueue", mw.authToken, (req, res) => {
+router.get("/joinQueue", mw.authToken, mw.avatar,(req, res) => {
   const username = req.username;
-  res.render("queue", { username: username });
+  const avatar = req.avatar;
+  res.render("queue", { username: username, avatar: avatar });
 });
 
 /**
@@ -327,8 +328,9 @@ router.post("/api/auth/register", (req, res) => {
  * @param {Object} res - Express response object.
  * @returns {void}
  */
-router.get("/scoreboard", mw.authToken, (req, res) => {
+router.get("/scoreboard", mw.authToken, mw.avatar, (req, res) => {
   const username = req.username;
+  const avatar = req.avatar;
 
   const sqlQuery = `
   SELECT DISTINCT U.USERNAME, U.HIGHSCORE, U.WINS, U.CONCURRENT_WINS, U.PERFECT_WINS, U.LOSES, A.FILE_PATH
@@ -345,7 +347,7 @@ router.get("/scoreboard", mw.authToken, (req, res) => {
       )
       .then((rows) => {
         //res.json(rows);
-        res.render("scoreboard", { rows: rows, username: username });
+        res.render("scoreboard", { rows: rows, username: username, avatar: avatar });
         conn.end();
       })
       .catch((error) => {
