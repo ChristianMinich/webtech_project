@@ -249,7 +249,7 @@
   <script>
     const socket = io();
     const roomId = "<%= roomID %>";
-     const username = "<%= username %>";
+    const username = "<%= username %>";
     
     window.onload = function () {
       socket.emit('gamePageLoaded',roomId, username);
@@ -294,6 +294,10 @@
       document.getElementById('option3-text').textContent = question.answers[2];
       document.getElementById('option4-text').textContent = question.answers[3];
 
+    });
+
+    socket.on('wrongUser', () => {
+      window.location.href = "/index";
     });
 
     socket.on("newRoundCountdown", () => {

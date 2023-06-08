@@ -127,15 +127,15 @@ module.exports = (io) => {
       console.log(username);
 
       const room = rooms.get(roomId);
-      if(room){
-        const players = room.players;
+      
+      if (!room.players.some(player => player.username === username)) {
+          console.log("Flascher User im Game! " + username);
+          console.log(socket.id);
+          io.to(socket.id).emit('wrongUser');
+        return;
+      }
 
-        players.forEach(player => {
-          if (player.username != username){
-            console.log("Flascher User im Game! + " + username);
-          }else{
-
-            socket.join(roomId);// if user in room join else redirect
+      socket.join(roomId);// if user in room join else redirect
             gamePageLoadedCount++;
             playersinGame.push(username);
             console.log(gamePageLoadedCount + " Spieler Da! " + username);
@@ -157,11 +157,6 @@ module.exports = (io) => {
             console.log(gameMap);
             console.log(currGame.toString());
             }
-          }
-        });
-      }else{
-        console.log("Room nicht gefunden");
-      }
     });
 
     socket.on("questionSelected", (roomId, username, answer) => {
