@@ -375,6 +375,7 @@ router.get("/video", (req, res) => {
     "..",
     "public",
     "assets",
+    "backgrounds",
     "registered.mp4"
   );
   res.sendFile(videoPath);

@@ -2,12 +2,15 @@
 <style >
     /* Navigation */
     nav {
-        display: flex;
-        justify-content: center;
+        /*display: flex;
+        justify-content: center;*/
         background-color: rgba(128, 128, 128, 0.8);
         padding: 10px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    }
+    nav a {
+        float: left;
     }
 
     nav ul {
@@ -56,8 +59,16 @@
     .navProfile .username {
         margin-right: 10px;
     }
-    
+    navProfile {
+        margin-right: auto;
+    }
 
+    .navProfile .username {
+         margin-right: 10px;
+    }
+
+
+    
 </style>
 
 <nav>
@@ -68,7 +79,7 @@
         <li>
             <div class="navProfile">
                 <span class="username"><%= username%></span>
-                <img src="<%= avatar%>" width="20px" height="2px">
+                <img src="<%= avatar%>" width="20px" height="20px">
               </div>
               
         </li>
