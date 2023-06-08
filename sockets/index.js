@@ -44,6 +44,7 @@ module.exports = (io) => {
           .query(sqlQuery)
           .then((rows) => {
             try {
+              if(rows[0].FILE_NAME !== undefined){
               const achievementName = rows[0].FILE_NAME;
               socket.emit("getAchievement", String(achievementName));
 
@@ -54,6 +55,7 @@ module.exports = (io) => {
                 .catch((error) => {
                   console.log(error);
                 });
+              } 
             } catch (error) {
               console.log(error);
             }
