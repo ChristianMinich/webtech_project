@@ -7,7 +7,8 @@
         background-color: rgba(128, 128, 128, 0.8);
         padding: 10px;
         border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        max-height: fit-content;
     }
     nav a {
         float: left;
@@ -40,12 +41,11 @@
     nav ul li:last-child a {
         color: white;
         text-decoration: none;
-        font-weight: bold;
     }
 
-    nav ul li:last-child a:hover {
+  /*  nav ul li:last-child a:hover {
         color: darkred;
-    }
+    }*/
     nav ul li:hover > a {
         background-color: rgba(255, 255, 255, 0.8);
         color: #6b5b95;
@@ -66,6 +66,11 @@
     .navProfile .username {
          margin-right: 10px;
     }
+    .navProfile a:hover {
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #6b5b95;
+        border-radius: 15px;
+    }
 
 
     
@@ -74,12 +79,14 @@
 <nav>
     <ul>
         <li><a href="/index">Dashboard</a></li>
-        <li><a href="/index">So wird gespielt</a></li>
+        <li><a href="/scoreboard">Scoreboard</a></li>
         <li><a href="/logout">Logout</a></li>
         <li>
             <div class="navProfile">
+                <a href="/profile/<%= username%>">
                 <span class="username"><%= username%></span>
                 <img src="<%= avatar%>" width="20px" height="20px">
+            </a>
               </div>
               
         </li>
