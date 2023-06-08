@@ -2,9 +2,12 @@
 <style >
     /* Navigation */
     nav {
+        display: flex;
+        justify-content: center;
         background-color: rgba(128, 128, 128, 0.8);
         padding: 10px;
         border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     }
 
     nav ul {
@@ -18,6 +21,7 @@
 
     nav ul li {
         display: inline;
+        
     }
 
     nav ul li a {
@@ -39,17 +43,34 @@
     nav ul li:last-child a:hover {
         color: darkred;
     }
+    nav ul li:hover > a {
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #6b5b95;
+        border-radius: 15px;
+    }
+    .navProfile{
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+    .navProfile .username {
+        margin-right: 10px;
+    }
+    
 
 </style>
 
 <nav>
     <ul>
         <li><a href="/index">Dashboard</a></li>
-        <li><a href="/game">So wird gespielt</a></li>
+        <li><a href="/index">So wird gespielt</a></li>
         <li><a href="/logout">Logout</a></li>
         <li>
-            <%= username%> 
-            <img src="<%= avatar%>" width="25px" height="25px">
+            <div class="navProfile">
+                <span class="username"><%= username%></span>
+                <img src="<%= avatar%>" width="20px" height="2px">
+              </div>
+              
         </li>
     </ul>
 </nav>
