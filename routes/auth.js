@@ -139,6 +139,7 @@ router.get("/game/:roomID", mw.authToken, mw.avatar, (req, res) => {
 router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
   const username = req.params.username;
   const user = req.username;
+  const avatar = req.avatar;
   
   const sqlQuery = `
   SELECT DISTINCT U.USER_ID, U.USERNAME, U.HIGHSCORE, U.WINS, U.CONCURRENT_WINS, U.PERFECT_WINS, U.LOSES, A.FILE_PATH
@@ -153,7 +154,7 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
       )
       .then((rows) => {
         try {
-          const avatar = rows[0].FILE_PATH;
+          const profile_avatar = rows[0].FILE_PATH;
           const achievement_query = `
           SELECT
           a.FILE_NAME
@@ -167,7 +168,7 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
           conn.query(achievement_query)
           .then(achievements => {
             console.log(achievements);
-            res.render("profile", { achievement: achievements, rows: rows, username: user, avatar: avatar });
+            res.render("profile", { achievement: achievements, rows: rows, username: user, profile_avatar: profile_avatar, avatar: avatar });
           })
           .catch(error => {
             console.log(error);
