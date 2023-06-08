@@ -300,7 +300,7 @@ router.post("/api/auth/register", (req, res) => {
                       );
 
                       res.cookie("accessToken", token, { httpOnly: false });
-                      res.status(200).redirect("/registered");
+                      res.status(200).redirect("/index");
                     } else {
                       res.status(400).send("An Error has Occured!");
                     }
