@@ -1,12 +1,12 @@
 window.addEventListener("load", function () {
-  const loginForm = document.getElementById("registerForm");
+  const registerForm = document.getElementById("registerForm");
   const usernameInput = document.getElementById("usernameInput");
   const passwordInput = document.getElementById("passwordInput");
 
-  // Login: Prüfen der eingegebenen Daten und Weiterleitung bei Erfolg
-  loginForm.addEventListener("submit", (event) => {
+  // Register: Prüfen der eingegebenen Daten und Weiterleitung bei Erfolg
+  registerForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const formData = new FormData(loginForm);
+    const formData = new FormData(registerForm);
     const value = Object.fromEntries(formData.entries());
 
     console.log("submitted");
