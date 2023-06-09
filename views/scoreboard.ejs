@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=0.5">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Highscores</title>
   <style>
     body {
@@ -79,7 +79,7 @@
     }
 
     .tableContainer {
-      
+
       margin: 0 auto;
       margin-top: 5%;
       padding: 25px;
@@ -169,6 +169,47 @@
         font-size: 18px;
       }
     }
+
+    @media screen and (max-width:600px) {
+
+      .scoreBoard table {
+        max-width: fit-content;
+      }
+
+      .scoreBoard table,
+      tr,
+      td {
+        padding: 0;
+      }
+
+      .scoreBoard thead {
+        display: none;
+      }
+
+      .scoreBoard tr {
+        float: left;
+        width: 100%;
+
+      }
+
+      .scoreBoard td {
+        float: left;
+        width: 100%;
+        padding: 1em;
+
+
+      }
+
+      .scoreBoard td::before {
+        content: attr(data-label);
+        word-wrap: break-word;
+        float: left;
+        font-weight: bold;
+        margin: -1em 1em -1em -1em;
+      }
+
+
+    }
   </style>
 </head>
 <%- include('navbar') %>
@@ -178,7 +219,7 @@
 
       <div class="tableContainer">
         <h1>User Highscores</h1>
-        <table>
+        <table class="scoreBoard">
           <thead>
             <tr>
               <th>Avatar</th>
@@ -199,22 +240,22 @@
                     <!-- <img src="/assets/ranks/fourth_level.png" alt="Rank" class="rank-image"> -->
                   </div>
                 </td>
-                <td><a href="/profile/<%= row.USERNAME %>">
+                <td data-label="Username"><a href="/profile/<%= row.USERNAME %>">
                     <%= row.USERNAME %>
                   </a></td>
-                <td>
+                <td data-label="Highscore">
                   <%= row.HIGHSCORE %>
                 </td>
-                <td>
+                <td data-label="Wins">
                   <%= row.WINS %>
                 </td>
-                <td>
+                <td data-label="Concurrent Wins">
                   <%= row.CONCURRENT_WINS %>
                 </td>
-                <td>
+                <td data-label="Perfect Wins">
                   <%= row.PERFECT_WINS %>
                 </td>
-                <td>
+                <td data-label="Loses">
                   <%= row.LOSES %>
                 </td>
               </tr>
