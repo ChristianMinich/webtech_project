@@ -314,6 +314,12 @@
 
     });
 
+    socket.on('userLeftGame', () =>{
+
+      document.getElementById("roundCounter").textContent = "Deine Gegner haben den Springer gemacht,\n deswegen wurde das Game beendet :(";
+
+    });
+
 
     socket.on("gameEnd", (players) => {
       

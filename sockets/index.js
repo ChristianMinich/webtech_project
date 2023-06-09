@@ -14,6 +14,7 @@ module.exports = (io) => {
   const queue = [];
   const playersinRoom = [];
   const playersinGame = [];
+  const runningGames = [];
 
   console.log("hello there");
 
@@ -44,18 +45,18 @@ module.exports = (io) => {
           .query(sqlQuery)
           .then((rows) => {
             try {
-              if(rows[0].FILE_NAME !== undefined){
-              const achievementName = rows[0].FILE_NAME;
-              socket.emit("getAchievement", String(achievementName));
+              if (rows[0].FILE_NAME !== undefined) {
+                const achievementName = rows[0].FILE_NAME;
+                socket.emit("getAchievement", String(achievementName));
 
-              conn
-                .query("DELETE FROM ACHIEVEMENT_GAINED WHERE USERNAME = ?", [
-                  username,
-                ])
-                .catch((error) => {
-                  console.log(error);
-                });
-              } 
+                conn
+                  .query("DELETE FROM ACHIEVEMENT_GAINED WHERE USERNAME = ?", [
+                    username,
+                  ])
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }
             } catch (error) {
               console.log(error);
             }
@@ -127,36 +128,43 @@ module.exports = (io) => {
       console.log(username);
 
       const room = rooms.get(roomId);
-      
+
       if (!room.players.some(player => player.username === username)) {
-          console.log("Flascher User im Game! " + username);
-          console.log(socket.id);
-          io.to(socket.id).emit('wrongUser');
+        console.log("Flascher User im Game! " + username);
+        console.log(socket.id);
+        io.to(socket.id).emit('wrongUser');
         return;
       }
+      const user ={
+        socketId: socket.id,
+        username: username,
+        roomId: roomId
+      };
+      runningGames.push(user);
+      console.log(user.socketId + "|" + user.username);
 
-      socket.join(roomId);// if user in room join else redirect
-            gamePageLoadedCount++;
-            playersinGame.push(username);
-            console.log(gamePageLoadedCount + " Spieler Da! " + username);
-            // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
-            if (playersinGame.length === MAX_PLAYERS_PER_ROOM) {
-            gameMap.set(roomId, new QuizGame(roomId, io));
-            gamePageLoadedCount = 0;
-            console.log(roomId + " Spiel startet blad");
-            const currGame = gameMap.get(roomId);
+      socket.join(roomId);
+      gamePageLoadedCount++;
+      playersinGame.push(username);
+      console.log(gamePageLoadedCount + " Spieler Da! " + username);
+      // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
+      if (playersinGame.length === MAX_PLAYERS_PER_ROOM) {
+        gameMap.set(roomId, new QuizGame(roomId, io));
+        gamePageLoadedCount = 0;
+        console.log(roomId + " Spiel startet blad");
+        const currGame = gameMap.get(roomId);
 
-            playersinGame.forEach((player) => {
-            currGame.addPlayer(player);
-            console.log("addedPlayer " + player);
-            });
+        playersinGame.forEach((player) => {
+          currGame.addPlayer(player);
+          console.log("addedPlayer " + player);
+        });
 
-            playersinGame.splice(0, playersinGame.length);
+        playersinGame.splice(0, playersinGame.length);
 
-            currGame.start();
-            console.log(gameMap);
-            console.log(currGame.toString());
-            }
+        currGame.start();
+        console.log(gameMap);
+        console.log(currGame.toString());
+      }
     });
 
     socket.on("questionSelected", (roomId, username, answer) => {
@@ -195,11 +203,18 @@ module.exports = (io) => {
       if (disconnectedPlayer) {
         const username = disconnectedPlayer.username;
         const playerIndex = queue.findIndex((item) => item.username === username);
-      if (playerIndex !== -1) {
-        queue.splice(playerIndex, 1);
-        console.log("Player disconnected and removed from queue: " + username);
+        if (playerIndex !== -1) {
+          queue.splice(playerIndex, 1);
+          console.log("Player disconnected and removed from queue: " + username);
+        }
       }
-    }
+      const player = runningGames.find(user => user.socketId === socket.id);
+      if(player){
+        console.log("Spieler hat das game verlassen");
+        const currGame = gameMap.get(player.roomId);
+        currGame.userDisconnect(player.username);
+      }
+
     });
   });
 };

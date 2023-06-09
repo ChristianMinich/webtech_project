@@ -20,6 +20,7 @@ const { error } = require("console");
  */
 router.get("/", mw.dashboard, (req, res) => {
   res.status(200).sendFile(path.resolve("public/index.html"));
+  
 });
 
 /**

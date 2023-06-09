@@ -17,4 +17,5 @@ router.use("/", authRouter);
 
 router.use(express.static("public", { extensions: ["html"] }));
 
+
 module.exports = router;

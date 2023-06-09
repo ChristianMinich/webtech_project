@@ -240,6 +240,17 @@ class QuizGame {
       })
     })
   }
+  userDisconnect(username){
+
+    this.players = this.players.filter(player => player.username !== username);
+    console.log(username + " hat das Spiel verlasen!");
+    if(this.players.length < 2){
+      this.io.to(this.roomId).emit('userLeftGame');
+      this.endGame();
+      
+    }
+
+  }
 
   /**
    * This function fetches the next question, checks for duplicate questions, and sends the question to the players.
