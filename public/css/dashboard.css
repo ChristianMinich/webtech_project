@@ -10,41 +10,93 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+
 }
-h1,
-h2,
-h3 {
+
+.contentContainer {
+    background: rgb(130,193,255);
+    background: radial-gradient(circle, rgba(130,193,255,0.4962359943977591) 0%, rgba(57,59,84,0.9136029411764706) 100%);
+    /*background: rgba(191, 191, 191, 0.5);*/
+    padding: 25px;
+    border-radius: 25px;
+    position: absolute;
+    left: 5%;
+    top: 15%;
+    right: 5%;
+    bottom: 5%;
+    height: fit-content;
+    margin: 0 auto;
+    padding: 5%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: fit-content;
+    margin-top: 5%;
+  }
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+
+h1, h2, h3 {
     font-family: "Helvetica", sans-serif;
     font-weight: 250;
     text-transform: uppercase;
     text-align: center;
     color: #fff;
     padding: 10px;
-    border-radius: 25px;
-    background-color: rgba(128, 128, 128, 0.6);
+    border-radius: 15px;
+    background-color: rgba(128, 128, 128, 0.8);
     margin: 10px 0;
-}
+    font-style: bold;
+    
+  }
+
+  h1 {
+    font-size: 36px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
 
 .profile-container {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
+    margin: 0 auto;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+      border-color: blueviolet;
+      border-style: solid;
+      border-width: 5px;
+      overflow: hidden;
 }
 
 .profile-container img {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
+    width: 100%;
+      height: 100%;
+      object-fit: cover;
 }
 
 button {
-    padding: 10px 20px;
+    font-family: "Helvetica", sans-serif;
+    font-weight: 200;
+    font-size: 20px;
+    padding: 20px 100px;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     background-color: rgba(128, 128, 128, 0.6);
     color: #fff;
-    margin: 5px;
+    margin: 10px;
     transition: background-color 0.3s ease;
 }
 
@@ -59,119 +111,4 @@ button:hover span {
 button:hover::after {
     content: attr(data-hover-text);
     display: inline-block;
-}
-
-
-@media only screen and (max-width: 767px) {
-    h1 {
-        font-size: 24px;
-    }
-
-    h2 {
-        font-size: 20px;
-    }
-
-    h3 {
-        font-size: 18px;
-    }
-
-    .profile-container {
-        flex-direction: column;
-    }
-
-    .profile-container img {
-        margin-bottom: 10px;
-    }
-
-    button {
-        width: 100%;
-    }
-}
-
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
-
-    h1 {
-        font-size: 36px;
-    }
-
-    h2 {
-        font-size: 28px;
-    }
-
-    h3 {
-        font-size: 24px;
-    }
-
-    .profile-container {
-        flex-direction: row;
-    }
-
-    form {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    button {
-        flex: 0 0 200px;
-    }
-}
-
-@media only screen and (min-width: 1024px) {
-
-    h1 {
-        font-size: 48px;
-    }
-
-    h2 {
-        font-size: 36px;
-    }
-
-    h3 {
-        font-size: 30px;
-    }
-
-    .profile-container {
-        flex-direction: row;
-    }
-
-    form {
-        display: flex;
-        justify-content: center;
-    }
-
-    button {
-        flex: 0 0 200px;
-    }
-}
-
-
-/* For mobile phones */
-@media only screen and (max-width: 600px) {
-    [class*="col-"] {
-        width: 100%;
-    }
-}
-
-/* For tablets */
-@media only screen and (min-width: 601px) and (max-width: 768px) {
-    [class*="col-"] {
-        width: 50%;
-    }
-}
-
-/* For desktop */
-@media only screen and (min-width: 769px) {
-    .col-1 {width: 8.33%;}
-    .col-2 {width: 16.66%;}
-    .col-3 {width: 25%;}
-    .col-4 {width: 33.33%;}
-    .col-5 {width: 41.66%;}
-    .col-6 {width: 50%;}
-    .col-7 {width: 58.33%;}
-    .col-8 {width: 66.66%;}
-    .col-9 {width: 75%;}
-    .col-10 {width: 83.33%;}
-    .col-11 {width: 91.66%;}
-    .col-12 {width: 100%;}
 }

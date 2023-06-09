@@ -247,7 +247,6 @@ class QuizGame {
     if(this.players.length < 2){
       this.io.to(this.roomId).emit('userLeftGame');
       this.endGame();
-      
     }
 
   }
