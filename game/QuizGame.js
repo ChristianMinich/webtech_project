@@ -3,7 +3,6 @@ const database = require("../repositories");
 const db = database.getConnection();
 const maxRounds = 5;
 class QuizGame {
-
   /**
    * Constructs a new instance of the QuizGame class.
    *
@@ -28,15 +27,14 @@ class QuizGame {
     /** Array to store the players in the game. */
     this.players = [];
     /** Array to store the winner of the game. */
-    this.winner =[];
+    this.winner = [];
     /** Counter to track the number of answers submitted for a question. */
     this.countAnswers = 0;
     //** To check if a game ist still active */
     this.gameRunning = true;
 
-
     /** Logging the creation of a new game instance. */
-    console.log("new game created " + roomId);
+    // console.log("new game created " + roomId);
   }
 
   /**
@@ -44,14 +42,11 @@ class QuizGame {
    * updating the score board, and sending the first question.
    */
   start() {
-
     this.round = 1;
-    //this.players = players;
     this.currentQuestionIndex = 0;
-    console.log("Spiel startet");
     this.updateScoreBoard();
     /** Initiate a new round countdown and start the first question. */
-    this.io.to(this.roomId).emit('newRoundCountdown');
+    this.io.to(this.roomId).emit("newRoundCountdown");
     setTimeout(() => {
       this.newQuestion();
     }, 5000);
@@ -64,23 +59,19 @@ class QuizGame {
    * @param username - The username of the player to add.
    */
   addPlayer(username) {
-    
     console.log("übergebener username: " + username);
 
-      if(this.userExist(username)){
-        console.log("Fehler, doppelter User");
+    if (this.userExist(username)) {
+      console.log("Fehler, doppelter User");
+    } else {
+      const player = {
+        username: username,
+        score: 0,
+      };
 
-      }else{
-
-        const player = {
-          username: username,
-          score: 0,
-        };
-
-        this.players.push(player);
-        console.log("Neuer Spieler hinzugefügt: " + player.username);
-      }
-    
+      this.players.push(player);
+      console.log("Neuer Spieler hinzugefügt: " + player.username);
+    }
   }
 
   /**
@@ -89,11 +80,10 @@ class QuizGame {
    * @param question - The question object to send.
    */
   sendQuestion(question) {
-
     if (question) {
-      this.io.to(this.roomId).emit('question', question, this.round);
+      this.io.to(this.roomId).emit("question", question, this.round);
     } else {
-      console.log('Fehler beim Abrufen der Fragen');
+      console.log("Fehler beim Abrufen der Fragen");
     }
   }
 
@@ -106,54 +96,70 @@ class QuizGame {
    * @param answer - The answer provided by the player.
    */
   answerQuestion(username, answer) {
-
-    //doppelte antworten auf eine frage verhindern
     /** Prevent duplicate answers to a question. */
-    if(this.countAnswers === 1){
+    if (this.countAnswers === 1) {
       console.log("Doppelte Antwort " + username);
-    }else{
-    this.countAnswers++;
-    console.log("Room: " + this.roomId + " | User: " + username + " hat gewählt: " + answer);
-    console.log(this.currentRightAnswer + " Richtige Antwort ");
+    } else {
+      this.countAnswers++;
+      console.log(
+        "Room: " +
+          this.roomId +
+          " | User: " +
+          username +
+          " hat gewählt: " +
+          answer
+      );
+      console.log(this.currentRightAnswer + " Richtige Antwort ");
 
       /** Check if the answer is correct and update scores accordingly. */
       if (this.currentRightAnswer === String(answer)) {
-      console.log("antwort richtig");
-      this.players.forEach((player) => {
-        if (player.username === username) {
-          player.score++;
-          console.log("Right Answer " + "Score of " + player.username + " incremented! " + player.score);
-        }
-      });
-    } else {
-      this.players.forEach((player) => {
-        if (player.username !== username) {
-          player.score++;
-          console.log("Wrong Answer " + "Score of " + player.username + " incremented! " + player.score);
-        }
-      });
-    }
-    /** Update the scoreboard and check if the game should continue or end. */
-    this.updateScoreBoard();
-    this.round++;
-    console.log("Aktueller Stand: "+ this.players);
-    
-    if (this.round <= maxRounds) {
-      /** Start a new round with a countdown and a new question. */
-      if(this.gameRunning){
-        this.io.to(this.roomId).emit('newRoundCountdown');
-        setTimeout(() => {
-        this.newQuestion();
-      }, 5000);
-      this.countAnswers = 0;
+        console.log("antwort richtig");
+        this.players.forEach((player) => {
+          if (player.username === username) {
+            player.score++;
+            console.log(
+              "Right Answer " +
+                "Score of " +
+                player.username +
+                " incremented! " +
+                player.score
+            );
+          }
+        });
+      } else {
+        this.players.forEach((player) => {
+          if (player.username !== username) {
+            player.score++;
+            console.log(
+              "Wrong Answer " +
+                "Score of " +
+                player.username +
+                " incremented! " +
+                player.score
+            );
+          }
+        });
       }
-    } else {
-      /** End the game if the maximum number of rounds is reached. */
-      console.log("Spiel zuende");
-      this.endGame();
-    }
-  }
+      /** Update the scoreboard and check if the game should continue or end. */
+      this.updateScoreBoard();
+      this.round++;
+      console.log("Aktueller Stand: " + this.players);
 
+      if (this.round <= maxRounds) {
+        /** Start a new round with a countdown and a new question. */
+        if (this.gameRunning) {
+          this.io.to(this.roomId).emit("newRoundCountdown");
+          setTimeout(() => {
+            this.newQuestion();
+          }, 5000);
+          this.countAnswers = 0;
+        }
+      } else {
+        /** End the game if the maximum number of rounds is reached. */
+        console.log("Spiel zuende");
+        this.endGame();
+      }
+    }
   }
 
   /**
@@ -164,120 +170,148 @@ class QuizGame {
     /** Define a null player object with default values. */
     const null_player = {
       username: "",
-      score: -1
-    }
+      score: -1,
+    };
     this.winner.push(null_player);
 
     /** Determine the winner based on the highest score. */
     this.players.forEach((player) => {
-
       if (this.winner[0].score <= player.score) {
         this.winner.shift();
         this.winner.push(player);
       }
-
-    })
+    });
 
     /** Update player statistics and highscores in the database. */
     this.players.forEach((player) => {
-      db.then(conn => {
-        conn.query("SELECT HIGHSCORE FROM USER WHERE USERNAME = ?", [player.username])
-          .then(rows => {
+      db.then((conn) => {
+        conn
+          .query("SELECT HIGHSCORE FROM USER WHERE USERNAME = ?", [
+            player.username,
+          ])
+          .then((rows) => {
             try {
               var highscore = rows[0].HIGHSCORE;
-              if(player.score === 5){
-                highscore+= 15;
+              if (player.score === 5) {
+                highscore += 15;
               }
-              const newhighscore = highscore+ player.score;
+              const newhighscore = highscore + player.score;
               console.log(player.username + "Alter Highscore:" + highscore);
               console.log(player.username + "Neuer Highscore:" + newhighscore);
 
               /** Update player highscore in the database. */
-              conn.query("UPDATE USER SET HIGHSCORE = ? WHERE USERNAME = ?", [newhighscore, player.username])
-                .then(rows => {
+              conn
+                .query("UPDATE USER SET HIGHSCORE = ? WHERE USERNAME = ?", [
+                  newhighscore,
+                  player.username,
+                ])
+                .then((rows) => {
                   console.log(rows);
-                })
+                });
             } catch (error) {
               console.log(error);
             }
-          })
+          });
         /** Update the player's perfect wins count in the database. */
-        if(player.score === 5){
-
-          conn.query("UPDATE USER SET PERFECT_WINS = PERFECT_WINS + 1 WHERE USERNAME = ?", [player.username])
-          .then(rows => {
-            console.log(rows);
-          })
+        if (player.score === 5) {
+          conn
+            .query(
+              "UPDATE USER SET PERFECT_WINS = PERFECT_WINS + 1 WHERE USERNAME = ?",
+              [player.username]
+            )
+            .then((rows) => {
+              console.log(rows);
+            });
         }
-        if (this.winner[0].username === player.username ){
+        if (this.winner[0].username === player.username) {
           /** Update the player's wins and concurrent wins count in the database. */
-          conn.query("UPDATE USER SET WINS = WINS + 1 WHERE USERNAME = ?", [player.username])
-          .then(rows => {
-            console.log(rows);
-          })
-          conn.query("UPDATE USER SET CONCURRENT_WINS = CONCURRENT_WINS + 1 WHERE USERNAME = ?", [player.username])
-          .then(rows => {
-          console.log(rows);
-          })
-
-        }else{
+          conn
+            .query("UPDATE USER SET WINS = WINS + 1 WHERE USERNAME = ?", [
+              player.username,
+            ])
+            .then((rows) => {
+              console.log(rows);
+            });
+          conn
+            .query(
+              "UPDATE USER SET CONCURRENT_WINS = CONCURRENT_WINS + 1 WHERE USERNAME = ?",
+              [player.username]
+            )
+            .then((rows) => {
+              console.log(rows);
+            });
+        } else {
           /** Update the player's loses count and reset concurrent wins count in the database. */
-          conn.query("UPDATE USER SET LOSES = LOSES + 1 WHERE USERNAME = ?", [player.username])
-          .then(rows => {
-            console.log(rows);
-          })
-          conn.query("UPDATE USER SET CONCURRENT_WINS = 0 WHERE USERNAME = ?", [player.username])
-          .then(rows => {
-          console.log(rows);
-        })
+          conn
+            .query("UPDATE USER SET LOSES = LOSES + 1 WHERE USERNAME = ?", [
+              player.username,
+            ])
+            .then((rows) => {
+              console.log(rows);
+            });
+          conn
+            .query("UPDATE USER SET CONCURRENT_WINS = 0 WHERE USERNAME = ?", [
+              player.username,
+            ])
+            .then((rows) => {
+              console.log(rows);
+            });
         }
-      })
+      });
     });
 
     /** Emit the gameEnd event to all players in the room. */
-    this.io.to(this.roomId).emit('gameEnd', this.players);
+    this.io.to(this.roomId).emit("gameEnd", this.players);
 
     /** Remove the active game record from the database. */
-    db.then(conn => {
-      conn.query("DELETE FROM ACTIVE_GAME WHERE ROOM_ID = ?", [this.roomId])
-      .catch(error => {
-        console.log(error);
-      })
-    })
+    db.then((conn) => {
+      conn
+        .query("DELETE FROM ACTIVE_GAME WHERE ROOM_ID = ?", [this.roomId])
+        .catch((error) => {
+          console.log(error);
+        });
+    });
   }
-  userDisconnect(username){
-
-    this.players = this.players.filter(player => player.username !== username);
+  userDisconnect(username) {
+    this.players = this.players.filter(
+      (player) => player.username !== username
+    );
     console.log(username + " hat das Spiel verlasen!");
-    if(this.players.length < 2){
+    if (this.players.length < 2) {
       this.gameRunning = false;
-      this.io.to(this.roomId).emit('userLeftGame', this.gameRunning);
+      this.io.to(this.roomId).emit("userLeftGame", this.gameRunning);
       this.endGame();
     }
-
   }
 
   /**
    * This function fetches the next question, checks for duplicate questions, and sends the question to the players.
    */
   newQuestion() {
-    getNextQuestion().then(question => {
-      
-      if (this.checkDuplicateQuestion(question.id)) {
-        this.questions[this.round] = question.id;
-        this.currentQuestionIndex = question.id;
-        this.currentRightAnswer = question.right_answer;
-        question.right_answer = "";
-        console.log("Runde :" + this.round + " " + String(question.text) + "| " + this.questions);
-        this.sendQuestion(question);
-      }
-      else {
-        console.log("Doppelte Frage: " + this.questions);
-        this.newQuestion();
-      }
-    }).catch(error => {
-      console.log('Fehler beim Abrufen der Frage:', error);
-    });
+    getNextQuestion()
+      .then((question) => {
+        if (this.checkDuplicateQuestion(question.id)) {
+          this.questions[this.round] = question.id;
+          this.currentQuestionIndex = question.id;
+          this.currentRightAnswer = question.right_answer;
+          question.right_answer = "";
+          console.log(
+            "Runde :" +
+              this.round +
+              " " +
+              String(question.text) +
+              "| " +
+              this.questions
+          );
+          this.sendQuestion(question);
+        } else {
+          console.log("Doppelte Frage: " + this.questions);
+          this.newQuestion();
+        }
+      })
+      .catch((error) => {
+        console.log("Fehler beim Abrufen der Frage:", error);
+      });
   }
 
   /**
@@ -286,7 +320,9 @@ class QuizGame {
    * @return {string} - The string representation of the players and their scores.
    */
   toString() {
-    const playerStrings = this.players.map(player => `${player.username} (Score: ${player.score})`);
+    const playerStrings = this.players.map(
+      (player) => `${player.username} (Score: ${player.score})`
+    );
     return playerStrings.join(", ");
   }
 
@@ -294,7 +330,7 @@ class QuizGame {
    * Updates the score board by emitting the "scoreBoard" event to the game room.
    * The event includes the current players and their scores.
    */
-  updateScoreBoard(){
+  updateScoreBoard() {
     this.io.to(this.roomId).emit("scoreBoard", this.players);
   }
 
@@ -304,19 +340,19 @@ class QuizGame {
    * @param username - The username to check for existence in the game.
    * @return {boolean} - True if the user exists, false otherwise.
    */
-  userExist(username){
+  userExist(username) {
+    let userExists = false;
 
-    let userExists = false; 
-
-    this.players.forEach(player => {
-    if (player.username === username) {
-      console.log("Der Benutzername existiert bereits! Wird nicht dem Spiel hinzugefügt");
-      userExists = true;
-    }
-  });
+    this.players.forEach((player) => {
+      if (player.username === username) {
+        console.log(
+          "Der Benutzername existiert bereits! Wird nicht dem Spiel hinzugefügt"
+        );
+        userExists = true;
+      }
+    });
 
     return userExists;
-
   }
 
   /**
@@ -331,11 +367,9 @@ class QuizGame {
       return false;
     }
     for (let i = 1; i <= this.MAX_ROUNDS; i++) {
-  
       if (this.questions[i] === quesID) {
         return false;
       }
-  
     }
     return true;
   }
@@ -363,17 +397,17 @@ async function getNextQuestion() {
           questionRow.RIGHT_ANSWER,
           questionRow.FALSE_ANSWER1,
           questionRow.FALSE_ANSWER2,
-          questionRow.FALSE_ANSWER3
+          questionRow.FALSE_ANSWER3,
         ],
-        category: questionRow.CATEGORY_ID
+        category: questionRow.CATEGORY_ID,
       };
       return shuffleAnswers(question);
     }
   } catch (error) {
-    console.log('Fehler beim Abrufen der nächsten Frage:', error);
+    console.log("Fehler beim Abrufen der nächsten Frage:", error);
   }
 
-  return null; // Falls keine Frage abgerufen werden kann, wird null zurückgegeben
+  return null;
 }
 
 /**
@@ -390,8 +424,5 @@ function shuffleAnswers(question) {
   }
   return question;
 }
-
-
-
 
 module.exports = QuizGame;
