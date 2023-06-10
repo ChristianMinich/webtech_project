@@ -13,7 +13,7 @@ QuizGame is a Node.js web application built with Express that allows users to pl
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/ChristianMinich/quizgame.git`
+1. Clone the repository: `git clone https://github.com/ChristianMinich/webtech_project.git`
 2. Navigate to the project directory: `cd webtech_project`
 3. Install the dependencies: `npm install`
 
@@ -33,13 +33,45 @@ Note: Adjust the values as per your requirements.
 ## Database Setup
 
 1. Make sure you have MariaDB installed and running on your local machine or connect to the remote Database.
-2. If run locally create a new database called `QUIZGAME` in MARIADB.
+2. If run locally create a new database called `QUIZGAME` in Mariadb.
 
 ## Usage
 
-1. Start the application: `npm start`
+1. Start the application: `node server.js`
 2. Open your web browser and visit `http://localhost:3000` (or the port you specified in `.env`).
 
+## JSDoc
+
+1. Install Dependencies globally:
+
+```
+npm install -g jsdoc
+```
+```
+npm install --save-dev jsdoc
+```
+2. Change Directory 
+```
+cd webtech_project
+```
+3. Generate JSDocs with directory path (./directory/)
+```
+jsdoc -r ./game/ ./services/ ./routes/ ./repositories/
+```
+## Jest
+
+1. Install Dependencies globally:
+```
+npm install --save-dev jest
+```
+2. Run all tests:
+```
+npm run test
+```
+3. Get coverage: (Caution: If an error occurres change your ExecutionPolicy to unrestricted)
+```
+jest --collect-coverage
+```
 ## Folder Structure
 
 ```
