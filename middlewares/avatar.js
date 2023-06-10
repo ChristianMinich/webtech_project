@@ -1,7 +1,5 @@
 const database = require("../repositories");
 const svc = require("../services");
-const path = require("path");
-
 const db = database.getConnection();
 
 /**
