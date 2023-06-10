@@ -1,88 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" type="text/css" href="css-warmupGame/main.css" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300"
-      rel="stylesheet"
-    />
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width,
+<head>
+  <link rel="stylesheet" type="text/css" href="css-warmupGame/main.css" />
+  <link
+    href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300"
+    rel="stylesheet"
+  />
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width,
           initial-scale=1.0"
-    />
-    <title>Quizduell</title>
-  </head>
-  <body>
-    <div class="contentContainer">
-      <nav>
-        <ul>
-          <li><a href="/index">Home</a></li>
-          <li><a href="#">So wird gespielt</a></li>
-          <li class="dropdown">
-            <a href="#">Anmelden</a>
-            <ul class="dropdown-menu">
-              <li><a href="/login">Login</a></li>
-              <li><a href="/register">Registrieren</a></li>
-            </ul>
-          </li>
+  />
+  <title>Quizduell</title>
+</head>
+<body>
+<div class="contentContainer">
+  <nav>
+    <ul>
+      <li><a href="/index">Home</a></li>
+      <li><a href="#how-to-play">So wird gespielt</a></li>
+      <li class="dropdown">
+        <a href="#">Anmelden</a>
+        <ul class="dropdown-menu">
+          <li><a href="/login">Login</a></li>
+          <li><a href="/register">Registrieren</a></li>
         </ul>
-      </nav>
+      </li>
+    </ul>
+  </nav>
 
-      <h1>Willkommen zu unserem Quiz im Rahmen des Webtechnologien Moduls</h1>
+  <h1>Willkommen zu unserem Quizduell Game SoSe 2023</h1>
 
-      <p>Unsere Team besteht aus: </p>
+  <h2>Unsere Team besteht aus: </h2>
 
-      <div class="container">
-        <div class="square">       <img src="/assets/backgrounds/Amirali.JPG" /></div>
-        <div class="square">       <img src="/assets/backgrounds/Jan.PNG" /></div>
-        <div class="square">
-          <img src="/assets/backgrounds/Rania.PNG" />
-        </div>
-        <div class="square">
-          <img src="/assets/backgrounds/Prof.PNG" />
-        </div>
-        <div class="square"><img src="/assets/backgrounds/Sadik.PNG" /></div>
-      </div>
-
-        <h2 id="howToPlay">so wird gespielt</h2>
-      <p>
-        Um das Spiel zu genießen, musst du zunächst einen einfachen Registrierungsprozess durchlaufen und dich dann mit
-        deinen Anmeldedaten einloggen. Sobald du eingeloggt bist, gelangst du zu deinem persönlichen Dashboard, wo dir
-        verschiedene Möglichkeiten zur Verfügung stehen.
-
-        Auf dem Dashboard kannst du den Multiplayer-Button auswählen und auf einen Gegner warten. Sobald genügend
-        Spieler verfügbar sind, beginnt das Spiel. Zwischen den Fragen hast du 5 Sekunden Zeit, um dich vorzubereiten
-        und deine Antwort zu überlegen. Wenn du eine falsche Antwort wählst, erhält dein Gegner einen Punkt. Punkte
-        werden vergeben, wenn du schnell und korrekt antwortest. Das Spiel besteht aus insgesamt 5 Runden, also 5 Fragen
-        pro Spiel.
-
-      </p>
-      <p>
-        Beachte bitte, dass es auch ein Einzelspielermodus gibt, den wir als Vorbereitungsspiel bezeichnen. Dieses Spiel
-        kann nur alleine gespielt werden und dient dazu, sich auf die Multiplayer-Herausforderungen vorzubereiten. Es
-        handelt sich hierbei um ein reines Client-basiertes Spiel, bei dem du gegen den Computer spielst.(Wenn Fehler zu Meilensteinen werden…)
-      </p>
-
-      <p>
-        Auf der Scoreboard-Seite kannst du deine Highscore, alle gewonnenen Spiele, aufeinanderfolgende Siege, perfekte
-        Siege (bei denen du alle 5 Fragen richtig beantwortet hast) und Niederlagen einsehen. Zudem hast du Zugriff auf
-        dein Profil, in dem du weitere interessante Statistiken aus dem Online-Quizduell-Spiel entdecken kannst.
-      </p>
-
-      <footer>
-        <p>&copy Liefergruppe</p>
-        <p><a href="impressum.html">Impressum</a></p>
-      </footer>
+  <div class="container">
+    <div class="square"><img src="/assets/backgrounds/Amirali.JPG" /></div>
+    <div class="square"><img src="/assets/backgrounds/Jann.jpeg" /></div>
+    <div class="square">
+      <img src="/assets/backgrounds/Rania.PNG" />
     </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-      /* const socket = io();
+    <div class="square">
+      <img src="/assets/backgrounds/Prof.PNG" />
+    </div>
+    <div class="square"><img src="/assets/backgrounds/Sadik.PNG" /></div>
+  </div>
 
-    socket.on("connection", () => {
-            socket.join("room1");
-        }); */
-    </script>
-  </body>
+
+  <section>
+    <h2 id="how-to-play">So wird gespielt</h2>
+
+  <p>
+    Um das Spiel zu genießen, musst du zunächst einen einfachen Registrierungsprozess durchlaufen und dich dann mit
+    deinen Anmeldedaten einloggen.
+  <p>
+    Sobald du eingeloggt bist, gelangst du zu deinem persönlichen Dashboard, wo dir
+    verschiedene Möglichkeiten zur Verfügung stehen.
+  <p>
+    Auf dem Dashboard kannst du den Multiplayer-Button auswählen und auf einen Gegner warten. Sobald genügend
+    Spieler verfügbar sind, beginnt das Spiel. Zwischen den Fragen hast du 5 Sekunden Zeit, um dich vorzubereiten
+    und deine Antwort zu überlegen.
+  <p>
+    Wenn du eine falsche Antwort wählst, erhält dein Gegner einen Punkt. Punkte
+    werden vergeben, wenn du schnell und korrekt antwortest. Das Spiel besteht aus insgesamt 5 Runden, also 5 Fragen
+    pro Spiel.
+  </p>
+  <p>
+    Beachte bitte, dass es auch ein Einzelspielermodus gibt, den wir als Vorbereitungsspiel bezeichnen. Dieses Spiel
+    kann nur alleine gespielt werden und dient dazu, sich auf die Multiplayer-Herausforderungen vorzubereiten.
+  <p>
+    Es
+    handelt sich hierbei um ein reines Client-basiertes Spiel, bei dem du gegen den Computer spielst.(Wenn Fehler zu
+    Meilensteinen werden…)
+  </p>
+
+  <p>
+    Auf der Scoreboard-Seite kannst du deine Highscore, alle gewonnenen Spiele, aufeinanderfolgende Siege, perfekte
+    Siege (bei denen du alle 5 Fragen richtig beantwortet hast) und Niederlagen einsehen. <p>
+    Zudem hast du Zugriff auf dein Profil, in dem du weitere interessante Statistiken aus dem Online-Quizduell-Spiel entdecken kannst.
+  </p>
+
+  </section>
+
+  <footer>
+    <p>&copy Liefergruppe</p>
+    <p><a href="impressum.html">Impressum</a></p>
+  </footer>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  /* const socket = io();
+
+socket.on("connection", () => {
+        socket.join("room1");
+    }); */
+</script>
+</body>
 </html>
