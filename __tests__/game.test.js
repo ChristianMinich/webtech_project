@@ -372,3 +372,146 @@ describe("checkDuplicateQuestion", () => {
   });
 });
 
+/**
+ * This is the test section for userDisconnect.
+ */
+describe("userDisconnect", () => {
+  let quizGame;
+
+  beforeEach(() => {
+    /**
+     * Creates a new QuizGame instance before each test case.
+     *
+     * @type {QuizGame}
+     */
+    quizGame = new QuizGame("room1", null);
+    quizGame.players = [
+      { username: "player1" },
+      { username: "player2" },
+      { username: "player3" },
+    ];
+  });
+
+  /**
+   * Checks if the disconnected user is removed from the players array.
+   */
+  test("Removes disconnected user ", () => {
+    const username = "player2";
+    quizGame.userDisconnect(username);
+    expect(quizGame.players.length).toBe(2);
+    expect(quizGame.players.some((player) => player.username === username)).toBe(
+      false
+    );
+  });
+
+  /**
+   * Checks if the message 'username has left the game!' is logged.
+   */
+  test("Logs 'username hat das Spiel verlassen!'", () => {
+    const username = "player3";
+    const consoleSpy = jest.spyOn(console, "log");
+    quizGame.userDisconnect(username);
+    /** The console.log method was called with the expected message. */
+    expect(consoleSpy).toHaveBeenCalledWith(username + " hat das Spiel verlassen!");
+    consoleSpy.mockRestore();
+  });
+
+  /**
+   * Checks if endGame is called when there are less than 2 players remaining.
+   */
+  test("endGame() when less than 2 players", () => {
+    const username = "player1";
+    const endGameSpy = jest.spyOn(quizGame, "endGame");
+    quizGame.userDisconnect(username);
+    /** Verifies that the endGame method was called. */
+    expect(endGameSpy).toHaveBeenCalled();
+    endGameSpy.mockRestore();
+  });
+
+  /**
+   * Checks if endGame is not called when there are 2 or more players remaining.
+   */
+  test("endGame() not called when 2 or more players", () => {
+    const username = "player2";
+    const endGameSpy = jest.spyOn(quizGame, "endGame");
+    quizGame.userDisconnect(username);
+    /** Verifies that the endGame method was not called. */
+    expect(endGameSpy).not.toHaveBeenCalled();
+    endGameSpy.mockRestore();
+  });
+
+  /**
+   * Checks if no player is removed when the disconnected user does not exist in the players array.
+   */
+  test("Not removing player if user does not exist", () => {
+    /** Does not remove any player when the disconnected user does not exist. */
+    const username = "nonexistentPlayer";
+    quizGame.userDisconnect(username);
+    expect(quizGame.players.length).toBe(3);
+  });
+
+  /**
+   * Checks if 'userLeftGame' event is not emitted when there are 2 or more players remaining.
+
+  test("Not emitting 'userLeftGame' when 2 or more players", () => {
+    const username = "player3";
+    const emitSpy = jest.spyOn(quizGame.io, "to").mockReturnThis();
+    const emitEventSpy = jest.spyOn(quizGame.io, "emit");
+    quizGame.userDisconnect(username);
+    expect(emitEventSpy).not.toHaveBeenCalledWith("userLeftGame", false);
+    emitSpy.mockRestore();
+    emitEventSpy.mockRestore();
+  });
+   */
+});
+
+
+/**
+ * This is the test section for updateScoreBoard.
+ */
+describe("updateScoreBoard", () => {
+  let quizGame;
+  let emitMock;
+
+  beforeEach(() => {
+    // Create a new QuizGame instance before each test case
+    quizGame = new QuizGame("room1", null);
+    quizGame.players = [
+      { username: "player1", score: 10 },
+      { username: "player2", score: 15 },
+      { username: "player3", score: 8 },
+    ];
+
+    // Mock the emit function
+    emitMock = jest.fn();
+    quizGame.io = {
+      to: jest.fn().mockReturnThis(),
+      emit: emitMock,
+    };
+  });
+
+  /**
+   * Checks if the updated scores are sent correctly.
+   */
+  test("sends updated scores to players", () => {
+    quizGame.updateScoreBoard();
+    expect(emitMock).toHaveBeenCalledWith("scoreBoard", quizGame.players);
+  });
+
+  /**
+   * Checks if the correct room is targeted.
+   */
+  test("scoreboard of the correct room", () => {
+    quizGame.updateScoreBoard();
+    expect(quizGame.io.to).toHaveBeenCalledWith(quizGame.roomId);
+  });
+
+  /**
+   * Checks if the 'scoreBoard' event is emitted with an empty players array when there are no players.
+   */
+  test("empty players array when there are no players", () => {
+    quizGame.players = [];
+    quizGame.updateScoreBoard();
+    expect(emitMock).toHaveBeenCalledWith("scoreBoard", []);
+  });
+});
