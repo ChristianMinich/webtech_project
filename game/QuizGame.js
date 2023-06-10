@@ -276,7 +276,7 @@ class QuizGame {
     this.players = this.players.filter(
       (player) => player.username !== username
     );
-    console.log(username + " hat das Spiel verlasen!");
+    console.log(username + " hat das Spiel verlassen!");
     if (this.players.length < 2) {
       this.gameRunning = false;
       this.io.to(this.roomId).emit("userLeftGame", this.gameRunning);
