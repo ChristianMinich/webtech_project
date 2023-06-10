@@ -33,4 +33,4 @@ class MariaDB {
   }
 }
 
-module.exports = new MariaDBSingleton();
+module.exports = new MariaDB();
