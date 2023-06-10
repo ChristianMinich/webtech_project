@@ -31,6 +31,9 @@ class QuizGame {
     this.winner =[];
     /** Counter to track the number of answers submitted for a question. */
     this.countAnswers = 0;
+    //** To check if a game ist still active */
+    this.gameRunning = true;
+
 
     /** Logging the creation of a new game instance. */
     console.log("new game created " + roomId);
@@ -137,11 +140,13 @@ class QuizGame {
     
     if (this.round <= maxRounds) {
       /** Start a new round with a countdown and a new question. */
-      this.io.to(this.roomId).emit('newRoundCountdown');
-      setTimeout(() => {
+      if(this.gameRunning){
+        this.io.to(this.roomId).emit('newRoundCountdown');
+        setTimeout(() => {
         this.newQuestion();
       }, 5000);
       this.countAnswers = 0;
+      }
     } else {
       /** End the game if the maximum number of rounds is reached. */
       console.log("Spiel zuende");
@@ -245,7 +250,8 @@ class QuizGame {
     this.players = this.players.filter(player => player.username !== username);
     console.log(username + " hat das Spiel verlasen!");
     if(this.players.length < 2){
-      this.io.to(this.roomId).emit('userLeftGame');
+      this.gameRunning = false;
+      this.io.to(this.roomId).emit('userLeftGame', this.gameRunning);
       this.endGame();
     }
 
