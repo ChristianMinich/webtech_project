@@ -1,8 +1,11 @@
 {
-  "plugins": [],
+  "plugins": [
+    "plugins/markdown",
+    "plugins/summarize"
+  ],
   "recurseDepth": 10,
   "source": {
-    "include": ["C:\\devNew\\webtech_project\\game"],
+    "include": ["A:\\webtech_project\\game\\"],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
   },
