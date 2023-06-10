@@ -8,22 +8,14 @@ let gamePageLoadedCount = 0;
 const db = database.getConnection();
 
 module.exports = (io) => {
-  const users = {}; // Sichern der angemeldeten Clients u.A. für Nutzerlisten und Namensänderungen.
-  const user = [];
+  const users = {};
   const MAX_PLAYERS_PER_ROOM = 2;
   const queue = [];
-  const playersinRoom = [];
   const playersinGame = [];
   const runningGames = [];
 
-  console.log("hello there");
-
   io.on("connection", (socket) => {
-    //console.log(socket.id);
-    //console.log(socket.request.session);
     users[socket.id] = socket.request.connection.remoteAddress;
-    //console.log(users);
-    // Ereignisbehandlung: Neuer Benutzer meldet sich an.
     socket.on("new-user", (name) => {
       users[socket.id] = name;
       socket.broadcast.emit("user-connected", name);
@@ -31,9 +23,6 @@ module.exports = (io) => {
     });
 
     socket.on("achievement_gained", (username) => {
-      //sql query get achievement gained by username return url
-      //console.log("achievement gained accessed! " + username);
-
       const sqlQuery = `
         SELECT a.FILE_NAME
         FROM ACHIEVEMENT_GAINED ag
@@ -45,7 +34,7 @@ module.exports = (io) => {
           .query(sqlQuery)
           .then((rows) => {
             try {
-              if (rows[0].FILE_NAME !== undefined) {
+              if (typeof rows[0].FILE_NAME !== undefined) {
                 const achievementName = rows[0].FILE_NAME;
                 socket.emit("getAchievement", String(achievementName));
 
@@ -57,9 +46,7 @@ module.exports = (io) => {
                     console.log(error);
                   });
               }
-            } catch (error) {
-              console.log(error);
-            }
+            } catch (error) {}
           })
           .catch((error) => {
             console.log(error);
@@ -86,7 +73,6 @@ module.exports = (io) => {
         }
         queue.push({ socket: socket, username: username });
       }
-      //console.log("In der Warteschlange: " + socket.id);
       if (queue.length >= MAX_PLAYERS_PER_ROOM) {
         const roomId = generateRoomId();
         const players = [];
@@ -108,18 +94,15 @@ module.exports = (io) => {
           const playerId = playerSocket.id;
           players.push({ id: playerId, username: playerUsername, score: 0 });
 
-          // Spieler dem Raum hinzufügen
           playerSocket.join(roomId);
 
           console.log(players);
           console.log(roomId);
         }
-        // Raum erstellen und speichern
         const room = { players: players, gameStarted: false };
         rooms.set(roomId, room);
 
-        //Weiterleitung
-        io.to(roomId).emit("joinGame", roomId); //usernames speichern an den der emit geht, verhindern das dritte einem spiel beitreten können
+        io.to(roomId).emit("joinGame", roomId);
       } else {
       }
     });
@@ -129,16 +112,16 @@ module.exports = (io) => {
 
       const room = rooms.get(roomId);
 
-      if (!room.players.some(player => player.username === username)) {
+      if (!room.players.some((player) => player.username === username)) {
         console.log("Flascher User im Game! " + username);
         console.log(socket.id);
-        io.to(socket.id).emit('wrongUser');
+        io.to(socket.id).emit("wrongUser");
         return;
       }
-      const user ={
+      const user = {
         socketId: socket.id,
         username: username,
-        roomId: roomId
+        roomId: roomId,
       };
       runningGames.push(user);
       console.log(user.socketId + "|" + user.username);
@@ -147,7 +130,6 @@ module.exports = (io) => {
       gamePageLoadedCount++;
       playersinGame.push(username);
       console.log(gamePageLoadedCount + " Spieler Da! " + username);
-      // Überprüfen, ob alle Spieler die Bestätigungsnachricht gesendet haben
       if (playersinGame.length === MAX_PLAYERS_PER_ROOM) {
         gameMap.set(roomId, new QuizGame(roomId, io));
         gamePageLoadedCount = 0;
@@ -170,10 +152,8 @@ module.exports = (io) => {
     socket.on("questionSelected", (roomId, username, answer) => {
       const currGame = gameMap.get(roomId);
       currGame.answerQuestion(username, answer);
-      //console.log("Room: " + roomId +" | User: " + username + " hat gewählt: " + answer );
     });
 
-    // Ereignisbehandlung: Nachricht wurde gesendet (Vom Client an Server).
     socket.on("send-chat-message", (message) => {
       socket.broadcast.emit("chat-message", {
         message: message,
@@ -181,7 +161,6 @@ module.exports = (io) => {
       });
     });
 
-    // Ereignisbehandlung: Name wurde geändert.
     socket.on("send-new-username", (name) => {
       let oldName = users[socket.id];
       users[socket.id] = name;
@@ -196,25 +175,29 @@ module.exports = (io) => {
         "User: " + username + " hat das Spiel " + roomId + " verlassen"
       );
     });
-    // Ereignisbehandlung: Verbindung getrennt.
     socket.on("disconnect", () => {
       console.log("user disconected");
-      const disconnectedPlayer = queue.find((item) => item.socket.id === socket.id);
+      const disconnectedPlayer = queue.find(
+        (item) => item.socket.id === socket.id
+      );
       if (disconnectedPlayer) {
         const username = disconnectedPlayer.username;
-        const playerIndex = queue.findIndex((item) => item.username === username);
+        const playerIndex = queue.findIndex(
+          (item) => item.username === username
+        );
         if (playerIndex !== -1) {
           queue.splice(playerIndex, 1);
-          console.log("Player disconnected and removed from queue: " + username);
+          console.log(
+            "Player disconnected and removed from queue: " + username
+          );
         }
       }
-      const player = runningGames.find(user => user.socketId === socket.id);
-      if(player){
+      const player = runningGames.find((user) => user.socketId === socket.id);
+      if (player) {
         console.log("Spieler hat das game verlassen");
         const currGame = gameMap.get(player.roomId);
         currGame.userDisconnect(player.username);
       }
-
     });
   });
 };
