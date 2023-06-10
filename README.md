@@ -1,5 +1,3 @@
-Certainly! Here's a sample README.md for your Node.js Express quiz game:
-
 # QuizGame
 
 QuizGame is a Node.js web application built with Express that allows users to play an interactive quiz game.
