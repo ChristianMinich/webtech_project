@@ -20,7 +20,6 @@ const { error } = require("console");
  */
 router.get("/", mw.dashboard, (req, res) => {
   res.status(200).sendFile(path.resolve("public/index.html"));
-  
 });
 
 /**
@@ -87,7 +86,7 @@ router.get("/game", mw.authToken, (req, res) => {
  * @param {Object} res - Express response object.
  * @returns {void}
  */
-router.get("/joinQueue", mw.authToken, mw.avatar,(req, res) => {
+router.get("/joinQueue", mw.authToken, mw.avatar, (req, res) => {
   const username = req.username;
   const avatar = req.avatar;
   res.render("queue", { username: username, avatar: avatar });
@@ -107,24 +106,29 @@ router.get("/game/:roomID", mw.authToken, mw.avatar, (req, res) => {
   const username = req.username;
   const avatar = req.avatar;
 
-  db.then(conn => {
-    conn.query("SELECT ROOM_ID FROM ACTIVE_GAME WHERE ROOM_ID = ?", [roomID])
-    .then(rows => {
-      try{
-        console.log(rows);
-        if(rows.length === 0) {
-          res.status(401).redirect("/");
-        } else {
-          res.render("game", { roomID: roomID, username: username, avatar: avatar });
+  db.then((conn) => {
+    conn
+      .query("SELECT ROOM_ID FROM ACTIVE_GAME WHERE ROOM_ID = ?", [roomID])
+      .then((rows) => {
+        try {
+          console.log(rows);
+          if (rows.length === 0) {
+            res.status(401).redirect("/");
+          } else {
+            res.render("game", {
+              roomID: roomID,
+              username: username,
+              avatar: avatar,
+            });
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
+      })
+      .catch((error) => {
         console.log(error);
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  })
+      });
+  });
 });
 
 //SELECT DISTINCT USERNAME, HIGHSCORE FROM USER WHERE USERNAME = ?
@@ -142,7 +146,7 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
   const username = req.params.username;
   const user = req.username;
   const avatar = req.avatar;
-  
+
   const sqlQuery = `
   SELECT DISTINCT U.USER_ID, U.USERNAME, U.HIGHSCORE, U.WINS, U.CONCURRENT_WINS, U.PERFECT_WINS, U.LOSES, A.FILE_PATH
   FROM USER U
@@ -150,14 +154,10 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
   WHERE U.USERNAME = '${username}';
   `;
   db.then((conn) => {
-    conn
-      .query(
-        sqlQuery
-      )
-      .then((rows) => {
-        try {
-          const profile_avatar = rows[0].FILE_PATH;
-          const achievement_query = `
+    conn.query(sqlQuery).then((rows) => {
+      try {
+        const profile_avatar = rows[0].FILE_PATH;
+        const achievement_query = `
           SELECT
           a.FILE_NAME
           FROM
@@ -167,18 +167,25 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
           ua.USER_ID = '${rows[0].USER_ID}';
 
           `;
-          conn.query(achievement_query)
-          .then(achievements => {
+        conn
+          .query(achievement_query)
+          .then((achievements) => {
             console.log(achievements);
-            res.render("profile", { achievement: achievements, rows: rows, username: user, profile_avatar: profile_avatar, avatar: avatar });
+            res.render("profile", {
+              achievement: achievements,
+              rows: rows,
+              username: user,
+              profile_avatar: profile_avatar,
+              avatar: avatar,
+            });
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
-          })
-        } catch (error) {
-          console.log(error);
-        }
-      });
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    });
   });
 });
 
@@ -343,12 +350,14 @@ router.get("/scoreboard", mw.authToken, mw.avatar, (req, res) => {
 
   db.then((conn) => {
     conn
-      .query(
-        sqlQuery
-      )
+      .query(sqlQuery)
       .then((rows) => {
         //res.json(rows);
-        res.render("scoreboard", { rows: rows, username: username, avatar: avatar });
+        res.render("scoreboard", {
+          rows: rows,
+          username: username,
+          avatar: avatar,
+        });
         conn.end();
       })
       .catch((error) => {
@@ -382,9 +391,4 @@ router.get("/video", (req, res) => {
   res.sendFile(videoPath);
 });
 
-/*
-router.get("/registered", (req, res) => {
-  res.status(200).sendFile(path.resolve("public/registered.html"));
-});
-*/
 module.exports = router;
