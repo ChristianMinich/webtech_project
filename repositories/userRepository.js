@@ -1,5 +1,4 @@
 const database = require("./index");
-
 const db = database.getConnection();
 
 /**

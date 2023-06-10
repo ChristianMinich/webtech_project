@@ -1,5 +1,4 @@
-const database = require('./index');
-
+const database = require("./index");
 const db = database.getConnection();
 
 /**
@@ -9,21 +8,20 @@ const db = database.getConnection();
  * @returns {Promise<unknown>} - A Promise resolving to an array of question rows.
  */
 function getQuestions(questionID) {
-    return new Promise((resolve, reject) => {
-        db.then(conn => {
-            conn.query("SELECT * FROM QUESTION WHERE QUESTION_ID = ?", [questionID])
-                .then(rows => {
-                    resolve(rows);
-                })
-                .catch(error => {
-                    reject(error);
-                })
+  return new Promise((resolve, reject) => {
+    db.then((conn) => {
+      conn
+        .query("SELECT * FROM QUESTION WHERE QUESTION_ID = ?", [questionID])
+        .then((rows) => {
+          resolve(rows);
         })
-        .catch(error => {
-            reject(error);
-        })
+        .catch((error) => {
+          reject(error);
+        });
+    }).catch((error) => {
+      reject(error);
     });
+  });
 }
-
 
 module.exports = { getQuestions };
