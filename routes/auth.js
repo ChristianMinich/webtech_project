@@ -58,6 +58,17 @@ router.get("/logout", (req, res) => {
 });
 
 /**
+ * GET route handler for the imprint.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
+router.get("/impressum", (req, res) => {
+  res.status(200).sendFile(path.resolve("public/impressum.html"));
+});
+
+/**
  * GET route handler for accessing the registration page.
  *
  * @param {Object} req - Express request object.
