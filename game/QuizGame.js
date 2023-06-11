@@ -284,7 +284,7 @@ class QuizGame {
                     conn
                       .query(
                         "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
-                        [currUserID, 3]
+                        [currUserID, 4]
                       )
                       .then((rows) => {
                         console.log(rows);
@@ -295,7 +295,7 @@ class QuizGame {
                     conn
                       .query(
                         "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
-                        [player.username, 3]
+                        [player.username, 4]
                       )
                       .then((rows) => {
                         console.log(rows);
@@ -341,6 +341,52 @@ class QuizGame {
             ])
             .then((rows) => {
               console.log(rows);
+            });
+
+          /** First Loss Achievement */
+          conn
+            .query("SELECT USER_ID, LOSES FROM USER WHERE USERNAME = ?", [
+              player.username,
+            ])
+            .then((rows) => {
+              if (rows.length !== 0) {
+                try {
+                  const lossCount = rows[0].LOSES;
+                  const currUserID = rows[0].USER_ID;
+
+                  if (lossCount === 0) {
+                    conn
+                      .query(
+                        "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
+                        [currUserID, 3]
+                      )
+                      .then((rows) => {
+                        console.log(rows);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+
+                    /** Player earned first Loss Achievement (ACHIEVEMENT_GAINED) */
+                    conn
+                      .query(
+                        "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
+                        [player.username, 3]
+                      )
+                      .then((rows) => {
+                        console.log(rows);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  }
+                } catch (error) {
+                  console.log(error);
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
             });
         }
       });
