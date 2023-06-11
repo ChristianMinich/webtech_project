@@ -109,6 +109,7 @@ jest --collect-coverage
 ├── sockets
 │   └── index.js
 ├── views
+│   ├── achievements.ejs
 │   ├── dashboard.ejs
 │   ├── game.ejs
 │   ├── navbar.ejs
