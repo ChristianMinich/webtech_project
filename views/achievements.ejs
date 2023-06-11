@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Profile of <%= username%>
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Allgemeine Stile */
+    body {
+      margin: 0;
+      background: url("/assets/backgrounds/profileBackground.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      padding: 20px;
+      display: marker;
+      min-height: 100vh;
+      width: auto;
+      height: auto;
+      background-position-x: center;
+      background-position-y: center;
+    }
+
+    h1,
+    h2 {
+      text-align: center;
+      color: white;
+      /* Textfarbe in Weiß */
+    }
+
+    .profile img {
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Profil-Container */
+    .profile {
+      position: relative;
+      border-radius: 50%;
+      border-color: blueviolet;
+      border-style: solid;
+      border-width: 5px;
+      overflow: hidden;
+      width: 72px;
+      height: 72px;
+      margin: 0 auto;
+    }
+
+    .profile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /*
+    .profile img {
+      display: block;
+      margin: 0 auto;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+*/
+    /* Tabelle */
+    table {
+      margin: 10px auto;
+      max-width: 600px;
+      width: 100%;
+      border-collapse: collapse;
+      background-color: rgba(128, 128, 128, 0.6);
+      border-radius: 5px;
+      color: white;
+      /* Textfarbe in Weiß */
+      text-align: center;
+    }
+    
+    th{
+      color: #6b5b95;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+
+    thead {
+      background-color: rgba(128, 128, 128, 0.8);
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: rgba(128, 128, 128, 0.6);
+    }
+
+    /* Achievements-Tabelle */
+    table:last-child {
+      margin-top: 20px;
+    }
+
+    table:last-child th {
+      text-align: left;
+    }
+
+    table a{
+      text-decoration: none;
+      color: white;
+    }
+
+    /* Media Queries für responsives Design */
+    @media screen and (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
+
+      h2 {
+        font-size: 16px;
+      }
+
+    }
+
+    @media screen and (max-width:600px) {
+
+      .scoreBoard table {
+        max-width: fit-content;
+      }
+
+      .scoreBoard table,
+      tr,
+      td {
+        padding: 0;
+      }
+
+      .scoreBoard thead {
+        display: none;
+      }
+
+      .scoreBoard tr {
+        float: left;
+        width: 100%;
+        
+      }
+
+      .scoreBoard td {
+        float: left;
+        width: 100%;
+        padding: 1em;
+
+      }
+
+      .scoreBoard td::before {
+        content: attr(data-label);
+        word-wrap: break-word;
+        float: left;
+        font-weight: bold;
+        margin: -1em 1em -1em -1em;
+      }
+      
+
+    }
+
+    .contentContainer {
+      /*background: rgba(169, 169, 169, 0.65);*/
+      /*background: rgba(87,7,97, 0.45);*/
+      background: rgba(191, 191, 191, 0.5);
+      padding: 25px;
+      border-radius: 25px;
+      position: absolute;
+      left: 5%;
+      top: 15%;
+      right: 5%;
+      bottom: 5%;
+      height: fit-content;
+      margin: 0 auto;
+      padding: 5%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      max-width: fit-content;
+      margin-top: 5%;
+    }
+
+    .image-container {
+      width: 100vw;
+      overflow: hidden;
+      padding: 2%;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('navbar') %>
+    <div class="contentContainer">
+        
+      <table>
+        <thead>
+          <tr>
+            <th>Achievments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% achievement.forEach(function(achievement) { %>
+            <tr>
+              <td class="image-container"><img src="/assets/achievements/<%= achievement.FILE_NAME %>"></td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+    </div>
+</body>
+
+</html>

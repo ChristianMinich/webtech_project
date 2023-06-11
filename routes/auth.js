@@ -201,157 +201,195 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
 });
 
 /**
- * LOGIN.
- * POST route handler for user authentication.
- * This route handler is responsible for authenticating a user based on the provided username and password.
+ * GET route handler for accessing a all achievments.
+ * It requires authentication token and avatar middleware functions to be executed before
+ * handling the request.
  *
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  * @returns {void}
  */
-router.post("/api/auth", (req, res) => {
-  const { username, password } = req.body;
-  /** Check the provided username and password against the database. */
-  db.then((conn) => {
-    conn
-      .query(
-        "SELECT USER_ID, USERNAME, PASSWORD FROM USER WHERE USERNAME = ?",
-        [username]
-      )
-      .then((rows) => {
-        if (rows.length === 0) {
-          res.status(401).send("Wrong Login Credentials!");
-        } else {
-          try {
-            const id = rows[0].USER_ID;
-            const username = rows[0].USERNAME;
-            const password_fromDB = rows[0].PASSWORD;
+router.get("/achievements", mw.authToken, mw.avatar, (req, res) => {
 
-            /** Compare the provided password with the hashed password stored in the database. */
-            bcrypt.compare(password, password_fromDB).then((valid) => {
-              if (valid) {
-                try {
-                  /** Generate a JWT token for authentication. */
-                  const token = jwt.sign(
-                    { id, username },
-                    process.env.JWT_SECRET,
-                    {
-                      algorithm: "HS256",
-                      expiresIn: "12h",
-                      subject: "auth_token",
-                    }
-                  );
-                  /** Set the JWT token as a cookie and redirect to the dashboard. */
-                  res.cookie("accessToken", token, { httpOnly: false });
-                  res.status(200).redirect("/");
-                } catch (error) {
-                  res.status(401).send("Wrong Login Credentials!");
-                }
-              } else {
-                res.status(401).send("Wrong Login Credentials!");
-              }
-            });
-          } catch (error) {
-            res.status(401).send("Wrong Login Credentials!");
-          }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        res.status(401).send("Wrong Login Credentials!");
-      });
-  });
-});
-
-/**
- * POST route handler for user registration.
- * This route handler is responsible for registering a new user.
- * It checks if the username already exists in the database.
- *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @returns {void}
- */
-router.post("/api/auth/register", (req, res) => {
-  const { username, password } = req.body;
-
-  // To check a password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
-
-  /*
-  if(!pw.CheckPassword(String(password))){
-    res.status(400).send("Password does not match the Requirements!");
-  } */
-
-  db.then((conn) => {
-    conn
-      .query("SELECT USERNAME FROM USER WHERE USERNAME = ?", [username])
-      .then((rows) => {
-        try {
-          if (rows[0].USERNAME !== 0) {
-            return res.send("User already exists");
-          }
-        } catch (error) {
-          let hashedPW = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-          const avatarID = Math.floor(Math.random() * 115 + 1);
-          conn
-            .query(
-              "INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID, WINS, CONCURRENT_WINS, PERFECT_WINS, LOSES) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-              [username, hashedPW, 0, avatarID, 0, 0, 0, 0]
-            )
-            .then((rows) => {
-              conn
-                .query("SELECT USER_ID FROM USER WHERE USERNAME = ?", [
-                  username,
-                ])
-                .then((rows) => {
-                  try {
-                    if (rows.length !== 0) {
-                      let id = rows[0].USER_ID;
-
-                      const token = jwt.sign(
-                        { id, username },
-                        process.env.JWT_SECRET,
-                        {
-                          algorithm: "HS256",
-                          expiresIn: "12h",
-                          subject: "auth_token",
-                        }
-                      );
-
-                      res.cookie("accessToken", token, { httpOnly: false });
-                      res.status(200).redirect("/index");
-                    } else {
-                      res.status(400).send("An Error has Occured!");
-                    }
-                  } catch (error) {
-                    console.log(error);
-                  }
-                });
-            })
-            .catch((error) => {
-              console.log(error);
-              res.status(400).send(error);
-            });
-        }
-      });
-  });
-});
-
-/**
- * GET route handler for accessing the scoreboard.
- * This route handler is responsible for accessing the scoreboard page.
- * It requires authentication token middleware function to be executed before handling the request.
- * The top 50 users with the highest scores are retrieved from the database and rendered on the scoreboard page.
- *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @returns {void}
- */
-router.get("/scoreboard", mw.authToken, mw.avatar, (req, res) => {
-  const username = req.username;
+  const user = req.username;
   const avatar = req.avatar;
 
   const sqlQuery = `
+  SELECT FILE_NAME FROM ACHIEVEMENT;
+  `;
+  db.then((conn) => {
+
+    conn
+      .query(sqlQuery)
+      .then((achievement) => {
+        console.log(achievement);
+        if(achievement.length !== 0){
+          res.render("achievements", {
+            username: user,
+            avatar: avatar,
+            achievement: achievement,
+          });
+        }
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+});
+
+  /**
+   * LOGIN.
+   * POST route handler for user authentication.
+   * This route handler is responsible for authenticating a user based on the provided username and password.
+   *
+   * @param {Object} req - Express request object.
+   * @param {Object} res - Express response object.
+   * @returns {void}
+   */
+  router.post("/api/auth", (req, res) => {
+    const { username, password } = req.body;
+    /** Check the provided username and password against the database. */
+    db.then((conn) => {
+      conn
+        .query(
+          "SELECT USER_ID, USERNAME, PASSWORD FROM USER WHERE USERNAME = ?",
+          [username]
+        )
+        .then((rows) => {
+          if (rows.length === 0) {
+            res.status(401).send("Wrong Login Credentials!");
+          } else {
+            try {
+              const id = rows[0].USER_ID;
+              const username = rows[0].USERNAME;
+              const password_fromDB = rows[0].PASSWORD;
+
+              /** Compare the provided password with the hashed password stored in the database. */
+              bcrypt.compare(password, password_fromDB).then((valid) => {
+                if (valid) {
+                  try {
+                    /** Generate a JWT token for authentication. */
+                    const token = jwt.sign(
+                      { id, username },
+                      process.env.JWT_SECRET,
+                      {
+                        algorithm: "HS256",
+                        expiresIn: "12h",
+                        subject: "auth_token",
+                      }
+                    );
+                    /** Set the JWT token as a cookie and redirect to the dashboard. */
+                    res.cookie("accessToken", token, { httpOnly: false });
+                    res.status(200).redirect("/");
+                  } catch (error) {
+                    res.status(401).send("Wrong Login Credentials!");
+                  }
+                } else {
+                  res.status(401).send("Wrong Login Credentials!");
+                }
+              });
+            } catch (error) {
+              res.status(401).send("Wrong Login Credentials!");
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          res.status(401).send("Wrong Login Credentials!");
+        });
+    });
+  });
+
+  /**
+   * POST route handler for user registration.
+   * This route handler is responsible for registering a new user.
+   * It checks if the username already exists in the database.
+   *
+   * @param {Object} req - Express request object.
+   * @param {Object} res - Express response object.
+   * @returns {void}
+   */
+  router.post("/api/auth/register", (req, res) => {
+    const { username, password } = req.body;
+
+    // To check a password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
+
+    /*
+    if(!pw.CheckPassword(String(password))){
+      res.status(400).send("Password does not match the Requirements!");
+    } */
+
+    db.then((conn) => {
+      conn
+        .query("SELECT USERNAME FROM USER WHERE USERNAME = ?", [username])
+        .then((rows) => {
+          try {
+            if (rows[0].USERNAME !== 0) {
+              return res.send("User already exists");
+            }
+          } catch (error) {
+            let hashedPW = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+            const avatarID = Math.floor(Math.random() * 115 + 1);
+            conn
+              .query(
+                "INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID, WINS, CONCURRENT_WINS, PERFECT_WINS, LOSES) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                [username, hashedPW, 0, avatarID, 0, 0, 0, 0]
+              )
+              .then((rows) => {
+                conn
+                  .query("SELECT USER_ID FROM USER WHERE USERNAME = ?", [
+                    username,
+                  ])
+                  .then((rows) => {
+                    try {
+                      if (rows.length !== 0) {
+                        let id = rows[0].USER_ID;
+
+                        const token = jwt.sign(
+                          { id, username },
+                          process.env.JWT_SECRET,
+                          {
+                            algorithm: "HS256",
+                            expiresIn: "12h",
+                            subject: "auth_token",
+                          }
+                        );
+
+                        res.cookie("accessToken", token, { httpOnly: false });
+                        res.status(200).redirect("/index");
+                      } else {
+                        res.status(400).send("An Error has Occured!");
+                      }
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  });
+              })
+              .catch((error) => {
+                console.log(error);
+                res.status(400).send(error);
+              });
+          }
+        });
+    });
+  });
+
+  /**
+   * GET route handler for accessing the scoreboard.
+   * This route handler is responsible for accessing the scoreboard page.
+   * It requires authentication token middleware function to be executed before handling the request.
+   * The top 50 users with the highest scores are retrieved from the database and rendered on the scoreboard page.
+   *
+   * @param {Object} req - Express request object.
+   * @param {Object} res - Express response object.
+   * @returns {void}
+   */
+  router.get("/scoreboard", mw.authToken, mw.avatar, (req, res) => {
+    const username = req.username;
+    const avatar = req.avatar;
+
+    const sqlQuery = `
   SELECT DISTINCT U.USERNAME, U.HIGHSCORE, U.WINS, U.CONCURRENT_WINS, U.PERFECT_WINS, U.LOSES, A.FILE_PATH
   FROM USER U
   INNER JOIN AVATAR A ON U.AVATAR_ID = A.AVATAR_ID
@@ -359,47 +397,47 @@ router.get("/scoreboard", mw.authToken, mw.avatar, (req, res) => {
   LIMIT 50;
   `;
 
-  db.then((conn) => {
-    conn
-      .query(sqlQuery)
-      .then((rows) => {
-        //res.json(rows);
-        res.render("scoreboard", {
-          rows: rows,
-          username: username,
-          avatar: avatar,
+    db.then((conn) => {
+      conn
+        .query(sqlQuery)
+        .then((rows) => {
+          //res.json(rows);
+          res.render("scoreboard", {
+            rows: rows,
+            username: username,
+            avatar: avatar,
+          });
+          conn.end();
+        })
+        .catch((error) => {
+          console.log(error);
+          conn.end();
+          res.status(500).json({ error: "Internal Server Error" });
         });
-        conn.end();
-      })
-      .catch((error) => {
-        console.log(error);
-        conn.end();
-        res.status(500).json({ error: "Internal Server Error" });
-      });
-  }).catch((error) => {
-    console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    });
   });
-});
 
-/**
- * GET route handler for accessing the video file of Obi Wan Kenobi.
- * The video file is located in the "public/assets" directory with the filename "registered.mp4".
- *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @returns {void}
- */
-router.get("/video", (req, res) => {
-  const videoPath = path.resolve(
-    __dirname,
-    "..",
-    "public",
-    "assets",
-    "backgrounds",
-    "registered.mp4"
-  );
-  res.sendFile(videoPath);
-});
+  /**
+   * GET route handler for accessing the video file of Obi Wan Kenobi.
+   * The video file is located in the "public/assets" directory with the filename "registered.mp4".
+   *
+   * @param {Object} req - Express request object.
+   * @param {Object} res - Express response object.
+   * @returns {void}
+   */
+  router.get("/video", (req, res) => {
+    const videoPath = path.resolve(
+      __dirname,
+      "..",
+      "public",
+      "assets",
+      "backgrounds",
+      "registered.mp4"
+    );
+    res.sendFile(videoPath);
+  });
 
-module.exports = router;
+  module.exports = router;

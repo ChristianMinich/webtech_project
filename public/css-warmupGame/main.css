@@ -1,6 +1,6 @@
 body {
 
-  background: url("/assets/backgrounds/screens-1683513.jpg");
+  background: url("/assets/backgrounds/index.jpg");
   background-size: cover;
   background-position-x: center;
   background-position-y: center;
@@ -34,6 +34,9 @@ h6 {
 }
 h1 {
   font-size: 47px;
+}
+.smallHeadline{
+  display: none;
 }
 
 .contentContainer {
@@ -71,6 +74,7 @@ h1 {
     animation: pulsate 1s ease-in-out ;
     animation-iteration-count: infinite; */
 }
+
 @keyframes pulsate {
   0% {
     border-color: #fff;
@@ -203,11 +207,14 @@ footer p a {
   text-decoration: none;
   padding-left: 50px;
 }
-@media only screen and (max-width: 800px) {
-  body {
-    background-image: url("/assets/backgrounds/screens-1683513.jpg");
+@media only screen and (max-width: 600px) {
+  
+  h1{
+    display: none;
   }
-
+  .smallHeadline{
+    display: block;
+  }
   .textPanel {
     height: auto;
     padding: 15px;
@@ -229,8 +236,8 @@ footer p a {
   }
 
   .square {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     margin: 10px;
     background-color: #f2f2f2;
   }
