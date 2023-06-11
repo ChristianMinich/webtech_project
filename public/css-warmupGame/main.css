@@ -88,6 +88,14 @@ h1 {
   justify-content: center;
 }
 
+.containerImpressum {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  height: vh;
+}
+
 .square:nth-child(odd) {
   float: left;
 }
