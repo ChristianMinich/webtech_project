@@ -4,6 +4,7 @@ body {
     text-align: center;
     padding: 20px;
     background: url("/assets/backgrounds/dashboard.jpg");
+    background-attachment: fixed;
     display: marker;
     min-height: 100vh;
     width: auto;
