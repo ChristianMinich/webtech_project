@@ -30,10 +30,18 @@ window.addEventListener("load", function () {
             usernameInput.classList.remove("error");
             usernameInput.offsetWidth;
             usernameInput.classList.add("error");
+            var element = document.querySelector(".passwordHint");
+              if (element) {
+              element.style.display = "block";
+            }
           } else if (msg === "password not set" || msg === "wrong password") {
             passwordInput.classList.remove("error");
             passwordInput.offsetWidth;
             passwordInput.classList.add("error");
+            var element = document.querySelector(".passwordHint");
+              if (element) {
+              element.style.display = "block";
+            }
           } else {
             usernameInput.classList.remove("error");
             passwordInput.classList.remove("error");
@@ -41,6 +49,10 @@ window.addEventListener("load", function () {
             passwordInput.offsetWidth;
             usernameInput.classList.add("error");
             passwordInput.classList.add("error");
+            var element = document.querySelector(".passwordHint");
+              if (element) {
+              element.style.display = "block";
+            }
           }
         }
       })
