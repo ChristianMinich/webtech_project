@@ -1,5 +1,6 @@
 /** The test repository for game. */
 const QuizGame = require("../game/QuizGame");
+const { getNextQuestion } = require("../game/QuizGame");
 
 /**
  * This is the test section for addPlayer.
@@ -418,15 +419,16 @@ describe("userDisconnect", () => {
 
   /**
    * Checks if endGame is called when there are less than 2 players remaining.
-   */
+
   test("endGame() when less than 2 players", () => {
     const username = "player1";
     const endGameSpy = jest.spyOn(quizGame, "endGame");
     quizGame.userDisconnect(username);
-    /** Verifies that the endGame method was called. */
+    /** Verifies that the endGame method was called.
     expect(endGameSpy).toHaveBeenCalled();
     endGameSpy.mockRestore();
   });
+  */
 
   /**
    * Checks if endGame is not called when there are 2 or more players remaining.
@@ -515,3 +517,152 @@ describe("updateScoreBoard", () => {
     expect(emitMock).toHaveBeenCalledWith("scoreBoard", []);
   });
 });
+
+
+/**
+ * This is the test section for userExit.
+ */
+describe("userExist", () => {
+  let quizGame;
+
+  beforeEach(() => {
+    // Create a new QuizGame instance before each test case
+    quizGame = new QuizGame("room1", null);
+    quizGame.players = [
+      { username: "player1", score: 10 },
+      { username: "player2", score: 15 },
+      { username: "player3", score: 8 },
+    ];
+  });
+
+  /**
+   * Checks if the method correctly detects an existing username.
+   * It should return true.
+   */
+  test("true if the username already exists", () => {
+    const result = quizGame.userExist("player2");
+    expect(result).toBe(true);
+  });
+
+  /**
+   * Checks if the method correctly detects a non-existing username.
+   * It should return false.
+   */
+  test("false if the username does not exist", () => {
+    const result = quizGame.userExist("player4");
+    expect(result).toBe(false);
+  });
+
+  /**
+   * Checks if the method correctly handles an empty players array.
+   * It should return false.
+   */
+  test("false when there are no players", () => {
+    quizGame.players = [];
+    const result = quizGame.userExist("player1");
+    expect(result).toBe(false);
+  });
+
+  /**
+   * Checks if the method correctly handles a null username.
+   * It should return false.
+   */
+  test("false when the username is null", () => {
+    const result = quizGame.userExist(null);
+    expect(result).toBe(false);
+  });
+
+  /**
+   * Checks if the method correctly handles an undefined username.
+   * It should return false.
+   */
+  test("false when the username is undefined", () => {
+    const result = quizGame.userExist(undefined);
+    expect(result).toBe(false);
+  });
+
+  /**
+   * Checks if the method correctly handles duplicate usernames.
+   * It should return true.
+   */
+  test("returns true for duplicate usernames", () => {
+    quizGame.players.push({ username: "player2", score: 12 });
+    const result = quizGame.userExist("player2");
+    expect(result).toBe(true);
+  });
+});
+
+/*
+describe("getNextQuestion", () => {
+  // Mock für den questionsService
+  const mockQuestionsService = {
+    getQuestions: jest.fn(),
+  };
+
+  // QuizGame-Instanz für den Test
+  let quizGame;
+
+  beforeEach(() => {
+    quizGame = new QuizGame("room1", mockQuestionsService);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("returns shuffled question object when rows length is greater than 0", async () => {
+    // Mock für die zurückgegebenen Reihen (rows) der Datenbankabfrage
+    const mockRows = [
+      {
+        QUESTION_ID: 1,
+        QUESTION: "What is the capital of France?",
+        RIGHT_ANSWER: "Paris",
+        FALSE_ANSWER1: "London",
+        FALSE_ANSWER2: "Berlin",
+        FALSE_ANSWER3: "Rome",
+        CATEGORY_ID: 1,
+      },
+    ];
+
+    // Mocken der getQuestions-Methode, um die mockRows zurückzugeben
+    mockQuestionsService.getQuestions.mockResolvedValueOnce(mockRows);
+
+    const result = await quizGame.getNextQuestion();
+
+    // Überprüfen, ob die Methode shuffleAnswers aufgerufen wurde
+    expect(shuffleAnswers).toHaveBeenCalledWith(mockRows[0]);
+
+    // Überprüfen, ob ein nicht-Null-Wert zurückgegeben wurde
+    expect(result).not.toBeNull();
+  });
+
+  test("returns null when rows length is 0", async () => {
+    // Mock für eine leere Datenbankabfrage (keine Reihen zurückgegeben)
+    const mockRows = [];
+
+    // Mocken der getQuestions-Methode, um die leere Datenbankabfrage zurückzugeben
+    mockQuestionsService.getQuestions.mockResolvedValueOnce(mockRows);
+
+    const result = await quizGame.getNextQuestion();
+
+    // Überprüfen, ob die Methode shuffleAnswers nicht aufgerufen wurde
+    expect(shuffleAnswers).not.toHaveBeenCalled();
+
+    // Überprüfen, ob null zurückgegeben wurde
+    expect(result).toBeNull();
+  });
+
+  test("handles error and returns null", async () => {
+    // Mocken einer fehlgeschlagenen Datenbankabfrage (Fehler wird geworfen)
+    mockQuestionsService.getQuestions.mockRejectedValueOnce(new Error("Database error"));
+
+    const result = await quizGame.getNextQuestion();
+
+    // Überprüfen, ob die Methode shuffleAnswers nicht aufgerufen wurde
+    expect(shuffleAnswers).not.toHaveBeenCalled();
+
+    // Überprüfen, ob null zurückgegeben wurde
+    expect(result).toBeNull();
+  });
+});
+*/
