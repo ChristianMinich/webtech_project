@@ -58,21 +58,25 @@ describe("addPlayer", () => {
   });
 
 
+  /**
+   * Checks if a player ist not added while trying to add
+   * a player with username with value of null.
+   */
   test("Add player with null username", () => {
     const username = null;
-
     this.quizGame.addPlayer(username);
-
-    // Expect no player to be added
+    /** Expect no player to be added. */
     expect(this.quizGame.players.length).toBe(0);
   });
 
+  /**
+   * Checks if a player ist not added while trying to add
+   * a player with an empty username.
+   */
   test("Add player with empty username", () => {
     const username = "";
-
     this.quizGame.addPlayer(username);
-
-    // Expect no player to be added
+    /** Expect no player to be added. */
     expect(this.quizGame.players.length).toBe(0);
   });
 
@@ -126,7 +130,8 @@ describe("sendQuestion", () => {
     expect(ioMock.to).not.toHaveBeenCalled();
     expect(ioMock.emit).not.toHaveBeenCalled();
     expect(consoleSpy).toHaveBeenCalledWith("Fehler beim Abrufen der Fragen");
-    consoleSpy.mockRestore(); // Wiederherstellung des ursprünglichen console.log
+    /** Restoring the original console.log. */
+    consoleSpy.mockRestore();
   });
 
 });
@@ -156,24 +161,19 @@ describe("answerQuestion", () => {
    * Sets all mock functions.
    */
   afterEach(() => {
-    // Bereinigungen nach jedem Testfall
-    jest.clearAllMocks(); // Zurücksetzen aller Mocks
+    /** Sets all mocks up. */
+    jest.clearAllMocks();
   });
 
   /**
    * Checks if the player's score is increased when the answer is correct.
    */
   test("Correct answer increases player score", async() => {
-    // Arrange
     const username = "user1";
     const answer = "A";
     game.currentRightAnswer = "A";
     game.players = [{ username: "user1", score: 0 }];
-
-    // Act
     game.answerQuestion(username, answer);
-
-    // Assert
     expect(game.players[0].score).toBe(1);
   });
 
@@ -181,7 +181,6 @@ describe("answerQuestion", () => {
    * Checks if the scores of other players are increased when the answer is wrong.
    */
   test("Wrong answer decreases player score", async() => {
-    // Arrange
     const username = "user1";
     const answer = "B";
     game.currentRightAnswer = "A";
@@ -511,7 +510,7 @@ describe("updateScoreBoard", () => {
   let emitMock;
 
   beforeEach(() => {
-    // Create a new QuizGame instance before each test case
+    /** Create a new QuizGame instance before each test case. */
     quizGame = new QuizGame("room1", null);
     quizGame.players = [
       { username: "player1", score: 10 },
@@ -519,7 +518,7 @@ describe("updateScoreBoard", () => {
       { username: "player3", score: 8 },
     ];
 
-    // Mock the emit function
+    /** Mock the emit function. */
     emitMock = jest.fn();
     quizGame.io = {
       to: jest.fn().mockReturnThis(),
@@ -561,7 +560,7 @@ describe("userExist", () => {
   let quizGame;
 
   beforeEach(() => {
-    // Create a new QuizGame instance before each test case
+    /** Create a new QuizGame instance before each test case. */
     quizGame = new QuizGame("room1", null);
     quizGame.players = [
       { username: "player1", score: 10 },
@@ -631,7 +630,7 @@ describe("userExist", () => {
    * It should return false when the username exists with different cases.
    */
   test("false username with different cases", () => {
-    quizGame.players.push({ username: "player1", score: 20 }); // Add a player with a different case
+    quizGame.players.push({ username: "player1", score: 20 });
     const result = quizGame.userExist("PLAYER1");
     expect(result).toBe(false);
   });
