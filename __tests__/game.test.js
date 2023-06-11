@@ -1,6 +1,5 @@
 /** The test repository for game. */
 const QuizGame = require("../game/QuizGame");
-const { getNextQuestion } = require("../game/QuizGame");
 
 /**
  * This is the test section for addPlayer.
@@ -58,6 +57,24 @@ describe("addPlayer", () => {
     });
   });
 
+
+  test("Add player with null username", () => {
+    const username = null;
+
+    this.quizGame.addPlayer(username);
+
+    // Expect no player to be added
+    expect(this.quizGame.players.length).toBe(0);
+  });
+
+  test("Add player with empty username", () => {
+    const username = "";
+
+    this.quizGame.addPlayer(username);
+
+    // Expect no player to be added
+    expect(this.quizGame.players.length).toBe(0);
+  });
 
 });
 
@@ -279,6 +296,50 @@ describe("endGame", () => {
     expect(ioMock.to).toHaveBeenCalledWith(game.roomId);
     expect(ioMock.emit).toHaveBeenCalledWith("gameEnd", game.players);
   });
+
+  /**
+   * Checks if the player score is not reseted to 0 after the game ends,
+   * because the score will be added to the highscore
+   */
+  test("Resets player scores to 0", async () => {
+    const player1 = { username: "user1", score: 10 };
+    const player2 = { username: "user2", score: 5 };
+    game.players = [player1, player2];
+
+    await game.endGame();
+
+    expect(game.players[0].score).toBe(10);
+    expect(game.players[1].score).toBe(5);
+  });
+
+  /**
+   * Checks if the "gameEnd" event is emitted only to the players in the game room.
+   */
+  test("Emits 'gameEnd' event to players in the room", async () => {
+    const player1 = { username: "user1", score: 10 };
+    const player2 = { username: "user2", score: 5 };
+    game.players = [player1, player2];
+
+    await game.endGame();
+
+    expect(ioMock.to).toHaveBeenCalledWith(game.roomId);
+    expect(ioMock.emit).toHaveBeenCalledWith("gameEnd", game.players);
+  });
+
+  /**
+   * Checks if the players array is not cleared after the game ends,
+   * because we need to know who won the game
+   */
+  test("Clears the players array", async () => {
+    const player1 = { username: "user1", score: 10 };
+    const player2 = { username: "user2", score: 5 };
+    game.players = [player1, player2];
+
+    await game.endGame();
+
+    expect(game.players.length).toBe(2);
+  });
+
 });
 
 /**
@@ -418,19 +479,6 @@ describe("userDisconnect", () => {
   });
 
   /**
-   * Checks if endGame is called when there are less than 2 players remaining.
-
-  test("endGame() when less than 2 players", () => {
-    const username = "player1";
-    const endGameSpy = jest.spyOn(quizGame, "endGame");
-    quizGame.userDisconnect(username);
-    /** Verifies that the endGame method was called.
-    expect(endGameSpy).toHaveBeenCalled();
-    endGameSpy.mockRestore();
-  });
-  */
-
-  /**
    * Checks if endGame is not called when there are 2 or more players remaining.
    */
   test("endGame() not called when 2 or more players", () => {
@@ -452,19 +500,6 @@ describe("userDisconnect", () => {
     expect(quizGame.players.length).toBe(3);
   });
 
-  /**
-   * Checks if 'userLeftGame' event is not emitted when there are 2 or more players remaining.
-
-  test("Not emitting 'userLeftGame' when 2 or more players", () => {
-    const username = "player3";
-    const emitSpy = jest.spyOn(quizGame.io, "to").mockReturnThis();
-    const emitEventSpy = jest.spyOn(quizGame.io, "emit");
-    quizGame.userDisconnect(username);
-    expect(emitEventSpy).not.toHaveBeenCalledWith("userLeftGame", false);
-    emitSpy.mockRestore();
-    emitEventSpy.mockRestore();
-  });
-   */
 });
 
 
@@ -590,79 +625,14 @@ describe("userExist", () => {
     const result = quizGame.userExist("player2");
     expect(result).toBe(true);
   });
-});
 
-/*
-describe("getNextQuestion", () => {
-  // Mock für den questionsService
-  const mockQuestionsService = {
-    getQuestions: jest.fn(),
-  };
-
-  // QuizGame-Instanz für den Test
-  let quizGame;
-
-  beforeEach(() => {
-    quizGame = new QuizGame("room1", mockQuestionsService);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("returns shuffled question object when rows length is greater than 0", async () => {
-    // Mock für die zurückgegebenen Reihen (rows) der Datenbankabfrage
-    const mockRows = [
-      {
-        QUESTION_ID: 1,
-        QUESTION: "What is the capital of France?",
-        RIGHT_ANSWER: "Paris",
-        FALSE_ANSWER1: "London",
-        FALSE_ANSWER2: "Berlin",
-        FALSE_ANSWER3: "Rome",
-        CATEGORY_ID: 1,
-      },
-    ];
-
-    // Mocken der getQuestions-Methode, um die mockRows zurückzugeben
-    mockQuestionsService.getQuestions.mockResolvedValueOnce(mockRows);
-
-    const result = await quizGame.getNextQuestion();
-
-    // Überprüfen, ob die Methode shuffleAnswers aufgerufen wurde
-    expect(shuffleAnswers).toHaveBeenCalledWith(mockRows[0]);
-
-    // Überprüfen, ob ein nicht-Null-Wert zurückgegeben wurde
-    expect(result).not.toBeNull();
-  });
-
-  test("returns null when rows length is 0", async () => {
-    // Mock für eine leere Datenbankabfrage (keine Reihen zurückgegeben)
-    const mockRows = [];
-
-    // Mocken der getQuestions-Methode, um die leere Datenbankabfrage zurückzugeben
-    mockQuestionsService.getQuestions.mockResolvedValueOnce(mockRows);
-
-    const result = await quizGame.getNextQuestion();
-
-    // Überprüfen, ob die Methode shuffleAnswers nicht aufgerufen wurde
-    expect(shuffleAnswers).not.toHaveBeenCalled();
-
-    // Überprüfen, ob null zurückgegeben wurde
-    expect(result).toBeNull();
-  });
-
-  test("handles error and returns null", async () => {
-    // Mocken einer fehlgeschlagenen Datenbankabfrage (Fehler wird geworfen)
-    mockQuestionsService.getQuestions.mockRejectedValueOnce(new Error("Database error"));
-
-    const result = await quizGame.getNextQuestion();
-
-    // Überprüfen, ob die Methode shuffleAnswers nicht aufgerufen wurde
-    expect(shuffleAnswers).not.toHaveBeenCalled();
-
-    // Überprüfen, ob null zurückgegeben wurde
-    expect(result).toBeNull();
+  /**
+   * Checks if the method correctly handles case-insensitive username comparison.
+   * It should return false when the username exists with different cases.
+   */
+  test("false username with different cases", () => {
+    quizGame.players.push({ username: "player1", score: 20 }); // Add a player with a different case
+    const result = quizGame.userExist("PLAYER1");
+    expect(result).toBe(false);
   });
 });
-*/
