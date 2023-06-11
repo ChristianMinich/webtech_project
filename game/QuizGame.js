@@ -61,7 +61,10 @@ class QuizGame {
   addPlayer(username) {
     console.log("übergebener username: " + username);
 
-    if (this.userExist(username)) {
+    if(username == null || username === ""){
+      console.log("Fehler, ungültiger Benutzername");
+    }
+    else if (this.userExist(username)) {
       console.log("Fehler, doppelter User");
     } else {
       const player = {
@@ -404,8 +407,9 @@ class QuizGame {
     console.log(username + " hat das Spiel verlassen!");
     if (this.players.length < 2) {
       this.gameRunning = false;
-      this.io.to(this.roomId).emit("userLeftGame", this.gameRunning);
       this.endGame();
+      this.io.to(this.roomId).emit("userLeftGame", this.gameRunning);
+
     }
   }
 
