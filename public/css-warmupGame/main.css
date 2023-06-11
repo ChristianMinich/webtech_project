@@ -74,7 +74,13 @@ h1 {
     animation: pulsate 1s ease-in-out ;
     animation-iteration-count: infinite; */
 }
+.devPiv{
 
+  width: fit-content;
+  height: 100px;
+  
+
+}
 @keyframes pulsate {
   0% {
     border-color: #fff;
