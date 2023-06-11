@@ -9,7 +9,7 @@
     /* Allgemeine Stile */
     body {
       margin: 0;
-      background: url("/assets/backgrounds/profileBackground.jpg");
+      background: url("/assets/backgrounds/dashboard.jpg");
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
@@ -24,13 +24,6 @@
       background-position-y: center;
     }
 
-    h1,
-    h2 {
-      text-align: center;
-      color: white;
-      /* Textfarbe in Weiß */
-    }
-
     .profile img {
       display: block;
       margin: 0 auto;
@@ -40,7 +33,7 @@
     .profile {
       position: relative;
       border-radius: 50%;
-      border-color: blueviolet;
+      border-color: white;
       border-style: solid;
       border-width: 5px;
       overflow: hidden;
@@ -76,11 +69,13 @@
       /* Textfarbe in Weiß */
       text-align: center;
     }
-    
-    th{
+
+    th {
       color: #6b5b95;
     }
-    th, td {
+
+    th,
+    td {
       padding: 10px;
       text-align: center;
     }
@@ -102,7 +97,7 @@
       text-align: left;
     }
 
-    table a{
+    table a {
       text-decoration: none;
       color: white;
     }
@@ -110,12 +105,10 @@
     /* Media Queries für responsives Design */
     @media screen and (max-width: 600px) {
       h1 {
-        font-size: 20px;
+        display: none;
       }
 
-      h2 {
-        font-size: 16px;
-      }
+      
 
     }
 
@@ -138,7 +131,7 @@
       .scoreBoard tr {
         float: left;
         width: 100%;
-        
+
       }
 
       .scoreBoard td {
@@ -155,7 +148,7 @@
         font-weight: bold;
         margin: -1em 1em -1em -1em;
       }
-      
+
 
     }
 
@@ -189,17 +182,35 @@
       height: auto;
       margin: 0 auto;
     }
+
+    h1, h2 {
+      font-family: "Helvetica", sans-serif;
+      font-weight: 500;
+      text-transform: uppercase;
+      text-align: center;
+      color: rgba(255, 255, 255, 1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      border-radius: 25px;
+      background-color: rgba(197, 197, 197, 0.4);
+      font-size: 47px;
+    }
+    h2{
+      display: none;
+    }
   </style>
 </head>
 
 <body>
   <%- include('navbar') %>
     <div class="contentContainer">
-        
+      <div>
+        <h1>All Achievements</h1>
+        <h2>All Achievements</h2>
+      </div>
       <table>
         <thead>
           <tr>
-            <th>Achievments</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
