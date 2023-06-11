@@ -58,6 +58,10 @@ describe("addPlayer", () => {
   });
 
 
+  /**
+   * Checks if a player ist not added while trying to add
+   * a player with username with value of null.
+   */
   test("Add player with null username", () => {
     const username = null;
 
@@ -67,6 +71,10 @@ describe("addPlayer", () => {
     expect(this.quizGame.players.length).toBe(0);
   });
 
+  /**
+   * Checks if a player ist not added while trying to add
+   * a player with an empty username.
+   */
   test("Add player with empty username", () => {
     const username = "";
 
@@ -631,7 +639,7 @@ describe("userExist", () => {
    * It should return false when the username exists with different cases.
    */
   test("false username with different cases", () => {
-    quizGame.players.push({ username: "player1", score: 20 }); // Add a player with a different case
+    quizGame.players.push({ username: "player1", score: 20 });
     const result = quizGame.userExist("PLAYER1");
     expect(result).toBe(false);
   });

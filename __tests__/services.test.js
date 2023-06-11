@@ -143,8 +143,8 @@ describe("Create User", () => {
     });
 
     /**
-     * Checks the value of the password
-     * which is supossed to be null and undefined.
+     * Checks the value of the password which
+     * is supossed to be null and undefined.
      */
     test("Null password", async() => {
         const username = "testuser";
@@ -153,4 +153,3 @@ describe("Create User", () => {
         expect(result).toBeUndefined();
     });
 });
-
