@@ -348,53 +348,55 @@ class QuizGame {
       (player) => player.username !== username
     );
 
-    conn
-      .query("SELECT USER_ID FROM USER WHERE USERNAME = ?", [username])
-      .then((rows) => {
-        try {
-          const userID = rows[0];
+    db.then((conn) => {
+      conn
+        .query("SELECT USER_ID FROM USER WHERE USERNAME = ?", [username])
+        .then((rows) => {
+          try {
+            const userID = rows[0];
 
-          conn
-            .query(
-              "SELECT * USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
-              [userID, 1]
-            )
-            .then((rows) => {
-              if (rows[0].USER_ID === undefined) {
-                conn
-                  .query(
-                    "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
-                    [currUserID, 1]
-                  )
-                  .then((rows) => {
-                    console.log(rows);
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-                conn
-                  .query(
-                    "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
-                    [player.username, 1]
-                  )
-                  .then((rows) => {
-                    console.log(rows);
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } catch (error) {
-          console.log(error);
-        }
-      })
-      .catch((error) => {
-        console(error);
-      });
+            conn
+              .query(
+                "SELECT * FROM USER_ACHIEVEMENT WHERE USER_ID = ?",
+                [userID]
+              )
+              .then((rows) => {
+                if (rows[0].USER_ID === undefined) {
+                  conn
+                    .query(
+                      "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
+                      [currUserID, 1]
+                    )
+                    .then((rows) => {
+                      console.log(rows);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                  conn
+                    .query(
+                      "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
+                      [player.username, 1]
+                    )
+                    .then((rows) => {
+                      console.log(rows);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          } catch (error) {
+            //console.log(error);
+          }
+        })
+        .catch((error) => {
+          console(error);
+        });
+    });
 
     console.log(username + " hat das Spiel verlassen!");
     if (this.players.length < 2) {
