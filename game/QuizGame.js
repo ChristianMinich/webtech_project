@@ -480,7 +480,7 @@ class QuizGame {
           this.questions[this.round] = question.id;
           this.currentQuestionIndex = question.id;
           this.currentRightAnswer = question.right_answer;
-          question.right_answer = "";
+          question.right_answer = "netter Versuch ;)";
           console.log(
             "Runde :" +
               this.round +
