@@ -169,6 +169,7 @@ class QuizGame {
    * and emitting the 'gameEnd' event to the game room.
    */
   endGame() {
+    this.gameRunning = false;
     /** Define a null player object with default values. */
     const null_player = {
       username: "",
@@ -327,22 +328,6 @@ class QuizGame {
               console.log(rows);
             });
         } else {
-          /** Update the player's loses count and reset concurrent wins count in the database. */
-          conn
-            .query("UPDATE USER SET LOSES = LOSES + 1 WHERE USERNAME = ?", [
-              player.username,
-            ])
-            .then((rows) => {
-              console.log(rows);
-            });
-          conn
-            .query("UPDATE USER SET CONCURRENT_WINS = 0 WHERE USERNAME = ?", [
-              player.username,
-            ])
-            .then((rows) => {
-              console.log(rows);
-            });
-
           /** First Loss Achievement */
           conn
             .query("SELECT USER_ID, LOSES FROM USER WHERE USERNAME = ?", [
@@ -353,7 +338,6 @@ class QuizGame {
                 try {
                   const lossCount = rows[0].LOSES;
                   const currUserID = rows[0].USER_ID;
-
                   if (lossCount === 0) {
                     conn
                       .query(
@@ -387,6 +371,21 @@ class QuizGame {
             })
             .catch((error) => {
               console.log(error);
+            });
+          /** Update the player's loses count and reset concurrent wins count in the database. */
+          conn
+            .query("UPDATE USER SET LOSES = LOSES + 1 WHERE USERNAME = ?", [
+              player.username,
+            ])
+            .then((rows) => {
+              console.log(rows);
+            });
+          conn
+            .query("UPDATE USER SET CONCURRENT_WINS = 0 WHERE USERNAME = ?", [
+              player.username,
+            ])
+            .then((rows) => {
+              console.log(rows);
             });
         }
       });
@@ -463,7 +462,7 @@ class QuizGame {
     }
 
     console.log(username + " hat das Spiel verlassen!");
-    if (this.players.length < 2) {
+    if (this.players.length < 2 && this.gameRunning) {
       this.gameRunning = false;
       this.endGame();
       this.io.to(this.roomId).emit("userLeftGame", this.gameRunning);
