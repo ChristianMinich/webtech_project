@@ -573,7 +573,8 @@ async function getNextQuestion() {
     const rows = await qs.getQuestions(randomQuestionID);
 
     if (rows.length > 0) {
-      const questionRow = rows[0]; // Nehmen Sie die erste Zeile als Frage an
+      /** Get the first row of questions */
+      const questionRow = rows[0]; 
 
       const question = {
         id: questionRow.QUESTION_ID,
