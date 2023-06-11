@@ -16,11 +16,6 @@ module.exports = (io) => {
 
   io.on("connection", (socket) => {
     users[socket.id] = socket.request.connection.remoteAddress;
-    socket.on("new-user", (name) => {
-      users[socket.id] = name;
-      socket.broadcast.emit("user-connected", name);
-      io.emit("all-connections", JSON.stringify(users));
-    });
 
     socket.on("achievement_gained", (username) => {
       const sqlQuery = `
@@ -154,22 +149,6 @@ module.exports = (io) => {
       currGame.answerQuestion(username, answer);
     });
 
-    socket.on("send-chat-message", (message) => {
-      socket.broadcast.emit("chat-message", {
-        message: message,
-        name: users[socket.id],
-      });
-    });
-
-    socket.on("send-new-username", (name) => {
-      let oldName = users[socket.id];
-      users[socket.id] = name;
-      socket.broadcast.emit("username-changed", {
-        oldName: oldName,
-        newName: name,
-      });
-      io.emit("all-connections", JSON.stringify(users));
-    });
     socket.on("leaveGame", (roomId, username) => {
       console.log(
         "User: " + username + " hat das Spiel " + roomId + " verlassen"
