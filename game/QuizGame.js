@@ -225,6 +225,77 @@ class QuizGame {
         }
         if (this.winner[0].username === player.username) {
           /** Update the player's wins and concurrent wins count in the database. */
+
+          /** Player earned first Win Achievement */
+          conn
+            .query("SELECT USER_ID, WINS FROM USER WHERE USERNAME = ?", [
+              player.username,
+            ])
+            .then((rows) => {
+              try {
+                const winCount = rows[0].WINS;
+                const currUserID = rows[0].USER_ID;
+
+                if (winCount === 0) {
+                  conn
+                    .query(
+                      "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
+                      [currUserID, 2]
+                    )
+                    .then((rows) => {
+                      console.log(rows);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+
+                  /** Player earned first Win Achievement (ACHIEVEMENT_GAINED) */
+                  conn
+                    .query(
+                      "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
+                      [player.username, 2]
+                    )
+                    .then((rows) => {
+                      console.log(rows);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                }
+              } catch (error) {
+                console.log(error);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          /** Player earned Perfect Win */
+          if (player.score === 5) {
+            conn
+              .query(
+                "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
+                [currUserID, 3]
+              )
+              .then((rows) => {
+                console.log(rows);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+            conn
+              .query(
+                "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
+                [player.username, 3]
+              )
+              .then((rows) => {
+                console.log(rows);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+
+          /** Player earned Win */
           conn
             .query("UPDATE USER SET WINS = WINS + 1 WHERE USERNAME = ?", [
               player.username,
@@ -276,6 +347,55 @@ class QuizGame {
     this.players = this.players.filter(
       (player) => player.username !== username
     );
+
+    conn
+      .query("SELECT USER_ID FROM USER WHERE USERNAME = ?", [username])
+      .then((rows) => {
+        try {
+          const userID = rows[0];
+
+          conn
+            .query(
+              "SELECT * USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
+              [userID, 1]
+            )
+            .then((rows) => {
+              if (rows[0].USER_ID === undefined) {
+                conn
+                  .query(
+                    "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
+                    [currUserID, 1]
+                  )
+                  .then((rows) => {
+                    console.log(rows);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+                conn
+                  .query(
+                    "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
+                    [player.username, 1]
+                  )
+                  .then((rows) => {
+                    console.log(rows);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      })
+      .catch((error) => {
+        console(error);
+      });
+
     console.log(username + " hat das Spiel verlassen!");
     if (this.players.length < 2) {
       this.gameRunning = false;
