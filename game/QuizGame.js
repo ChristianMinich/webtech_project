@@ -61,10 +61,9 @@ class QuizGame {
   addPlayer(username) {
     console.log("übergebener username: " + username);
 
-    if(username == null || username === ""){
+    if (username == null || username === "") {
       console.log("Fehler, ungültiger Benutzername");
-    }
-    else if (this.userExist(username)) {
+    } else if (this.userExist(username)) {
       console.log("Fehler, doppelter User");
     } else {
       const player = {
@@ -275,26 +274,39 @@ class QuizGame {
           /** Player earned Perfect Win */
           if (player.score === 5) {
             conn
-              .query(
-                "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
-                [currUserID, 3]
-              )
+              .query("SELECT USER_ID, WINS FROM USER WHERE USERNAME = ?", [
+                player.username,
+              ])
               .then((rows) => {
-                console.log(rows);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-            conn
-              .query(
-                "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
-                [player.username, 3]
-              )
-              .then((rows) => {
-                console.log(rows);
-              })
-              .catch((error) => {
-                console.log(error);
+                if (rows.length !== 0) {
+                  try {
+                    const currUserID = rows[0].USER_ID;
+                    conn
+                      .query(
+                        "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
+                        [currUserID, 3]
+                      )
+                      .then((rows) => {
+                        console.log(rows);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                    conn
+                      .query(
+                        "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
+                        [player.username, 3]
+                      )
+                      .then((rows) => {
+                        console.log(rows);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  } catch (error) {
+                    console.log(error);
+                  }
+                }
               });
           }
 
@@ -352,64 +364,63 @@ class QuizGame {
     );
 
     if (this.players.length >= 2) {
-    db.then((conn) => {
-      conn
-        .query("SELECT USER_ID FROM USER WHERE USERNAME = ?", [username])
-        .then((rows) => {
-          try {
-            if (rows.length !== 0) {
-              const currUserID = rows[0].USER_ID;
+      db.then((conn) => {
+        conn
+          .query("SELECT USER_ID FROM USER WHERE USERNAME = ?", [username])
+          .then((rows) => {
+            try {
+              if (rows.length !== 0) {
+                const currUserID = rows[0].USER_ID;
 
-              conn
-                .query("SELECT * FROM USER_ACHIEVEMENT WHERE USER_ID = ?", [
-                  currUserID,
-                ])
-                .then((rows) => {
-                  if (rows.length === 0) {
-                    conn
-                      .query(
-                        "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
-                        [currUserID, 1]
-                      )
-                      .then((rows) => {
-                        console.log(rows);
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
-                    conn
-                      .query(
-                        "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
-                        [username, 1]
-                      )
-                      .then((rows) => {
-                        console.log(rows);
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
-                  }
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
+                conn
+                  .query("SELECT * FROM USER_ACHIEVEMENT WHERE USER_ID = ?", [
+                    currUserID,
+                  ])
+                  .then((rows) => {
+                    if (rows.length === 0) {
+                      conn
+                        .query(
+                          "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
+                          [currUserID, 1]
+                        )
+                        .then((rows) => {
+                          console.log(rows);
+                        })
+                        .catch((error) => {
+                          console.log(error);
+                        });
+                      conn
+                        .query(
+                          "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
+                          [username, 1]
+                        )
+                        .then((rows) => {
+                          console.log(rows);
+                        })
+                        .catch((error) => {
+                          console.log(error);
+                        });
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }
+            } catch (error) {
+              console.log(error);
             }
-          } catch (error) {
+          })
+          .catch((error) => {
             console.log(error);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-  }
+          });
+      });
+    }
 
     console.log(username + " hat das Spiel verlassen!");
     if (this.players.length < 2) {
       this.gameRunning = false;
       this.endGame();
       this.io.to(this.roomId).emit("userLeftGame", this.gameRunning);
-
     }
   }
 
