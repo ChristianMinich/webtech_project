@@ -2,6 +2,12 @@
 
 QuizDuell is a Node.js web application built with Express that allows users to play an interactive quiz game.
 
+## Haverland suggested improvements
+:heavy_check_mark: -> implemented
+- Save avatar inside JWT instead of using middleware :heavy_check_mark:
+- Design a feature to provide feedback on the website indicating whether a question has been answered correctly or incorrectly. :heavy_check_mark:
+- NOTICE: Fixed Springer achievement :heavy_check_mark:
+
 ## Features
 
 - Multiple-choice questions with options
