@@ -584,7 +584,7 @@ class QuizGame {
  */
 async function getNextQuestion() {
   try {
-    const randomQuestionID = Math.floor(Math.random() * 27) + 1; // Beispiel: Zufällige Frage ID generieren
+    const randomQuestionID = Math.floor(Math.random() * 27) + 1;
     const rows = await qs.getQuestions(randomQuestionID);
 
     if (rows.length > 0) {
