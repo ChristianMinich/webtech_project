@@ -169,6 +169,7 @@ class QuizGame {
    * and emitting the 'gameEnd' event to the game room.
    */
   endGame() {
+    this.gameRunning = false;
     /** Define a null player object with default values. */
     const null_player = {
       username: "",
@@ -284,7 +285,7 @@ class QuizGame {
                     conn
                       .query(
                         "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
-                        [currUserID, 3]
+                        [currUserID, 4]
                       )
                       .then((rows) => {
                         console.log(rows);
@@ -295,7 +296,7 @@ class QuizGame {
                     conn
                       .query(
                         "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
-                        [player.username, 3]
+                        [player.username, 4]
                       )
                       .then((rows) => {
                         console.log(rows);
@@ -327,6 +328,50 @@ class QuizGame {
               console.log(rows);
             });
         } else {
+          /** First Loss Achievement */
+          conn
+            .query("SELECT USER_ID, LOSES FROM USER WHERE USERNAME = ?", [
+              player.username,
+            ])
+            .then((rows) => {
+              if (rows.length !== 0) {
+                try {
+                  const lossCount = rows[0].LOSES;
+                  const currUserID = rows[0].USER_ID;
+                  if (lossCount === 0) {
+                    conn
+                      .query(
+                        "INSERT INTO USER_ACHIEVEMENT (USER_ID, ACHIEVEMENT_ID) VALUES (?, ?)",
+                        [currUserID, 3]
+                      )
+                      .then((rows) => {
+                        console.log(rows);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+
+                    /** Player earned first Loss Achievement (ACHIEVEMENT_GAINED) */
+                    conn
+                      .query(
+                        "INSERT INTO ACHIEVEMENT_GAINED (USERNAME, ACHIEVEMENT_ID) VALUES (?, ?)",
+                        [player.username, 3]
+                      )
+                      .then((rows) => {
+                        console.log(rows);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  }
+                } catch (error) {
+                  console.log(error);
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           /** Update the player's loses count and reset concurrent wins count in the database. */
           conn
             .query("UPDATE USER SET LOSES = LOSES + 1 WHERE USERNAME = ?", [
@@ -359,10 +404,11 @@ class QuizGame {
     });
   }
   userDisconnect(username) {
+
     this.players = this.players.filter(
       (player) => player.username !== username
     );
-
+  
     if (this.players.length >= 2) {
       db.then((conn) => {
         conn
@@ -416,8 +462,9 @@ class QuizGame {
       });
     }
 
+    
     console.log(username + " hat das Spiel verlassen!");
-    if (this.players.length < 2) {
+    if (this.players.length < 2 && this.gameRunning) {
       this.gameRunning = false;
       this.endGame();
       this.io.to(this.roomId).emit("userLeftGame", this.gameRunning);
@@ -434,7 +481,7 @@ class QuizGame {
           this.questions[this.round] = question.id;
           this.currentQuestionIndex = question.id;
           this.currentRightAnswer = question.right_answer;
-          question.right_answer = "";
+          question.right_answer = "netter Versuch ;)";
           console.log(
             "Runde :" +
               this.round +
@@ -523,11 +570,12 @@ class QuizGame {
  */
 async function getNextQuestion() {
   try {
-    const randomQuestionID = Math.floor(Math.random() * 30) + 1; // Beispiel: Zufällige Frage ID generieren
+    const randomQuestionID = Math.floor(Math.random() * 27) + 1; // Beispiel: Zufällige Frage ID generieren
     const rows = await qs.getQuestions(randomQuestionID);
 
     if (rows.length > 0) {
-      const questionRow = rows[0]; // Nehmen Sie die erste Zeile als Frage an
+      /** Get the first row of questions */
+      const questionRow = rows[0]; 
 
       const question = {
         id: questionRow.QUESTION_ID,

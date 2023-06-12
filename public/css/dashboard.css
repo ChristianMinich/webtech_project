@@ -4,6 +4,7 @@ body {
     text-align: center;
     padding: 20px;
     background: url("/assets/backgrounds/dashboard.jpg");
+    background-attachment: fixed;
     display: marker;
     min-height: 100vh;
     width: auto;
@@ -92,7 +93,7 @@ button {
     font-family: "Helvetica", sans-serif;
     font-weight: 200;
     font-size: 20px;
-    padding: 20px 100px;
+    padding: 18px 100px;
     border: none;
     border-radius: 20px;
     background-color: rgba(128, 128, 128, 0.6);
@@ -100,6 +101,7 @@ button {
     margin: 10px;
     transition: background-color 0.3s ease;
     max-width: fit-content;
+    width: 100%;
 }
 
 button:hover {

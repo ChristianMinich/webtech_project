@@ -1,6 +1,6 @@
-# QuizGame
+# QuizDuell
 
-QuizGame is a Node.js web application built with Express that allows users to play an interactive quiz game.
+QuizDuell is a Node.js web application built with Express that allows users to play an interactive quiz game.
 
 ## Features
 
@@ -22,7 +22,7 @@ QuizGame is a Node.js web application built with Express that allows users to pl
 
 ```
 PORT=3000
-DATABASE_URL=mariadb://localhost/quizgame
+DATABASE_URL=mariadb://localhost/quizduell
 JWT_SECRET=Liefergruppe
 ```
 
@@ -109,6 +109,7 @@ jest --collect-coverage
 ├── sockets
 │   └── index.js
 ├── views
+│   ├── achievements.ejs
 │   ├── dashboard.ejs
 │   ├── game.ejs
 │   ├── navbar.ejs
@@ -145,4 +146,4 @@ This project is licensed under the [Eclipse Public License 2.0](https://github.c
 
 If you have any questions, feel free to reach out to [Chris](mailto:christian.minich@hs-osnabrueck.de).
 
-Enjoy playing the QuizGame!
+Enjoy playing our Quizduell!
