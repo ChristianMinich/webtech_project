@@ -545,7 +545,7 @@ describe("updateScoreBoard", () => {
   /**
    * Checks if the 'scoreBoard' event is emitted with an empty players array when there are no players.
    */
-  test("empty players array when there are no players", () => {
+  test("empty players array when no players", () => {
     quizGame.players = [];
     quizGame.updateScoreBoard();
     expect(emitMock).toHaveBeenCalledWith("scoreBoard", []);
