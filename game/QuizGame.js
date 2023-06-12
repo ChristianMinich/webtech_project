@@ -2,6 +2,13 @@ const qs = require("../repositories/questions");
 const database = require("../repositories");
 const db = database.getConnection();
 const maxRounds = 5;
+
+/**
+ * The `QuizGame` class represents a quiz game played in a game room.
+ * It manages the game flow, the players, the questions, and the scoring.
+ * It provides functionality to facilitate a multi-player quiz game,
+ * including managing the game progression, player interactions, question handling, and scoring mechanics.
+ */
 class QuizGame {
   /**
    * Constructs a new instance of the QuizGame class.
