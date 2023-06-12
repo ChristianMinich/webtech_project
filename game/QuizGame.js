@@ -404,6 +404,10 @@ class QuizGame {
     });
   }
   userDisconnect(username) {
+
+    this.players = this.players.filter(
+      (player) => player.username !== username
+    );
   
     if (this.players.length >= 2) {
       db.then((conn) => {
@@ -458,10 +462,7 @@ class QuizGame {
       });
     }
 
-    this.players = this.players.filter(
-      (player) => player.username !== username
-    );
-
+    
     console.log(username + " hat das Spiel verlassen!");
     if (this.players.length < 2 && this.gameRunning) {
       this.gameRunning = false;
@@ -569,7 +570,7 @@ class QuizGame {
  */
 async function getNextQuestion() {
   try {
-    const randomQuestionID = Math.floor(Math.random() * 30) + 1; // Beispiel: Zufällige Frage ID generieren
+    const randomQuestionID = Math.floor(Math.random() * 27) + 1; // Beispiel: Zufällige Frage ID generieren
     const rows = await qs.getQuestions(randomQuestionID);
 
     if (rows.length > 0) {
