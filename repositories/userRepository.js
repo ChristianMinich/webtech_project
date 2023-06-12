@@ -2,9 +2,10 @@ const database = require("./index");
 const db = database.getConnection();
 
 /**
- * The function gets username from the Database.
+ * Retrieves a user from the database based on their username.
  *
- * @param username - The username of the player to get.
+ * @param {string} username - The username of the player to retrieve.
+ * @returns {Promise<string>} - A Promise that resolves with the username of the user if found, or rejects with an error if not found.
  */
 function getUserbyName(username) {
   db.then((conn) => {

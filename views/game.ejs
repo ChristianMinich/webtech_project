@@ -210,6 +210,19 @@
         max-width: 250px;
       }
     }
+    .rightAnswer{
+      border-color: rgba(255, 0, 0, 0.6);
+      border-radius: 15px;
+      border-width: 2px;
+      font-size: 20px;
+
+    }
+    .flaseAnswer{
+      border-color: rgba(255, 0, 0, 0.6);
+      border-radius: 15px;
+      border-width: 2px;
+      font-size: 20px;
+    }
   </style>
 </head>
 
@@ -240,6 +253,8 @@
 
     <div class="betweenRound" id="waitText">Mach dich Bereit, die nächste Runde startet in :
       <div id="countdown">5</div>
+      <div id="feedbackRightAnswer" class="rightAnswer"></div>
+      <div id="feedbackFalseAnswer" class=" falseAnswer"></div>
     </div>
 
     <div class="userscore" id="scoreboard-container">
@@ -278,6 +293,8 @@
       document.getElementById("roundCounter").style.display = 'none';
       document.getElementById("endButton").disabled = true;
       document.getElementById('scoreboard-container').style.display = 'none';
+      document.getElementById('feedbackRightAnswer').style.display = 'none';
+      document.getElementById('feedbackFalseAnswer').style.display = 'none';
 
     };
     window.addEventListener('beforeunload', function (event) {
@@ -324,12 +341,25 @@
       window.location.href = "/index";
     });
 
-    socket.on("newRoundCountdown", () => {
+    socket.on("newRoundCountdown", (currentAnswerRight, currentRightAnswer, username) => {
       disableQuestions();
+      console.log(currentAnswerRight + " | " + currentRightAnswer + " | " + username);
       document.getElementById('quizbox').style.display = 'none';
-      const waitTextq = document.getElementById('waitText')
+      const waitTextq = document.getElementById('waitText');
       waitTextq.style.display = 'block';
       startCountdown();
+
+      if(currentAnswerRight){
+
+        document.getElementById('feedbackRightAnswer').style.display = 'block';
+        document.getElementById('feedbackRightAnswer').textContent = username + ": Richtige Antwort ! \n" + currentRightAnswer;
+        
+      }else{
+
+        document.getElementById('feedbackFalseAnswer').style.display = 'block';
+        document.getElementById('feedbackFalseAnswer').textContent = username + ": Falsche Antwort ! \n Richtige Antwort: " + currentRightAnswer;
+      }
+      
     });
 
     socket.on("test", (roomID) => {
