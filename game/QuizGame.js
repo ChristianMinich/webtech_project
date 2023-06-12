@@ -33,6 +33,8 @@ class QuizGame {
     //** To check if a game ist still active */
     this.gameRunning = true;
 
+    this.currentAnswerRight = false;
+
     /** Logging the creation of a new game instance. */
     // console.log("new game created " + roomId);
   }
@@ -105,26 +107,27 @@ class QuizGame {
       this.countAnswers++;
       console.log(
         "Room: " +
-          this.roomId +
-          " | User: " +
-          username +
-          " hat gewählt: " +
-          answer
+        this.roomId +
+        " | User: " +
+        username +
+        " hat gewählt: " +
+        answer
       );
       console.log(this.currentRightAnswer + " Richtige Antwort ");
 
       /** Check if the answer is correct and update scores accordingly. */
       if (this.currentRightAnswer === String(answer)) {
-        console.log("antwort richtig");
+        console.log("antwort richtig")
+        this.currentAnswerRight = true;
         this.players.forEach((player) => {
           if (player.username === username) {
             player.score++;
             console.log(
               "Right Answer " +
-                "Score of " +
-                player.username +
-                " incremented! " +
-                player.score
+              "Score of " +
+              player.username +
+              " incremented! " +
+              player.score
             );
           }
         });
@@ -134,10 +137,10 @@ class QuizGame {
             player.score++;
             console.log(
               "Wrong Answer " +
-                "Score of " +
-                player.username +
-                " incremented! " +
-                player.score
+              "Score of " +
+              player.username +
+              " incremented! " +
+              player.score
             );
           }
         });
@@ -150,11 +153,15 @@ class QuizGame {
       if (this.round <= maxRounds) {
         /** Start a new round with a countdown and a new question. */
         if (this.gameRunning) {
-          this.io.to(this.roomId).emit("newRoundCountdown");
+
+          this.io.to(this.roomId).emit("newRoundCountdown", this.currentAnswerRight, this.currentRightAnswer, username);
+          this.currentAnswerRight = false;
           setTimeout(() => {
             this.newQuestion();
           }, 5000);
+
           this.countAnswers = 0;
+          
         }
       } else {
         /** End the game if the maximum number of rounds is reached. */
@@ -408,7 +415,7 @@ class QuizGame {
     this.players = this.players.filter(
       (player) => player.username !== username
     );
-  
+
     if (this.players.length >= 2) {
       db.then((conn) => {
         conn
@@ -462,7 +469,7 @@ class QuizGame {
       });
     }
 
-    
+
     console.log(username + " hat das Spiel verlassen!");
     if (this.players.length < 2 && this.gameRunning) {
       this.gameRunning = false;
@@ -484,11 +491,11 @@ class QuizGame {
           question.right_answer = "netter Versuch ;)";
           console.log(
             "Runde :" +
-              this.round +
-              " " +
-              String(question.text) +
-              "| " +
-              this.questions
+            this.round +
+            " " +
+            String(question.text) +
+            "| " +
+            this.questions
           );
           this.sendQuestion(question);
         } else {
@@ -575,7 +582,7 @@ async function getNextQuestion() {
 
     if (rows.length > 0) {
       /** Get the first row of questions */
-      const questionRow = rows[0]; 
+      const questionRow = rows[0];
 
       const question = {
         id: questionRow.QUESTION_ID,
