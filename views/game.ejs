@@ -210,18 +210,21 @@
         max-width: 250px;
       }
     }
-    .rightAnswer{
-      border-color: rgba(255, 0, 0, 0.6);
-      border-radius: 15px;
-      border-width: 2px;
-      font-size: 20px;
 
+    .rightAnswer {
+      border-color: rgb(124, 252, 0, 0.6);
+      border-radius: 15px;
+      border-width: 5px;
+      font-size: 20px;
+      border-style: solid;
     }
-    .flaseAnswer{
+
+    .falseAnswer {
       border-color: rgba(255, 0, 0, 0.6);
       border-radius: 15px;
-      border-width: 2px;
+      border-width: 5px;
       font-size: 20px;
+      border-style: solid;
     }
   </style>
 </head>
@@ -253,8 +256,8 @@
 
     <div class="betweenRound" id="waitText">Mach dich Bereit, die nächste Runde startet in :
       <div id="countdown">5</div>
-      <div id="feedbackRightAnswer" class="rightAnswer"></div>
-      <div id="feedbackFalseAnswer" class=" falseAnswer"></div>
+      <div class="rightAnswer" id="feedbackRightAnswer"></div>
+      <div class="falseAnswer" id="feedbackFalseAnswer"></div>
     </div>
 
     <div class="userscore" id="scoreboard-container">
@@ -322,6 +325,8 @@
 
         const waitTextq = document.getElementById('waitText')
         waitTextq.style.display = 'none';
+        document.getElementById('feedbackFalseAnswer').style.display = 'none';
+        document.getElementById('feedbackRightAnswer').style.display = 'none';
         enableQuestions();
         document.getElementById('quizbox').style.display = 'block';
         document.getElementById("roundCounter").style.display = 'block';
@@ -349,17 +354,25 @@
       waitTextq.style.display = 'block';
       startCountdown();
 
-      if(currentAnswerRight){
+      if (username === undefined) {
 
-        document.getElementById('feedbackRightAnswer').style.display = 'block';
-        document.getElementById('feedbackRightAnswer').textContent = username + ": Richtige Antwort ! \n" + currentRightAnswer;
-        
-      }else{
+        //vor erster runde
 
-        document.getElementById('feedbackFalseAnswer').style.display = 'block';
-        document.getElementById('feedbackFalseAnswer').textContent = username + ": Falsche Antwort ! \n Richtige Antwort: " + currentRightAnswer;
+      } else {
+
+        if (currentAnswerRight) {
+
+          document.getElementById('feedbackRightAnswer').style.display = 'block';
+          document.getElementById('feedbackRightAnswer').textContent = username + ": Richtige Antwort ! \n" + currentRightAnswer;
+
+        } else {
+
+          document.getElementById('feedbackFalseAnswer').style.display = 'block';
+          document.getElementById('feedbackFalseAnswer').textContent = username + ": Falsche Antwort ! \n Richtige Antwort: " + currentRightAnswer;
+        }
       }
-      
+
+
     });
 
     socket.on("test", (roomID) => {
@@ -371,7 +384,7 @@
     socket.on('userLeftGame', (gameRunning) => {
 
       gameActive = gameRunning;
-      document.getElementById('roundCounter').style.display ='block';
+      document.getElementById('roundCounter').style.display = 'block';
       document.getElementById("roundCounter").textContent = "Deine Gegner haben den Springer gemacht,\n deswegen wurde das Game beendet :(";
       document.getElementById('waitText').style.display = 'none';
 

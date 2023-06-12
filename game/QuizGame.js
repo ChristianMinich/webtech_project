@@ -420,10 +420,6 @@ class QuizGame {
   }
   userDisconnect(username) {
 
-    this.players = this.players.filter(
-      (player) => player.username !== username
-    );
-
     if (this.players.length >= 2) {
       db.then((conn) => {
         conn
@@ -477,6 +473,9 @@ class QuizGame {
       });
     }
 
+    this.players = this.players.filter(
+      (player) => player.username !== username
+    );
 
     console.log(username + " hat das Spiel verlassen!");
     if (this.players.length < 2 && this.gameRunning) {
