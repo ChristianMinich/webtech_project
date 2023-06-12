@@ -1,10 +1,9 @@
 const mariadb = require("mariadb");
 
 /**
- * Design Pattern Singleton enusures that there can only be one Instance of the @class {MariaDBSingleton} Class
- * to make sure that there can only be a single Instance at one Time connected to the Database   // Rania bitte Kommentar ändern
- *
- * @returns {MariaDB}
+ * The MariaDB class establishes a connection to a MariaDB database and manages a connection pool.
+ * It provides a convenient way to retrieve a database connection from the pool for executing queries
+ * and managing database operations.
  */
 class MariaDB {
   constructor() {
