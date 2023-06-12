@@ -19,7 +19,8 @@ function renderDashboard(req, res, next) {
     try {
       const decoded = svc.getData(accessToken);
       const user = decoded.username;
-
+      const avatarPath = decoded.avatarPath;
+      /** SQL Unnecessary now due to Haverland suggested improvements */
       db.then((conn) => {
         conn
           .query(
@@ -29,7 +30,7 @@ function renderDashboard(req, res, next) {
           .then((rows) => {
             try {
               const avatar = rows[0].FILE_PATH;
-              const avatarPath = "/assets/emojis/" + avatar;
+              //const avatarPath = "/assets/emojis/" + avatar;
               return res.render("dashboard", {
                 username: user,
                 avatar: avatarPath,
@@ -71,11 +72,11 @@ function authenticateToken(req, res, next) {
     console.log("redirected!");
     return res.redirect("/login");
   }
-
+/** Haverland suggested improvements */
   try {
     const decoded = svc.getData(accessToken);
-    console.log(decoded);
     req.username = decoded.username;
+    req.avatar = decoded.avatarPath;
     next();
   } catch (err) {
     return res.redirect("/login");

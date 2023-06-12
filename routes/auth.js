@@ -97,7 +97,7 @@ router.get("/game", mw.authToken, (req, res) => {
  * @param {Object} res - Express response object.
  * @returns {void}
  */
-router.get("/joinQueue", mw.authToken, mw.avatar, (req, res) => {
+router.get("/joinQueue", mw.authToken, (req, res) => { //avatar
   const username = req.username;
   const avatar = req.avatar;
   res.render("queue", { username: username, avatar: avatar });
@@ -112,7 +112,7 @@ router.get("/joinQueue", mw.authToken, mw.avatar, (req, res) => {
  * @param {Object} res - Express response object.
  *@returns {void}
  */
-router.get("/game/:roomID", mw.authToken, mw.avatar, (req, res) => {
+router.get("/game/:roomID", mw.authToken, (req, res) => { //avatar
   const roomID = req.params.roomID;
   const username = req.username;
   const avatar = req.avatar;
@@ -153,10 +153,11 @@ router.get("/game/:roomID", mw.authToken, mw.avatar, (req, res) => {
  * @param {Object} res - Express response object.
  * @returns {void}
  */
-router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
+router.get("/profile/:username", mw.authToken, (req, res) => { // avatar
   const username = req.params.username;
   const user = req.username;
   const avatar = req.avatar;
+  console.log("avatarProfile " + avatar);
 
   const sqlQuery = `
   SELECT DISTINCT U.USER_ID, U.USERNAME, U.HIGHSCORE, U.WINS, U.CONCURRENT_WINS, U.PERFECT_WINS, U.LOSES, A.FILE_PATH
@@ -209,7 +210,7 @@ router.get("/profile/:username", mw.authToken, mw.avatar, (req, res) => {
  * @param {Object} res - Express response object.
  * @returns {void}
  */
-router.get("/achievements", mw.authToken, mw.avatar, (req, res) => {
+router.get("/achievements", mw.authToken, (req, res) => { //avatar
   const user = req.username;
   const avatar = req.avatar;
 
@@ -255,7 +256,7 @@ router.post("/api/auth", (req, res) => {
   db.then((conn) => {
     conn
       .query(
-        "SELECT USER_ID, USERNAME, PASSWORD FROM USER WHERE USERNAME = ?",
+        "SELECT USER_ID, USERNAME, PASSWORD, AVATAR_ID FROM USER WHERE USERNAME = ?",
         [username]
       )
       .then((rows) => {
@@ -266,6 +267,9 @@ router.post("/api/auth", (req, res) => {
             const id = rows[0].USER_ID;
             const username = rows[0].USERNAME;
             const password_fromDB = rows[0].PASSWORD;
+            /** Haverland suggested improvements */
+            const avatarID = rows[0].AVATAR_ID;
+            const avatarPath = "/assets/emojis/" + "emoji_" + String(avatarID) + ".png";
 
             /** Compare the provided password with the hashed password stored in the database. */
             bcrypt.compare(password, password_fromDB).then((valid) => {
@@ -273,7 +277,7 @@ router.post("/api/auth", (req, res) => {
                 try {
                   /** Generate a JWT token for authentication. */
                   const token = jwt.sign(
-                    { id, username },
+                    { id, username, avatarPath},
                     process.env.JWT_SECRET,
                     {
                       algorithm: "HS256",
@@ -331,6 +335,8 @@ router.post("/api/auth/register", (req, res) => {
           
             let hashedPW = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
             const avatarID = Math.floor(Math.random() * 115 + 1);
+            /** Haverland suggested improvements */
+            const avatarPath = "/assets/emojis/" + "emoji_" + avatarID + ".png";
             conn
               .query(
                 "INSERT INTO USER (USERNAME, PASSWORD, HIGHSCORE, AVATAR_ID, WINS, CONCURRENT_WINS, PERFECT_WINS, LOSES) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -347,7 +353,7 @@ router.post("/api/auth/register", (req, res) => {
                         let id = rows[0].USER_ID;
 
                         const token = jwt.sign(
-                          { id, username },
+                          { id, username, avatarPath },
                           process.env.JWT_SECRET,
                           {
                             algorithm: "HS256",
@@ -389,9 +395,10 @@ router.post("/api/auth/register", (req, res) => {
  * @param {Object} res - Express response object.
  * @returns {void}
  */
-router.get("/scoreboard", mw.authToken, mw.avatar, (req, res) => {
+router.get("/scoreboard", mw.authToken, (req, res) => { // avatar
   const username = req.username;
   const avatar = req.avatar;
+  console.log("avatarDashboard" + avatar);
 
   const sqlQuery = `
   SELECT DISTINCT U.USERNAME, U.HIGHSCORE, U.WINS, U.CONCURRENT_WINS, U.PERFECT_WINS, U.LOSES, A.FILE_PATH

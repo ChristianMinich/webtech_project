@@ -2,12 +2,15 @@ const database = require("../repositories");
 const svc = require("../services");
 const db = database.getConnection();
 
+/** Unnecessary now due to Haverland suggested improvements */
+
 /**
  * Middleware function to retrieve the avatar file path for a user.
  *
  * @param req - Express request object.
  * @param res - Express respond object.
  * @param next - Next function for in the middleware chain.
+ * @deprecated Since Haverlands suggested improvements.
  */
 function getAvatar(req, res, next) {
   const accessToken = req.cookies["accessToken"];
