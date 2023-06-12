@@ -4,10 +4,11 @@ const db = database.getConnection();
 const maxRounds = 5;
 
 /**
- * The `QuizGame` class represents a quiz game played in a game room.
- * It manages the game flow, the players, the questions, and the scoring.
- * It provides functionality to facilitate a multi-player quiz game,
- * including managing the game progression, player interactions, question handling, and scoring mechanics.
+ * The `QuizGame` class embodies the excitement of a quiz game held within a vibrant game room atmosphere.
+ * It takes charge of orchestrating the game flow, player dynamics, captivating questions, and the thrilling scoring system.
+ * With its robust functionality, it effortlessly brings to life an immersive multiplayer quiz experience,
+ * seamlessly managing game progression, fostering player interactions, deftly handling a wide array of thought-provoking questions,
+ * and meticulously tracking and awarding points, all in a quest to crown the ultimate quiz champion.
  */
 class QuizGame {
   /**
